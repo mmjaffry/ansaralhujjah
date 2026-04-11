@@ -655,7 +655,7 @@ async function publishToGitHub() {
   }
 
   const branch   = gh.branch || 'main';
-  const filePath = 'ansar_index.html';
+  const filePath = 'index.html';
   const apiBase  = `https://api.github.com/repos/${gh.owner}/${gh.repo}/contents/${filePath}`;
   const headers  = {
     'Authorization': `Bearer ${gh.token}`,
