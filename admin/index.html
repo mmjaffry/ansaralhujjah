@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin · Ansar Al-Hujjah</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:            #080808;
+      --bg-card:       #111111;
+      --bg-panel:      #0d0d0d;
+      --accent:        rgb(180,90,45);
+      --accent-light:  rgb(210,130,80);
+      --accent-dim:    rgba(180,90,45,0.12);
+      --accent-border: rgba(180,90,45,0.22);
+      --text:          #e8ddd0;
+      --text-muted:    #8a7a6a;
+    }
+
+    body { background: var(--bg); color: var(--text); font-family: 'Lato', sans-serif; font-weight: 300; min-height: 100vh; }
+
+    /* ── LOGIN ── */
+    #loginScreen {
+      min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px;
+      background: radial-gradient(ellipse at 50% 0%, rgba(180,90,45,0.08) 0%, transparent 70%);
+    }
+    .login-card {
+      width: 100%; max-width: 380px; background: var(--bg-card);
+      border: 1px solid var(--accent-border); border-radius: 20px; padding: 48px 40px; text-align: center;
+    }
+    .login-logo { width: 58px; height: 58px; object-fit: contain; margin: 0 auto 18px; display: block; opacity: 0.9; }
+    .login-card h1 { font-family: 'Cinzel', serif; font-size: 1.2rem; font-weight: 400; color: var(--accent-light); margin-bottom: 4px; }
+    .login-sub { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 30px; }
+    .login-error { margin-top: 11px; font-size: 0.8rem; color: #e05555; display: none; }
+
+    /* ── SHARED INPUTS / BUTTONS ── */
+    .field {
+      width: 100%; background: rgba(255,255,255,0.04); border: 1px solid var(--accent-border);
+      border-radius: 10px; padding: 13px 16px; color: var(--text);
+      font-family: 'Lato', sans-serif; font-size: 0.95rem; outline: none;
+      transition: border-color 0.2s; margin-bottom: 13px;
+    }
+    .field:focus { border-color: var(--accent); }
+
+    .btn-primary {
+      width: 100%; background: var(--accent); color: #fff; border: none;
+      border-radius: 10px; padding: 14px; font-family: 'Cinzel', serif;
+      font-size: 0.85rem; letter-spacing: 0.05em; cursor: pointer;
+      transition: opacity 0.2s, transform 0.15s;
+    }
+    .btn-primary:hover  { opacity: 0.88; transform: translateY(-1px); }
+    .btn-primary:active { transform: translateY(0); }
+
+    .btn-ghost {
+      background: var(--accent-dim); border: 1px solid var(--accent-border); color: var(--accent-light);
+      border-radius: 8px; padding: 8px 16px; font-size: 0.8rem; cursor: pointer;
+      transition: background 0.2s; font-family: 'Lato', sans-serif;
+    }
+    .btn-ghost:hover { background: rgba(180,90,45,0.22); }
+
+    .btn-secondary {
+      background: transparent; border: 1px solid var(--accent-border); color: var(--text-muted);
+      border-radius: 10px; padding: 13px 22px; font-family: 'Lato', sans-serif;
+      font-size: 0.88rem; cursor: pointer; transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-secondary:hover { border-color: var(--accent-light); color: var(--text); }
+
+    /* ── DASHBOARD ── */
+    #dashboard { display: none; min-height: 100vh; flex-direction: column; }
+
+    .topbar {
+      position: sticky; top: 0; z-index: 200; background: var(--bg-card);
+      border-bottom: 1px solid var(--accent-border); padding: 0 24px; height: 56px;
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    }
+    .topbar-brand {
+      font-family: 'Cinzel', serif; font-size: 0.9rem; color: var(--accent-light);
+      display: flex; align-items: center; gap: 10px;
+    }
+    .topbar-brand img { width: 26px; height: 26px; object-fit: contain; opacity: 0.85; }
+    .topbar-badge {
+      font-size: 0.62rem; color: var(--text-muted); background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08); border-radius: 4px;
+      padding: 2px 7px; letter-spacing: 0.08em; text-transform: uppercase;
+    }
+    .topbar-right { display: flex; align-items: center; gap: 10px; }
+
+    /* publish status pill */
+    .status-pill {
+      font-size: 0.73rem; padding: 5px 11px; border-radius: 20px;
+      border: 1px solid transparent; display: none; align-items: center; gap: 6px;
+    }
+    .status-pill.publishing { display: flex; background: rgba(180,90,45,0.1); border-color: var(--accent-border); color: var(--accent-light); }
+    .status-pill.published  { display: flex; background: rgba(40,140,60,0.12); border-color: rgba(40,140,60,0.3); color: #6ecb7e; }
+    .status-pill.error      { display: flex; background: rgba(200,50,50,0.12); border-color: rgba(200,50,50,0.3); color: #e07070; }
+    .spin { display: inline-block; animation: spin 0.8s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── LAYOUT ── */
+    .admin-body {
+      display: grid; grid-template-columns: 260px 1fr;
+      flex: 1; min-height: calc(100vh - 56px);
+    }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      background: var(--bg-panel); border-right: 1px solid var(--accent-border);
+      display: flex; flex-direction: column; padding: 20px 14px; overflow-y: auto;
+    }
+    .sidebar-label { font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-muted); margin-bottom: 10px; padding: 0 2px; }
+
+    .event-item {
+      display: flex; align-items: center; gap: 9px; background: var(--bg-card);
+      border: 1px solid var(--accent-border); border-radius: 10px; padding: 10px 11px;
+      margin-bottom: 7px; cursor: pointer; transition: border-color 0.2s, background 0.2s;
+    }
+    .event-item:hover  { border-color: var(--accent); }
+    .event-item.active { border-color: var(--accent); background: rgba(180,90,45,0.07); }
+
+    .event-thumb {
+      width: 32px; height: 32px; border-radius: 6px; object-fit: cover; flex-shrink: 0;
+      background: var(--accent-dim); display: flex; align-items: center; justify-content: center; font-size: 0.9rem; overflow: hidden;
+    }
+    .event-thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .event-info { flex: 1; min-width: 0; }
+    .event-name { font-size: 0.82rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .event-sub  { font-size: 0.7rem; color: var(--text-muted); margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+    .btn-del {
+      width: 24px; height: 24px; border-radius: 5px; border: none; background: transparent;
+      color: var(--text-muted); cursor: pointer; display: flex; align-items: center;
+      justify-content: center; flex-shrink: 0; font-size: 0.8rem; transition: background 0.15s, color 0.15s;
+    }
+    .btn-del:hover { background: rgba(200,50,50,0.15); color: #e05555; }
+
+    .btn-add {
+      width: 100%; background: transparent; border: 1px dashed rgba(180,90,45,0.35);
+      border-radius: 10px; padding: 11px; color: var(--accent-light); font-size: 0.83rem;
+      cursor: pointer; margin-top: 3px; transition: background 0.2s, border-color 0.2s;
+      font-family: 'Lato', sans-serif;
+    }
+    .btn-add:hover { background: var(--accent-dim); border-color: var(--accent); }
+
+    .sidebar-divider { border: none; border-top: 1px solid var(--accent-border); margin: 16px 0; }
+
+    /* ── SETTINGS PANEL (inside sidebar) ── */
+    .settings-section summary {
+      font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.12em;
+      color: var(--text-muted); cursor: pointer; padding: 2px; list-style: none;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .settings-section summary::before { content: '⚙'; font-size: 0.8rem; }
+    .settings-section[open] summary { color: var(--accent-light); }
+    .settings-section .settings-body { margin-top: 12px; display: flex; flex-direction: column; gap: 10px; }
+    .settings-section .field { margin-bottom: 0; font-size: 0.82rem; padding: 10px 12px; }
+    .settings-hint { font-size: 0.7rem; color: var(--text-muted); line-height: 1.5; }
+    .settings-hint a { color: var(--accent-light); }
+    .btn-save-settings {
+      background: var(--accent-dim); border: 1px solid var(--accent-border); color: var(--accent-light);
+      border-radius: 8px; padding: 9px; font-size: 0.78rem; cursor: pointer;
+      width: 100%; font-family: 'Lato', sans-serif; transition: background 0.2s;
+    }
+    .btn-save-settings:hover { background: rgba(180,90,45,0.22); }
+    .settings-ok { font-size: 0.72rem; color: #6ecb7e; display: none; margin-top: 2px; }
+
+    /* ── MAIN EDITOR ── */
+    .main-area { display: flex; flex-direction: column; overflow-y: auto; }
+
+    .empty-state {
+      flex: 1; display: flex; flex-direction: column; align-items: center;
+      justify-content: center; padding: 60px 24px; text-align: center; gap: 10px;
+    }
+    .empty-icon { width: 52px; height: 52px; border-radius: 13px; background: var(--accent-dim); display: flex; align-items: center; justify-content: center; margin-bottom: 6px; }
+    .empty-icon svg { fill: var(--accent-light); width: 24px; height: 24px; }
+    .empty-state h3 { font-family: 'Cinzel', serif; font-size: 1rem; font-weight: 400; }
+    .empty-state p { font-size: 0.82rem; color: var(--text-muted); max-width: 240px; }
+
+    .editor-wrap { display: none; padding: 30px 34px; max-width: 660px; }
+    .editor-heading { font-family: 'Cinzel', serif; font-size: 1.05rem; font-weight: 400; color: var(--accent-light); margin-bottom: 26px; }
+
+    .form-row { margin-bottom: 20px; }
+    .form-row label { display: block; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 7px; }
+    .form-row input[type="text"],
+    .form-row input[type="url"] {
+      width: 100%; background: rgba(255,255,255,0.04); border: 1px solid var(--accent-border);
+      border-radius: 10px; padding: 12px 15px; color: var(--text);
+      font-family: 'Lato', sans-serif; font-size: 0.92rem; outline: none; transition: border-color 0.2s;
+    }
+    .form-row input:focus { border-color: var(--accent); }
+
+    /* flyer upload */
+    .upload-zone {
+      border: 2px dashed rgba(180,90,45,0.3); border-radius: 12px;
+      padding: 32px 20px; text-align: center; cursor: pointer;
+      transition: border-color 0.2s, background 0.2s; position: relative;
+    }
+    .upload-zone:hover { border-color: var(--accent); background: rgba(180,90,45,0.04); }
+    .upload-zone input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+    .upload-zone-icon { width: 42px; height: 42px; border-radius: 10px; background: var(--accent-dim); display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; }
+    .upload-zone-icon svg { fill: var(--accent-light); width: 20px; height: 20px; }
+    .upload-zone p { font-size: 0.82rem; color: var(--text-muted); }
+    .upload-zone strong { color: var(--accent-light); font-weight: 400; }
+
+    .flyer-preview-wrap { display: none; position: relative; margin-top: 12px; }
+    .flyer-preview-wrap img { width: 100%; border-radius: 10px; display: block; }
+    .btn-remove-flyer {
+      position: absolute; top: 9px; right: 9px; background: rgba(0,0,0,0.72);
+      border: 1px solid rgba(255,255,255,0.12); border-radius: 6px; color: #ccc;
+      font-size: 0.73rem; padding: 4px 10px; cursor: pointer; font-family: 'Lato', sans-serif;
+    }
+    .btn-remove-flyer:hover { color: #fff; }
+
+    /* preview */
+    .preview-section { margin-top: 32px; border-top: 1px solid var(--accent-border); padding-top: 22px; }
+    .preview-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 14px; }
+    .demo-card { background: var(--bg-card); border: 1px solid rgba(180,90,45,0.18); border-radius: 16px; overflow: hidden; max-width: 440px; }
+    .demo-card-header { display: flex; align-items: center; gap: 13px; padding: 15px 17px; }
+    .demo-icon { width: 38px; height: 38px; border-radius: 9px; background: var(--accent-dim); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .demo-icon svg { fill: var(--accent-light); width: 18px; height: 18px; }
+    .demo-text { flex: 1; }
+    .demo-label { font-size: 0.9rem; color: var(--text); }
+    .demo-sub   { font-size: 0.72rem; color: var(--text-muted); margin-top: 2px; }
+    .demo-arrow { width: 32px; height: 32px; border-radius: 7px; background: rgba(180,90,45,0.15); display: flex; align-items: center; justify-content: center; color: var(--accent-light); font-size: 0.9rem; }
+    .demo-body  { border-top: 1px solid rgba(180,90,45,0.1); display: none; }
+    .demo-body img { width: 100%; display: block; }
+    .demo-register { display: block; margin: 11px; background: var(--accent); color: #fff; text-align: center; padding: 11px; border-radius: 9px; text-decoration: none; font-family: 'Cinzel', serif; font-size: 0.8rem; }
+
+    .form-actions { display: flex; gap: 10px; margin-top: 26px; padding-top: 22px; border-top: 1px solid var(--accent-border); }
+    .form-actions .btn-primary { width: auto; flex: 1; }
+
+    /* ── TOAST ── */
+    .toast {
+      position: fixed; bottom: 24px; right: 24px; border-radius: 10px;
+      padding: 13px 18px; font-size: 0.83rem; display: none; align-items: center;
+      gap: 8px; z-index: 999; animation: slideUp 0.22s ease;
+    }
+    .toast.success { background: #1a2e1a; border: 1px solid #2d5a2d; color: #7ecb7e; display: flex; }
+    .toast.error   { background: #2e1a1a; border: 1px solid #5a2d2d; color: #cb7e7e; display: flex; }
+    @keyframes slideUp { from { opacity:0; transform: translateY(8px); } to { opacity:1; transform: translateY(0); } }
+
+    /* ── MODAL (GitHub setup prompt) ── */
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.75);
+      display: none; align-items: center; justify-content: center; z-index: 500; padding: 20px;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-box {
+      background: var(--bg-card); border: 1px solid var(--accent-border);
+      border-radius: 18px; padding: 36px 32px; width: 100%; max-width: 420px;
+    }
+    .modal-box h2 { font-family: 'Cinzel', serif; font-size: 1rem; font-weight: 400; color: var(--accent-light); margin-bottom: 8px; }
+    .modal-box p  { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 22px; line-height: 1.55; }
+    .modal-box p a { color: var(--accent-light); }
+    .modal-box .field { margin-bottom: 10px; }
+    .modal-actions { display: flex; gap: 10px; margin-top: 20px; }
+    .modal-actions .btn-primary { flex: 1; width: auto; }
+
+    @media (max-width: 580px) {
+      .admin-body { grid-template-columns: 1fr; }
+      .sidebar { border-right: none; border-bottom: 1px solid var(--accent-border); max-height: 40vh; }
+      .editor-wrap { padding: 22px 18px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginScreen">
+  <div class="login-card">
+    <img src="../Ansar Al-Hujjah Logo Symbol.png" class="login-logo" alt="">
+    <h1>Admin Panel</h1>
+    <p class="login-sub">Ansar Al-Hujjah &nbsp;·&nbsp; Houston, TX</p>
+    <form id="loginForm">
+      <input class="field" type="password" id="passwordInput" placeholder="Admin password" autocomplete="current-password">
+      <button type="submit" class="btn-primary">Sign In</button>
+      <p class="login-error" id="loginError">Incorrect password — please try again.</p>
+    </form>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard">
+
+  <div class="topbar">
+    <div class="topbar-brand">
+      <img src="../Ansar Al-Hujjah Logo Symbol.png" alt="">
+      Ansar Al-Hujjah
+      <span class="topbar-badge">Admin</span>
+    </div>
+    <div class="topbar-right">
+      <div class="status-pill" id="statusPill"></div>
+      <button class="btn-ghost" id="logoutBtn">Sign Out</button>
+    </div>
+  </div>
+
+  <div class="admin-body">
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <div class="sidebar-label">Event Cards</div>
+      <div id="eventList"></div>
+      <button class="btn-add" id="addBtn">+ Add New Card</button>
+
+      <hr class="sidebar-divider">
+
+      <!-- GitHub settings -->
+      <details class="settings-section" id="settingsDetails">
+        <summary>GitHub Settings</summary>
+        <div class="settings-body">
+          <p class="settings-hint">
+            Needed to publish changes live. Create a token at
+            <a href="https://github.com/settings/tokens" target="_blank">github.com/settings/tokens</a>
+            with <strong>repo</strong> scope.
+          </p>
+          <input class="field" type="password" id="ghToken"  placeholder="GitHub token (ghp_...)">
+          <input class="field" type="text"     id="ghOwner"  placeholder="Repo owner (e.g. ansaralhujjah)">
+          <input class="field" type="text"     id="ghRepo"   placeholder="Repo name (e.g. ansaralhujjah.github.io)">
+          <input class="field" type="text"     id="ghBranch" placeholder="Branch (default: main)">
+          <button class="btn-save-settings" id="saveSettingsBtn">Save Settings</button>
+          <p class="settings-ok" id="settingsOk">✓ Settings saved</p>
+        </div>
+      </details>
+    </div>
+
+    <!-- MAIN EDITOR -->
+    <div class="main-area" id="mainArea">
+
+      <div class="empty-state" id="emptyState">
+        <div class="empty-icon">
+          <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+        </div>
+        <h3>No card selected</h3>
+        <p>Choose a card from the sidebar or add a new one to get started.</p>
+      </div>
+
+      <div class="editor-wrap" id="editorWrap">
+        <div class="editor-heading" id="editorHeading">New Event Card</div>
+
+        <div class="form-row">
+          <label>Event Title</label>
+          <input type="text" id="fTitle" placeholder="e.g. Unity Majlis — Night to Remember">
+        </div>
+        <div class="form-row">
+          <label>Subtitle</label>
+          <input type="text" id="fSub" placeholder="e.g. Saturdays · 7:00 AM · AHS Portable 4B">
+        </div>
+        <div class="form-row">
+          <label>Registration / Sign-In Link</label>
+          <input type="url" id="fLink" placeholder="https://forms.gle/...">
+        </div>
+        <div class="form-row">
+          <label>Flyer Image <span style="color:var(--text-muted);font-size:0.7rem;text-transform:none;letter-spacing:0">(PNG or JPG — shown when card expands)</span></label>
+          <div class="upload-zone" id="uploadZone">
+            <input type="file" id="fFlyer" accept="image/png,image/jpeg,image/jpg">
+            <div class="upload-zone-icon">
+              <svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+            </div>
+            <p><strong>Click to upload</strong> or drag &amp; drop</p>
+            <p style="font-size:0.74rem;margin-top:3px;">PNG · JPG</p>
+          </div>
+          <div class="flyer-preview-wrap" id="flyerPreviewWrap">
+            <img id="flyerPreviewImg" src="" alt="">
+            <button class="btn-remove-flyer" id="removeFlyerBtn">Remove</button>
+          </div>
+        </div>
+
+        <!-- live preview -->
+        <div class="preview-section">
+          <div class="preview-label">Card Preview</div>
+          <div class="demo-card">
+            <div class="demo-card-header">
+              <div class="demo-icon">
+                <svg viewBox="0 0 24 24"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg>
+              </div>
+              <div class="demo-text">
+                <div class="demo-label" id="previewTitle">Event Title</div>
+                <div class="demo-sub"   id="previewSub">Subtitle</div>
+              </div>
+              <div class="demo-arrow">→</div>
+            </div>
+            <div class="demo-body" id="previewBody">
+              <img id="previewImg" src="" alt="">
+              <a class="demo-register" href="#">Register</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button class="btn-secondary" id="cancelBtn">Cancel</button>
+          <button class="btn-primary"   id="saveBtn">Save &amp; Publish</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- GitHub setup modal (shown on first publish if not configured) -->
+<div class="modal-overlay" id="ghModal">
+  <div class="modal-box">
+    <h2>GitHub Setup Required</h2>
+    <p>
+      To publish live, enter your GitHub credentials in the
+      <strong style="color:var(--accent-light)">⚙ GitHub Settings</strong>
+      panel in the sidebar, then try saving again.
+    </p>
+    <div class="modal-actions">
+      <button class="btn-primary" id="ghModalClose">Got it</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+'use strict';
+
+/* ── Password ─────────────────────────── */
+// Change this string to set a new admin password. No other changes needed.
+const ADMIN_PASSWORD = 'AnsarAdmin2025';
+
+/* ── State ───────────────────────────── */
+let events    = JSON.parse(localStorage.getItem('aah_events') || '[]');
+let editingId = null;
+let flyerB64  = null;
+let flyerMime = null;
+
+/* ── Crypto ──────────────────────────── */
+async function sha256(str) {
+  const buf  = new TextEncoder().encode(str);
+  const hash = await crypto.subtle.digest('SHA-256', buf);
+  return [...new Uint8Array(hash)].map(b => b.toString(16).padStart(2,'0')).join('');
+}
+
+/* ── Boot ────────────────────────────── */
+document.addEventListener('DOMContentLoaded', async () => {
+  const storedHash = await sha256(ADMIN_PASSWORD);
+
+  if (sessionStorage.getItem('aah_authed') === storedHash) showDashboard();
+
+  document.getElementById('loginForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    const hash = await sha256(document.getElementById('passwordInput').value);
+    if (hash === storedHash) {
+      sessionStorage.setItem('aah_authed', storedHash);
+      showDashboard();
+    } else {
+      document.getElementById('loginError').style.display = 'block';
+      document.getElementById('passwordInput').select();
+    }
+  });
+
+  document.getElementById('logoutBtn').addEventListener('click', () => {
+    sessionStorage.removeItem('aah_authed');
+    location.reload();
+  });
+
+  document.getElementById('addBtn').addEventListener('click', () => openEditor(null));
+  document.getElementById('fTitle').addEventListener('input', updatePreview);
+  document.getElementById('fSub').addEventListener('input',   updatePreview);
+  document.getElementById('fLink').addEventListener('input',  updatePreview);
+  document.getElementById('fFlyer').addEventListener('change', handleFlyerUpload);
+  document.getElementById('removeFlyerBtn').addEventListener('click', clearFlyer);
+  document.getElementById('saveBtn').addEventListener('click',   saveCard);
+  document.getElementById('cancelBtn').addEventListener('click', closeEditor);
+  document.getElementById('saveSettingsBtn').addEventListener('click', saveGhSettings);
+  document.getElementById('ghModalClose').addEventListener('click', () => {
+    document.getElementById('ghModal').classList.remove('open');
+    document.getElementById('settingsDetails').open = true;
+  });
+
+  loadGhSettings();
+});
+
+/* ── GitHub settings ─────────────────── */
+function loadGhSettings() {
+  const s = JSON.parse(localStorage.getItem('aah_gh') || '{}');
+  if (s.token)  document.getElementById('ghToken').value  = s.token;
+  if (s.owner)  document.getElementById('ghOwner').value  = s.owner;
+  if (s.repo)   document.getElementById('ghRepo').value   = s.repo;
+  if (s.branch) document.getElementById('ghBranch').value = s.branch;
+}
+
+function saveGhSettings() {
+  const settings = {
+    token:  document.getElementById('ghToken').value.trim(),
+    owner:  document.getElementById('ghOwner').value.trim(),
+    repo:   document.getElementById('ghRepo').value.trim(),
+    branch: document.getElementById('ghBranch').value.trim() || 'main',
+  };
+  localStorage.setItem('aah_gh', JSON.stringify(settings));
+  const ok = document.getElementById('settingsOk');
+  ok.style.display = 'block';
+  setTimeout(() => { ok.style.display = 'none'; }, 2500);
+}
+
+function getGhSettings() {
+  return JSON.parse(localStorage.getItem('aah_gh') || '{}');
+}
+
+/* ── Publish status ──────────────────── */
+function setStatus(state, msg) {
+  const pill = document.getElementById('statusPill');
+  pill.className = 'status-pill ' + state;
+  pill.innerHTML = state === 'publishing'
+    ? `<span class="spin">↻</span> ${msg}`
+    : msg;
+  if (state !== 'publishing') {
+    setTimeout(() => { pill.className = 'status-pill'; }, 4000);
+  }
+}
+
+/* ── Dashboard ───────────────────────── */
+function showDashboard() {
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('dashboard').style.display   = 'flex';
+  renderSidebar();
+}
+
+/* ── Sidebar ─────────────────────────── */
+function renderSidebar() {
+  const el = document.getElementById('eventList');
+  if (!events.length) {
+    el.innerHTML = '<p style="font-size:0.76rem;color:var(--text-muted);padding:2px;margin-bottom:8px;">No cards yet.</p>';
+    return;
+  }
+  el.innerHTML = events.map(ev => `
+    <div class="event-item${editingId === ev.id ? ' active' : ''}" id="item-${ev.id}" onclick="openEditor('${ev.id}')">
+      <div class="event-thumb">
+        ${ev.flyerB64 ? `<img src="data:${ev.flyerMime};base64,${ev.flyerB64}" alt="">` : '📋'}
+      </div>
+      <div class="event-info">
+        <div class="event-name">${esc(ev.title || 'Untitled')}</div>
+        <div class="event-sub">${esc(ev.sub || '')}</div>
+      </div>
+      <button class="btn-del" onclick="event.stopPropagation();deleteCard('${ev.id}')" title="Delete">✕</button>
+    </div>
+  `).join('');
+}
+
+/* ── Editor ──────────────────────────── */
+function openEditor(id) {
+  editingId = id;
+  const ev  = id ? events.find(e => e.id === id) : null;
+  document.getElementById('emptyState').style.display  = 'none';
+  document.getElementById('editorWrap').style.display  = 'block';
+  document.getElementById('editorHeading').textContent = ev ? 'Edit Card' : 'New Event Card';
+  document.getElementById('fTitle').value = ev?.title || '';
+  document.getElementById('fSub').value   = ev?.sub   || '';
+  document.getElementById('fLink').value  = ev?.link  || '';
+  if (ev?.flyerB64) {
+    flyerB64 = ev.flyerB64; flyerMime = ev.flyerMime;
+    showFlyerPreview(`data:${ev.flyerMime};base64,${ev.flyerB64}`);
+  } else { clearFlyer(); }
+  updatePreview();
+  renderSidebar();
+  document.getElementById('fTitle').focus();
+}
+
+function closeEditor() {
+  editingId = null;
+  document.getElementById('editorWrap').style.display  = 'none';
+  document.getElementById('emptyState').style.display  = 'flex';
+  renderSidebar();
+}
+
+async function saveCard() {
+  const title = document.getElementById('fTitle').value.trim();
+  const sub   = document.getElementById('fSub').value.trim();
+  const link  = document.getElementById('fLink').value.trim();
+  if (!title) { document.getElementById('fTitle').focus(); return; }
+
+  if (editingId) {
+    const idx = events.findIndex(e => e.id === editingId);
+    if (idx > -1) events[idx] = { ...events[idx], title, sub, link, flyerB64, flyerMime };
+  } else {
+    events.push({ id: Date.now().toString(36), title, sub, link, flyerB64, flyerMime });
+  }
+
+  persist();
+  renderSidebar();
+  closeEditor();
+  await publishToGitHub();
+}
+
+async function deleteCard(id) {
+  if (!confirm('Delete this card?')) return;
+  events = events.filter(e => e.id !== id);
+  persist();
+  if (editingId === id) closeEditor();
+  else renderSidebar();
+  await publishToGitHub();
+}
+
+function persist() {
+  localStorage.setItem('aah_events', JSON.stringify(events));
+}
+
+/* ── Flyer upload ────────────────────── */
+function handleFlyerUpload(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    const [header, b64] = ev.target.result.split(',');
+    flyerMime = header.match(/data:([^;]+)/)[1];
+    flyerB64  = b64;
+    showFlyerPreview(ev.target.result);
+    updatePreview();
+  };
+  reader.readAsDataURL(file);
+}
+
+function showFlyerPreview(src) {
+  document.getElementById('uploadZone').style.display       = 'none';
+  document.getElementById('flyerPreviewWrap').style.display = 'block';
+  document.getElementById('flyerPreviewImg').src            = src;
+}
+
+function clearFlyer() {
+  flyerB64 = null; flyerMime = null;
+  document.getElementById('uploadZone').style.display       = 'block';
+  document.getElementById('flyerPreviewWrap').style.display = 'none';
+  document.getElementById('flyerPreviewImg').src            = '';
+  document.getElementById('fFlyer').value                   = '';
+  updatePreview();
+}
+
+/* ── Live preview ────────────────────── */
+function updatePreview() {
+  document.getElementById('previewTitle').textContent = document.getElementById('fTitle').value || 'Event Title';
+  document.getElementById('previewSub').textContent   = document.getElementById('fSub').value   || 'Subtitle';
+  const body = document.getElementById('previewBody');
+  if (flyerB64) {
+    document.getElementById('previewImg').src = `data:${flyerMime};base64,${flyerB64}`;
+    body.style.display = 'block';
+  } else {
+    body.style.display = 'none';
+  }
+}
+
+/* ── GitHub API publish ──────────────── */
+async function publishToGitHub() {
+  const gh = getGhSettings();
+  if (!gh.token || !gh.owner || !gh.repo) {
+    document.getElementById('ghModal').classList.add('open');
+    return;
+  }
+
+  const branch   = gh.branch || 'main';
+  const filePath = 'ansar_index.html';
+  const apiBase  = `https://api.github.com/repos/${gh.owner}/${gh.repo}/contents/${filePath}`;
+  const headers  = {
+    'Authorization': `Bearer ${gh.token}`,
+    'Accept': 'application/vnd.github+json',
+    'X-GitHub-Api-Version': '2022-11-28',
+  };
+
+  setStatus('publishing', 'Publishing…');
+
+  try {
+    // 1. Fetch current file (need SHA + content)
+    const getResp = await fetch(`${apiBase}?ref=${branch}`, { headers });
+    if (!getResp.ok) throw new Error(`GitHub fetch failed: ${getResp.status} ${await getResp.text()}`);
+    const fileData    = await getResp.json();
+    const currentSha  = fileData.sha;
+    const currentHtml = atob(fileData.content.replace(/\n/g, ''));
+
+    // 2. Replace admin cards section between markers
+    const startMarker = '<!-- AAH-ADMIN-CARDS-START -->';
+    const endMarker   = '<!-- AAH-ADMIN-CARDS-END -->';
+    const startIdx    = currentHtml.indexOf(startMarker);
+    const endIdx      = currentHtml.indexOf(endMarker);
+
+    if (startIdx === -1 || endIdx === -1) {
+      throw new Error('Markers not found in ansar_index.html. Make sure the file has <!-- AAH-ADMIN-CARDS-START --> and <!-- AAH-ADMIN-CARDS-END --> comments.');
+    }
+
+    const cardsHtml = events.length
+      ? '\n' + events.map((ev, i) => buildCardHtml(ev, i)).join('\n') + '\n      '
+      : '\n      ';
+
+    const newHtml = currentHtml.slice(0, startIdx + startMarker.length)
+      + cardsHtml
+      + currentHtml.slice(endIdx);
+
+    // 3. Commit updated file
+    const encoded  = btoa(unescape(encodeURIComponent(newHtml)));
+    const putResp  = await fetch(`${apiBase}?ref=${branch}`, {
+      method:  'PUT',
+      headers: { ...headers, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message: `Update event cards via admin panel (${new Date().toLocaleDateString()})`,
+        content: encoded,
+        sha:     currentSha,
+        branch,
+      }),
+    });
+
+    if (!putResp.ok) throw new Error(`GitHub commit failed: ${putResp.status} ${await putResp.text()}`);
+
+    setStatus('published', '✓ Live in ~30s');
+
+  } catch (err) {
+    console.error(err);
+    setStatus('error', '✕ Publish failed');
+    showToast(err.message, 'error');
+  }
+}
+
+/* ── Card HTML generator ─────────────── */
+function buildCardHtml(ev, idx) {
+  const delay  = (0.7 + idx * 0.1).toFixed(1);
+  const bodyId = `adminCard_${ev.id}`;
+  const fnName = `toggleAdminCard_${ev.id}`;
+  const t = esc(ev.title || '');
+  const s = esc(ev.sub   || '');
+  const l = esc(ev.link  || '#');
+
+  if (ev.flyerB64) {
+    return `      <!-- admin:${ev.id} -->
+      <div class="social-card" style="animation:fadeUp 0.6s ${delay}s ease both;">
+        <div class="social-card-header" onclick="${fnName}(event)">
+          <div class="icon"><svg viewBox="0 0 24 24"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg></div>
+          <span class="btn-text">
+            <span class="btn-label">${t}</span>${s ? `\n            <span class="btn-sub">${s}</span>` : ''}
+          </span>
+          <a class="arrow-link" href="${l}" target="_blank" rel="noopener" onclick="event.stopPropagation()">→</a>
+        </div>
+        <div class="social-card-body" id="${bodyId}">
+          <img src="data:${ev.flyerMime};base64,${ev.flyerB64}" alt="${t} Flyer">
+          <a class="register-btn" href="${l}" target="_blank" rel="noopener">Register</a>
+        </div>
+      </div>
+      <script>function ${fnName}(){document.getElementById('${bodyId}').classList.toggle('open');}<\/script>`;
+  }
+
+  return `      <!-- admin:${ev.id} -->
+      <a class="link-btn" href="${l}" target="_blank" rel="noopener" style="animation-delay:${delay}s">
+        <div class="icon"><svg viewBox="0 0 24 24"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg></div>
+        <span class="btn-text">
+          <span class="btn-label">${t}</span>${s ? `\n          <span class="btn-sub">${s}</span>` : ''}
+        </span>
+        <span class="arrow">→</span>
+      </a>`;
+}
+
+/* ── Toast ───────────────────────────── */
+function showToast(msg, type = 'success') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className   = `toast ${type}`;
+  setTimeout(() => { t.className = 'toast'; }, 4000);
+}
+
+/* ── Utility ─────────────────────────── */
+function esc(str) {
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+</script>
+</body>
+</html>
