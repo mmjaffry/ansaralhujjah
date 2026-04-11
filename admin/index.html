@@ -667,11 +667,13 @@ async function publishToGitHub() {
 
   try {
     // 1. Fetch current file (need SHA + content)
-    const getResp = await fetch(`${apiBase}?ref=${branch}`, { headers });
-    if (!getResp.ok) throw new Error(`GitHub fetch failed: ${getResp.status} ${await getResp.text()}`);
+    const fetchUrl = `${apiBase}?ref=${branch}`;
+    console.log('GitHub API fetch:', fetchUrl);
+    const getResp = await fetch(fetchUrl, { headers });
+    if (!getResp.ok) throw new Error(`GitHub fetch failed: ${getResp.status} — URL: ${fetchUrl} — ${await getResp.text()}`);
     const fileData    = await getResp.json();
     const currentSha  = fileData.sha;
-    const currentHtml = atob(fileData.content.replace(/\n/g, ''));
+    const currentHtml = decodeURIComponent(escape(atob(fileData.content.replace(/\n/g, ''))));
 
     // 2. Replace admin cards section between markers
     const startMarker = '<!-- AAH-ADMIN-CARDS-START -->';
@@ -680,7 +682,7 @@ async function publishToGitHub() {
     const endIdx      = currentHtml.indexOf(endMarker);
 
     if (startIdx === -1 || endIdx === -1) {
-      throw new Error('Markers not found in ansar_index.html. Make sure the file has <!-- AAH-ADMIN-CARDS-START --> and <!-- AAH-ADMIN-CARDS-END --> comments.');
+      throw new Error('Markers not found in index.html. Make sure the file has <!-- AAH-ADMIN-CARDS-START --> and <!-- AAH-ADMIN-CARDS-END --> comments.');
     }
 
     const cardsHtml = events.length
