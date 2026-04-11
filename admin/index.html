@@ -424,7 +424,7 @@
 
 /* ── Password ─────────────────────────── */
 // Change this string to set a new admin password. No other changes needed.
-const ADMIN_PASSWORD = 'ansar2026';
+const ADMIN_PASSWORD = 'murtaza6';
 
 /* ── State ───────────────────────────── */
 let events    = JSON.parse(localStorage.getItem('aah_events') || '[]');
@@ -574,7 +574,8 @@ function closeEditor() {
 async function saveCard() {
   const title = document.getElementById('fTitle').value.trim();
   const sub   = document.getElementById('fSub').value.trim();
-  const link  = document.getElementById('fLink').value.trim();
+  const rawLink = document.getElementById('fLink').value.trim();
+  const link = rawLink && !/^https?:\/\//i.test(rawLink) ? 'https://' + rawLink : rawLink;
   if (!title) { document.getElementById('fTitle').focus(); return; }
 
   if (editingId) {
