@@ -228,11 +228,11 @@
 
     /* ── ICON PICKER ── */
     .icon-picker {
-      display: grid; grid-template-columns: repeat(6, 1fr); gap: 7px; margin-top: 6px;
+      display: grid; grid-template-columns: repeat(8, 1fr); gap: 6px; margin-top: 6px;
     }
     .icon-option {
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      gap: 5px; padding: 10px 4px; border-radius: 9px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      padding: 9px; border-radius: 9px; cursor: pointer;
       border: 1px solid var(--accent-border); background: rgba(255,255,255,0.03);
       transition: border-color 0.18s, background 0.18s;
     }
@@ -242,8 +242,6 @@
       box-shadow: 0 0 0 1px rgba(180,90,45,0.35);
     }
     .icon-option svg { width: 20px; height: 20px; fill: var(--accent-light); display: block; }
-    .icon-option span { font-size: 0.58rem; color: var(--text-muted); text-align: center; line-height: 1.25; }
-    .icon-option.selected span { color: var(--accent-light); }
 
     /* flyer upload */
     .upload-zone {
@@ -321,7 +319,7 @@
       .admin-body { grid-template-columns: 1fr; }
       .sidebar { border-right: none; border-bottom: 1px solid var(--accent-border); max-height: 45vh; }
       .editor-wrap { padding: 22px 18px; }
-      .icon-picker { grid-template-columns: repeat(4, 1fr); }
+      .icon-picker { grid-template-columns: repeat(6, 1fr); }
     }
   </style>
 </head>
@@ -415,11 +413,11 @@
 
         <div class="form-row">
           <label>Event Title</label>
-          <input type="text" id="fTitle" placeholder="e.g. Unity Majlis — Night to Remember">
+          <input type="text" id="fTitle" placeholder="e.g. Quran Reflections">
         </div>
         <div class="form-row">
           <label>Subtitle</label>
-          <input type="text" id="fSub" placeholder="e.g. Saturdays · 7:00 AM · IEC Houston">
+          <input type="text" id="fSub" placeholder="e.g. Tafsir of Surah Ankaboot - Moulana Farhat Abbas">
         </div>
         <div class="form-row">
           <label>Registration / Sign-In Link</label>
@@ -506,18 +504,39 @@ const ADMIN_PASSWORD = 'murtaza6';
 
 /* ── Icon definitions ─────────────────── */
 const ICONS = [
-  { id: 'calendar', label: 'Calendar',  path: 'M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z' },
-  { id: 'people',   label: 'People',    path: 'M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z' },
-  { id: 'book',     label: 'Quran',     path: 'M21 5c-1.11-.35-2.33-.5-3.5-.5-1.95 0-4.05.4-5.5 1.5-1.45-1.1-3.55-1.5-5.5-1.5S2.45 4.9 1 6v14.65c0 .25.25.5.5.5.1 0 .15-.05.25-.05C3.1 20.45 5.05 20 6.5 20c1.95 0 3.75.4 5 1.5 1.35-1.15 3.8-1.5 5.5-1.5 1.65 0 3.35.3 4.75 1.05.1.05.15.05.25.05.25 0 .5-.25.5-.5V6c-.6-.45-1.25-.75-2-1zm0 13.5c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5V8c1.35-.85 3.8-1.5 5.5-1.5 1.2 0 2.4.15 3.5.5v11.5z' },
-  { id: 'whatsapp', label: 'WhatsApp',  path: 'M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z' },
-  { id: 'instagram',label: 'Instagram', path: 'M9 2L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z' },
-  { id: 'star',     label: 'Special',   path: 'M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z' },
-  { id: 'mic',      label: 'Lecture',   path: 'M12 14c1.66 0 2.99-1.34 2.99-3L15 5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z' },
-  { id: 'heart',    label: 'Charity',   path: 'M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z' },
-  { id: 'globe',    label: 'Website',   path: 'M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zm6.93 6h-2.95c-.32-1.25-.78-2.45-1.38-3.56 1.84.63 3.37 1.91 4.33 3.56zM12 4.04c.83 1.2 1.48 2.53 1.91 3.96h-3.82c.43-1.43 1.08-2.76 1.91-3.96zM4.26 14C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2 0 .68.06 1.34.14 2H4.26zm.82 2h2.95c.32 1.25.78 2.45 1.38 3.56-1.84-.63-3.37-1.91-4.33-3.56zm2.95-8H5.08c.96-1.65 2.49-2.93 4.33-3.56C8.81 5.55 8.35 6.75 8.03 8zM12 19.96c-.83-1.2-1.48-2.53-1.91-3.96h3.82c-.43 1.43-1.08 2.76-1.91 3.96zM14.34 14H9.66c-.09-.66-.16-1.32-.16-2 0-.68.07-1.35.16-2h4.68c.09.65.16 1.32.16 2 0 .68-.07 1.34-.16 2zm.25 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95c-.96 1.65-2.49 2.93-4.33 3.56zM16.36 14c.08-.66.14-1.32.14-2 0-.68-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2s-.1 1.36-.26 2h-3.38z' },
-  { id: 'pin',      label: 'Location',  path: 'M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z' },
-  { id: 'video',    label: 'Online',    path: 'M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z' },
-  { id: 'ticket',   label: 'Ticket',    path: 'M22 10V6c0-1.11-.9-2-2-2H4c-1.1 0-1.99.89-1.99 2v4c1.1 0 1.99.9 1.99 2s-.89 2-2 2v4c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2v-4c-1.1 0-2-.9-2-2s.9-2 2-2zm-2-1.46c-1.19.69-2 1.99-2 3.46s.81 2.77 2 3.46V18H4v-2.54c1.19-.69 2-1.99 2-3.46 0-1.48-.8-2.77-2-3.46V6h16v2.54z' },
+  { id: 'calendar',     label: 'Calendar',      path: 'M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z' },
+  { id: 'book',         label: 'Quran',         path: 'M21 5c-1.11-.35-2.33-.5-3.5-.5-1.95 0-4.05.4-5.5 1.5-1.45-1.1-3.55-1.5-5.5-1.5S2.45 4.9 1 6v14.65c0 .25.25.5.5.5.1 0 .15-.05.25-.05C3.1 20.45 5.05 20 6.5 20c1.95 0 3.75.4 5 1.5 1.35-1.15 3.8-1.5 5.5-1.5 1.65 0 3.35.3 4.75 1.05.1.05.15.05.25.05.25 0 .5-.25.5-.5V6c-.6-.45-1.25-.75-2-1zm0 13.5c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5V8c1.35-.85 3.8-1.5 5.5-1.5 1.2 0 2.4.15 3.5.5v11.5z' },
+  { id: 'people',       label: 'People',        path: 'M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z' },
+  { id: 'mic',          label: 'Lecture',       path: 'M12 14c1.66 0 2.99-1.34 2.99-3L15 5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z' },
+  { id: 'star',         label: 'Special',       path: 'M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z' },
+  { id: 'heart',        label: 'Charity',       path: 'M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z' },
+  { id: 'globe',        label: 'Website',       path: 'M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zm6.93 6h-2.95c-.32-1.25-.78-2.45-1.38-3.56 1.84.63 3.37 1.91 4.33 3.56zM12 4.04c.83 1.2 1.48 2.53 1.91 3.96h-3.82c.43-1.43 1.08-2.76 1.91-3.96zM4.26 14C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2 0 .68.06 1.34.14 2H4.26zm.82 2h2.95c.32 1.25.78 2.45 1.38 3.56-1.84-.63-3.37-1.91-4.33-3.56zm2.95-8H5.08c.96-1.65 2.49-2.93 4.33-3.56C8.81 5.55 8.35 6.75 8.03 8zM12 19.96c-.83-1.2-1.48-2.53-1.91-3.96h3.82c-.43 1.43-1.08 2.76-1.91 3.96zM14.34 14H9.66c-.09-.66-.16-1.32-.16-2 0-.68.07-1.35.16-2h4.68c.09.65.16 1.32.16 2 0 .68-.07 1.34-.16 2zm.25 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95c-.96 1.65-2.49 2.93-4.33 3.56zM16.36 14c.08-.66.14-1.32.14-2 0-.68-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2s-.1 1.36-.26 2h-3.38z' },
+  { id: 'pin',          label: 'Location',      path: 'M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z' },
+  { id: 'video',        label: 'Online',        path: 'M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z' },
+  { id: 'ticket',       label: 'Ticket',        path: 'M22 10V6c0-1.11-.9-2-2-2H4c-1.1 0-1.99.89-1.99 2v4c1.1 0 1.99.9 1.99 2s-.89 2-2 2v4c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2v-4c-1.1 0-2-.9-2-2s.9-2 2-2zm-2-1.46c-1.19.69-2 1.99-2 3.46s.81 2.77 2 3.46V18H4v-2.54c1.19-.69 2-1.99 2-3.46 0-1.48-.8-2.77-2-3.46V6h16v2.54z' },
+  { id: 'whatsapp',     label: 'WhatsApp',      path: 'M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z' },
+  { id: 'instagram',    label: 'Instagram',     path: 'M9 2L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z' },
+  { id: 'moon',         label: 'Moon',          path: 'M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z' },
+  { id: 'mosque',       label: 'Mosque',        path: 'M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z' },
+  { id: 'school',       label: 'School',        path: 'M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82zM12 3L1 9l11 6 9-4.91V17h2V9L12 3z' },
+  { id: 'food',         label: 'Food',          path: 'M18.06 22.99h1.66c.84 0 1.53-.64 1.63-1.46L23 5.05h-5V1h-1.97v4.05h-4.97l.3 2.34c1.71.47 3.31 1.32 4.27 2.26 1.44 1.42 2.43 2.89 2.43 5.29v8.05zM1 21.99V21h15.03v.99c0 .55-.45 1-1.01 1H2.01c-.56 0-1.01-.45-1.01-1zm15.03-7c0-4.5-6.91-5-8.53-5-1.63 0-8.5.5-8.5 5h17.03z' },
+  { id: 'donate',       label: 'Donate',        path: 'M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z' },
+  { id: 'clipboard',    label: 'Form',          path: 'M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z' },
+  { id: 'award',        label: 'Award',         path: 'M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94.63 1.5 1.98 2.63 3.61 2.96V19H7v2h10v-2h-4v-3.1c1.63-.33 2.98-1.46 3.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z' },
+  { id: 'bell',         label: 'Announce',      path: 'M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z' },
+  { id: 'chat',         label: 'Discussion',    path: 'M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z' },
+  { id: 'person',       label: 'Person',        path: 'M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z' },
+  { id: 'volunteer',    label: 'Volunteer',     path: 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z' },
+  { id: 'link',         label: 'Link',          path: 'M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z' },
+  { id: 'sports',       label: 'Sports',        path: 'M13.49 5.48c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm-3.6 13.9l1-4.4 2.1 2v6h2v-7.5l-2.1-2 .6-3c1.3 1.5 3.3 2.5 5.5 2.5v-2c-1.9 0-3.5-1-4.3-2.4l-1-1.6c-.4-.6-1-1-1.7-1-.3 0-.5.1-.8.1l-5.2 2.2v4.7h2v-3.4l1.8-.7-1.6 8.1-4.9-1-.4 2 7 1.4z' },
+  { id: 'photo',        label: 'Photo',         path: 'M9 2L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.65 0-3 1.35-3 3s1.35 3 3 3 3-1.35 3-3-1.35-3-3-3z' },
+  { id: 'info',         label: 'Info',          path: 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z' },
+  { id: 'pen',          label: 'Workshop',      path: 'M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z' },
+  { id: 'wifi',         label: 'Livestream',    path: 'M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z' },
+  { id: 'hands',        label: 'Dua',           path: 'M23 12l-2.44-2.79.34-3.69-3.61-.82-1.89-3.2L12 3 8.6 1.5 6.71 4.69 3.1 5.5l.34 3.7L1 12l2.44 2.79-.34 3.7 3.61.82 1.89 3.2L12 21l3.4 1.5 1.89-3.19 3.61-.82-.34-3.69L23 12zm-10 3h-2v-2h2v2zm0-4h-2V7h2v4z' },
+  { id: 'coffee',       label: 'Social',        path: 'M20 3H4v10c0 2.21 1.79 4 4 4h6c2.21 0 4-1.79 4-4v-3h2c1.11 0 2-.89 2-2V5c0-1.11-.89-2-2-2zm0 5h-2V5h2v3zM4 19h16v2H4z' },
+  { id: 'child',        label: 'Youth',         path: 'M13 2.05v2.02c3.95.49 7 3.85 7 7.93 0 3.21-1.81 6.01-4.72 7.28L13 17v5h5l-1.22-1.22C19.91 19.07 22 15.76 22 12c0-5.18-3.95-9.45-9-9.95zM11 2.05C5.95 2.55 2 6.82 2 12c0 3.76 2.09 7.07 5.22 8.78L6 22h5v-5l-2.28 2.28C6.81 18.01 5 15.21 5 12c0-4.08 3.05-7.44 7-7.93V2.05z' },
+  { id: 'flag',         label: 'Campaign',      path: 'M14.4 6L14 4H5v17h2v-7h5.6l.4 2h7V6z' },
 ];
 
 function getIconPath(id) {
@@ -530,13 +549,13 @@ const PINNED_DEFAULTS = {
     title: "Sister's Spring Social Registration",
     sub: "Games | Snacks | Matcha | Study Zone",
     link: "https://www.cognitoforms.com/IECHouston1/AAHSistersSocialRegistration",
-    btnText: "Register", flyerB64: null, flyerMime: null, removed: false
+    btnText: "Register", iconId: "people", flyerB64: null, flyerMime: null, removed: false
   },
   quran: {
     title: "Quran Reflections",
     sub: "Tafsir of Surah Ankabut · Moulana Farhat Abbas",
     link: "https://forms.gle/Y3d2QzXqTmWiczvh9",
-    btnText: "Sign In", flyerB64: null, flyerMime: null, removed: false
+    btnText: "Sign In", iconId: "book", flyerB64: null, flyerMime: null, removed: false
   }
 };
 
@@ -608,7 +627,6 @@ function renderIconPicker() {
     <div class="icon-option${selectedIconId === ic.id ? ' selected' : ''}"
          onclick="selectIcon('${ic.id}')" title="${ic.label}">
       <svg viewBox="0 0 24 24"><path d="${ic.path}"/></svg>
-      <span>${ic.label}</span>
     </div>`).join('');
 }
 
@@ -665,9 +683,7 @@ function renderSidebar() {
   const pl = document.getElementById('pinnedList');
   pl.innerHTML = ['sisters', 'quran'].map(key => {
     const pc = pinnedCards[key];
-    const iconPath = key === 'sisters'
-      ? ICONS.find(i => i.id === 'people').path
-      : ICONS.find(i => i.id === 'book').path;
+    const iconPath = getIconPath(pc.iconId || (key === 'sisters' ? 'people' : 'book'));
     if (pc.removed) {
       return `
         <div class="event-item pinned-removed" id="pinned-${key}">
@@ -729,8 +745,9 @@ function openPinnedEditor(key) {
   document.getElementById('fTitle').value = pc.title || '';
   document.getElementById('fSub').value   = pc.sub   || '';
   document.getElementById('fLink').value  = pc.link  || '';
-  // Icon picker is hidden for pinned cards (icon is fixed by type)
-  document.getElementById('iconPicker').closest('.form-row').style.display = 'none';
+  document.getElementById('iconPicker').closest('.form-row').style.display = 'block';
+  selectedIconId = pc.iconId || (key === 'sisters' ? 'people' : 'book');
+  renderIconPicker();
   if (pc.flyerB64) {
     flyerB64 = pc.flyerB64; flyerMime = pc.flyerMime;
     showFlyerPreview(`data:${pc.flyerMime};base64,${pc.flyerB64}`);
@@ -802,7 +819,7 @@ async function saveCard() {
   if (editingPinned) {
     pinnedCards[editingPinned] = {
       ...pinnedCards[editingPinned],
-      title, sub, link,
+      title, sub, link, iconId: selectedIconId,
       flyerB64:  flyerB64  || pinnedCards[editingPinned].flyerB64,
       flyerMime: flyerMime || pinnedCards[editingPinned].flyerMime,
       removed: false
@@ -897,10 +914,7 @@ function buildPinnedCardHtml(key, pc, existingFlyer) {
   const b64  = pc.flyerB64  || (existingFlyer && existingFlyer.b64)  || null;
   const mime = pc.flyerMime || (existingFlyer && existingFlyer.mime) || null;
 
-  const sistersSvg = `<svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>`;
-  const quranSvg   = `<svg viewBox="0 0 24 24"><path d="M21 5c-1.11-.35-2.33-.5-3.5-.5-1.95 0-4.05.4-5.5 1.5-1.45-1.1-3.55-1.5-5.5-1.5S2.45 4.9 1 6v14.65c0 .25.25.5.5.5.1 0 .15-.05.25-.05C3.1 20.45 5.05 20 6.5 20c1.95 0 3.75.4 5 1.5 1.35-1.15 3.8-1.5 5.5-1.5 1.65 0 3.35.3 4.75 1.05.1.05.15.05.25.05.25 0 .5-.25.5-.5V6c-.6-.45-1.25-.75-2-1zm0 13.5c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5V8c1.35-.85 3.8-1.5 5.5-1.5 1.2 0 2.4.15 3.5.5v11.5z"/></svg>`;
-
-  const iconSvg = key === 'sisters' ? sistersSvg : quranSvg;
+  const iconSvg = `<svg viewBox="0 0 24 24"><path d="${getIconPath(pc.iconId || (key === 'sisters' ? 'people' : 'book'))}"/></svg>`;
   const bodyId  = key === 'sisters' ? 'socialBody' : 'quranBody';
   const fnName  = key === 'sisters' ? 'toggleSocial' : 'toggleQuran';
 
