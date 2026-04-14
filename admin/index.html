@@ -35,7 +35,11 @@
       width: 100%; max-width: 380px; background: var(--bg-card);
       border: 1px solid var(--accent-border); border-radius: 20px; padding: 48px 40px; text-align: center;
     }
-    .login-logo { width: 58px; height: 58px; object-fit: contain; margin: 0 auto 18px; display: block; opacity: 0.9; }
+    .login-logo {
+      width: 76px; height: 76px; object-fit: cover; margin: 0 auto 18px; display: block;
+      border-radius: 50%; border: 2px solid rgba(180,90,45,0.4);
+      box-shadow: 0 0 24px rgba(180,90,45,0.18);
+    }
     .login-card h1 { font-family: 'Cinzel', serif; font-size: 1.2rem; font-weight: 400; color: var(--accent-light); margin-bottom: 4px; }
     .login-sub { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 30px; }
     .login-error { margin-top: 11px; font-size: 0.8rem; color: #e05555; display: none; }
@@ -84,7 +88,10 @@
       font-family: 'Cinzel', serif; font-size: 0.9rem; color: var(--accent-light);
       display: flex; align-items: center; gap: 10px;
     }
-    .topbar-brand img { width: 26px; height: 26px; object-fit: contain; opacity: 0.85; }
+    .topbar-brand img {
+      width: 32px; height: 32px; object-fit: cover; opacity: 0.92;
+      border-radius: 50%; border: 1px solid rgba(180,90,45,0.35);
+    }
     .topbar-badge {
       font-size: 0.62rem; color: var(--text-muted); background: rgba(255,255,255,0.05);
       border: 1px solid rgba(255,255,255,0.08); border-radius: 4px;
@@ -104,16 +111,27 @@
     @keyframes spin { to { transform: rotate(360deg); } }
 
     /* ── LAYOUT ── */
-    .admin-body {
-      display: grid; grid-template-columns: 260px 1fr;
-      flex: 1; min-height: calc(100vh - 56px);
-    }
+    .admin-body { display: grid; grid-template-columns: 260px 1fr; flex: 1; min-height: calc(100vh - 56px); }
 
     /* ── SIDEBAR ── */
     .sidebar {
       background: var(--bg-panel); border-right: 1px solid var(--accent-border);
-      display: flex; flex-direction: column; padding: 20px 14px; overflow-y: auto;
+      display: flex; flex-direction: column; padding: 0 14px 20px; overflow-y: auto;
     }
+
+    /* org header inside sidebar */
+    .sidebar-org {
+      display: flex; align-items: center; gap: 11px;
+      padding: 18px 4px 16px; border-bottom: 1px solid var(--accent-border); margin-bottom: 16px;
+    }
+    .sidebar-org-logo {
+      width: 40px; height: 40px; border-radius: 50%; object-fit: cover; flex-shrink: 0;
+      border: 1px solid rgba(180,90,45,0.4);
+      box-shadow: 0 0 12px rgba(180,90,45,0.15);
+    }
+    .sidebar-org-name { font-family: 'Cinzel', serif; font-size: 0.78rem; color: var(--accent-light); line-height: 1.3; }
+    .sidebar-org-sub  { font-size: 0.66rem; color: var(--text-muted); margin-top: 2px; }
+
     .sidebar-label { font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-muted); margin-bottom: 10px; padding: 0 2px; }
 
     .event-item {
@@ -126,10 +144,12 @@
     .event-item.pinned-removed { opacity: 0.45; }
 
     .event-thumb {
-      width: 32px; height: 32px; border-radius: 6px; object-fit: cover; flex-shrink: 0;
-      background: var(--accent-dim); display: flex; align-items: center; justify-content: center; font-size: 0.9rem; overflow: hidden;
+      width: 32px; height: 32px; border-radius: 6px; flex-shrink: 0;
+      background: var(--accent-dim); display: flex; align-items: center; justify-content: center;
+      font-size: 0.9rem; overflow: hidden;
     }
     .event-thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .event-thumb svg { width: 16px; height: 16px; fill: var(--accent-light); }
     .event-info { flex: 1; min-width: 0; }
     .event-name { font-size: 0.82rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .event-sub  { font-size: 0.7rem; color: var(--text-muted); margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -184,8 +204,12 @@
       flex: 1; display: flex; flex-direction: column; align-items: center;
       justify-content: center; padding: 60px 24px; text-align: center; gap: 10px;
     }
-    .empty-icon { width: 52px; height: 52px; border-radius: 13px; background: var(--accent-dim); display: flex; align-items: center; justify-content: center; margin-bottom: 6px; }
-    .empty-icon svg { fill: var(--accent-light); width: 24px; height: 24px; }
+    .empty-logo-wrap {
+      width: 80px; height: 80px; border-radius: 50%; overflow: hidden; margin-bottom: 10px;
+      border: 2px solid rgba(180,90,45,0.3);
+      box-shadow: 0 0 30px rgba(180,90,45,0.15), 0 0 60px rgba(180,90,45,0.06);
+    }
+    .empty-logo-wrap img { width: 100%; height: 100%; object-fit: cover; }
     .empty-state h3 { font-family: 'Cinzel', serif; font-size: 1rem; font-weight: 400; }
     .empty-state p { font-size: 0.82rem; color: var(--text-muted); max-width: 240px; }
 
@@ -201,6 +225,25 @@
       font-family: 'Lato', sans-serif; font-size: 0.92rem; outline: none; transition: border-color 0.2s;
     }
     .form-row input:focus { border-color: var(--accent); }
+
+    /* ── ICON PICKER ── */
+    .icon-picker {
+      display: grid; grid-template-columns: repeat(6, 1fr); gap: 7px; margin-top: 6px;
+    }
+    .icon-option {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 5px; padding: 10px 4px; border-radius: 9px; cursor: pointer;
+      border: 1px solid var(--accent-border); background: rgba(255,255,255,0.03);
+      transition: border-color 0.18s, background 0.18s;
+    }
+    .icon-option:hover { border-color: var(--accent-light); background: var(--accent-dim); }
+    .icon-option.selected {
+      border-color: var(--accent-light); background: rgba(180,90,45,0.18);
+      box-shadow: 0 0 0 1px rgba(180,90,45,0.35);
+    }
+    .icon-option svg { width: 20px; height: 20px; fill: var(--accent-light); display: block; }
+    .icon-option span { font-size: 0.58rem; color: var(--text-muted); text-align: center; line-height: 1.25; }
+    .icon-option.selected span { color: var(--accent-light); }
 
     /* flyer upload */
     .upload-zone {
@@ -224,7 +267,6 @@
     }
     .btn-remove-flyer:hover { color: #fff; }
 
-    /* keep-flyer hint */
     .keep-flyer-hint {
       display: none; font-size: 0.75rem; color: var(--text-muted); margin-top: 10px;
       padding: 10px 14px; border: 1px solid var(--accent-border); border-radius: 8px;
@@ -259,7 +301,7 @@
     .toast.error   { background: #2e1a1a; border: 1px solid #5a2d2d; color: #cb7e7e; display: flex; }
     @keyframes slideUp { from { opacity:0; transform: translateY(8px); } to { opacity:1; transform: translateY(0); } }
 
-    /* ── MODAL (GitHub setup prompt) ── */
+    /* ── MODAL ── */
     .modal-overlay {
       position: fixed; inset: 0; background: rgba(0,0,0,0.75);
       display: none; align-items: center; justify-content: center; z-index: 500; padding: 20px;
@@ -272,14 +314,14 @@
     .modal-box h2 { font-family: 'Cinzel', serif; font-size: 1rem; font-weight: 400; color: var(--accent-light); margin-bottom: 8px; }
     .modal-box p  { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 22px; line-height: 1.55; }
     .modal-box p a { color: var(--accent-light); }
-    .modal-box .field { margin-bottom: 10px; }
     .modal-actions { display: flex; gap: 10px; margin-top: 20px; }
     .modal-actions .btn-primary { flex: 1; width: auto; }
 
     @media (max-width: 580px) {
       .admin-body { grid-template-columns: 1fr; }
-      .sidebar { border-right: none; border-bottom: 1px solid var(--accent-border); max-height: 40vh; }
+      .sidebar { border-right: none; border-bottom: 1px solid var(--accent-border); max-height: 45vh; }
       .editor-wrap { padding: 22px 18px; }
+      .icon-picker { grid-template-columns: repeat(4, 1fr); }
     }
   </style>
 </head>
@@ -288,7 +330,7 @@
 <!-- LOGIN -->
 <div id="loginScreen">
   <div class="login-card">
-    <img src="../Ansar Al-Hujjah Logo Symbol.png" class="login-logo" alt="">
+    <img src="../Ansar Al-Hujjah Logo Symbol.png" class="login-logo" alt="Ansar Al-Hujjah">
     <h1>Admin Panel</h1>
     <p class="login-sub">Ansar Al-Hujjah &nbsp;·&nbsp; Houston, TX</p>
     <form id="loginForm">
@@ -304,7 +346,7 @@
 
   <div class="topbar">
     <div class="topbar-brand">
-      <img src="../Ansar Al-Hujjah Logo Symbol.png" alt="">
+      <img src="../Ansar Al-Hujjah Logo Symbol.png" alt="Ansar Al-Hujjah">
       Ansar Al-Hujjah
       <span class="topbar-badge">Admin</span>
     </div>
@@ -319,6 +361,15 @@
     <!-- SIDEBAR -->
     <div class="sidebar">
 
+      <!-- Org branding -->
+      <div class="sidebar-org">
+        <img src="../Ansar Al-Hujjah Logo Symbol.png" class="sidebar-org-logo" alt="">
+        <div>
+          <div class="sidebar-org-name">Ansar Al-Hujjah</div>
+          <div class="sidebar-org-sub">Houston, TX &nbsp;·&nbsp; ansaralhujjah.org</div>
+        </div>
+      </div>
+
       <div class="sidebar-label">Pinned Cards</div>
       <div id="pinnedList"></div>
 
@@ -330,7 +381,6 @@
 
       <hr class="sidebar-divider">
 
-      <!-- GitHub settings -->
       <details class="settings-section" id="settingsDetails">
         <summary>GitHub Settings</summary>
         <div class="settings-body">
@@ -341,7 +391,7 @@
           </p>
           <input class="field" type="password" id="ghToken"  placeholder="GitHub token (ghp_...)">
           <input class="field" type="text"     id="ghOwner"  placeholder="Repo owner (e.g. ansaralhujjah)">
-          <input class="field" type="text"     id="ghRepo"   placeholder="Repo name (e.g. ansaralhujjah.github.io)">
+          <input class="field" type="text"     id="ghRepo"   placeholder="Repo name (e.g. ansaralhujjah)">
           <input class="field" type="text"     id="ghBranch" placeholder="Branch (default: main)">
           <button class="btn-save-settings" id="saveSettingsBtn">Save Settings</button>
           <p class="settings-ok" id="settingsOk">✓ Settings saved</p>
@@ -353,8 +403,8 @@
     <div class="main-area" id="mainArea">
 
       <div class="empty-state" id="emptyState">
-        <div class="empty-icon">
-          <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+        <div class="empty-logo-wrap">
+          <img src="../Ansar Al-Hujjah Logo Symbol.png" alt="Ansar Al-Hujjah">
         </div>
         <h3>No card selected</h3>
         <p>Choose a card from the sidebar or add a new one to get started.</p>
@@ -369,12 +419,18 @@
         </div>
         <div class="form-row">
           <label>Subtitle</label>
-          <input type="text" id="fSub" placeholder="e.g. Saturdays · 7:00 AM · AHS Portable 4B">
+          <input type="text" id="fSub" placeholder="e.g. Saturdays · 7:00 AM · IEC Houston">
         </div>
         <div class="form-row">
           <label>Registration / Sign-In Link</label>
           <input type="url" id="fLink" placeholder="https://forms.gle/...">
         </div>
+
+        <div class="form-row">
+          <label>Card Icon</label>
+          <div class="icon-picker" id="iconPicker"></div>
+        </div>
+
         <div class="form-row">
           <label>Flyer Image <span style="color:var(--text-muted);font-size:0.7rem;text-transform:none;letter-spacing:0">(PNG or JPG — shown when card expands)</span></label>
           <div class="upload-zone" id="uploadZone">
@@ -399,8 +455,8 @@
           <div class="preview-label">Card Preview</div>
           <div class="demo-card">
             <div class="demo-card-header">
-              <div class="demo-icon">
-                <svg viewBox="0 0 24 24"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg>
+              <div class="demo-icon" id="previewIconWrap">
+                <svg viewBox="0 0 24 24" id="previewIconSvg"><path id="previewIconPath" d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg>
               </div>
               <div class="demo-text">
                 <div class="demo-label" id="previewTitle">Event Title</div>
@@ -425,7 +481,7 @@
   </div>
 </div>
 
-<!-- GitHub setup modal (shown on first publish if not configured) -->
+<!-- GitHub setup modal -->
 <div class="modal-overlay" id="ghModal">
   <div class="modal-box">
     <h2>GitHub Setup Required</h2>
@@ -448,35 +504,54 @@
 /* ── Password ─────────────────────────── */
 const ADMIN_PASSWORD = 'murtaza6';
 
+/* ── Icon definitions ─────────────────── */
+const ICONS = [
+  { id: 'calendar', label: 'Calendar',  path: 'M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z' },
+  { id: 'people',   label: 'People',    path: 'M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z' },
+  { id: 'book',     label: 'Quran',     path: 'M21 5c-1.11-.35-2.33-.5-3.5-.5-1.95 0-4.05.4-5.5 1.5-1.45-1.1-3.55-1.5-5.5-1.5S2.45 4.9 1 6v14.65c0 .25.25.5.5.5.1 0 .15-.05.25-.05C3.1 20.45 5.05 20 6.5 20c1.95 0 3.75.4 5 1.5 1.35-1.15 3.8-1.5 5.5-1.5 1.65 0 3.35.3 4.75 1.05.1.05.15.05.25.05.25 0 .5-.25.5-.5V6c-.6-.45-1.25-.75-2-1zm0 13.5c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5V8c1.35-.85 3.8-1.5 5.5-1.5 1.2 0 2.4.15 3.5.5v11.5z' },
+  { id: 'whatsapp', label: 'WhatsApp',  path: 'M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z' },
+  { id: 'instagram',label: 'Instagram', path: 'M9 2L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z' },
+  { id: 'star',     label: 'Special',   path: 'M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z' },
+  { id: 'mic',      label: 'Lecture',   path: 'M12 14c1.66 0 2.99-1.34 2.99-3L15 5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z' },
+  { id: 'heart',    label: 'Charity',   path: 'M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z' },
+  { id: 'globe',    label: 'Website',   path: 'M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zm6.93 6h-2.95c-.32-1.25-.78-2.45-1.38-3.56 1.84.63 3.37 1.91 4.33 3.56zM12 4.04c.83 1.2 1.48 2.53 1.91 3.96h-3.82c.43-1.43 1.08-2.76 1.91-3.96zM4.26 14C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2 0 .68.06 1.34.14 2H4.26zm.82 2h2.95c.32 1.25.78 2.45 1.38 3.56-1.84-.63-3.37-1.91-4.33-3.56zm2.95-8H5.08c.96-1.65 2.49-2.93 4.33-3.56C8.81 5.55 8.35 6.75 8.03 8zM12 19.96c-.83-1.2-1.48-2.53-1.91-3.96h3.82c-.43 1.43-1.08 2.76-1.91 3.96zM14.34 14H9.66c-.09-.66-.16-1.32-.16-2 0-.68.07-1.35.16-2h4.68c.09.65.16 1.32.16 2 0 .68-.07 1.34-.16 2zm.25 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95c-.96 1.65-2.49 2.93-4.33 3.56zM16.36 14c.08-.66.14-1.32.14-2 0-.68-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2s-.1 1.36-.26 2h-3.38z' },
+  { id: 'pin',      label: 'Location',  path: 'M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z' },
+  { id: 'video',    label: 'Online',    path: 'M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z' },
+  { id: 'ticket',   label: 'Ticket',    path: 'M22 10V6c0-1.11-.9-2-2-2H4c-1.1 0-1.99.89-1.99 2v4c1.1 0 1.99.9 1.99 2s-.89 2-2 2v4c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2v-4c-1.1 0-2-.9-2-2s.9-2 2-2zm-2-1.46c-1.19.69-2 1.99-2 3.46s.81 2.77 2 3.46V18H4v-2.54c1.19-.69 2-1.99 2-3.46 0-1.48-.8-2.77-2-3.46V6h16v2.54z' },
+];
+
+function getIconPath(id) {
+  return (ICONS.find(ic => ic.id === id) || ICONS[0]).path;
+}
+
 /* ── Pinned card defaults ─────────────── */
 const PINNED_DEFAULTS = {
   sisters: {
     title: "Sister's Spring Social Registration",
     sub: "Games | Snacks | Matcha | Study Zone",
     link: "https://www.cognitoforms.com/IECHouston1/AAHSistersSocialRegistration",
-    btnText: "Register",
-    flyerB64: null, flyerMime: null, removed: false
+    btnText: "Register", flyerB64: null, flyerMime: null, removed: false
   },
   quran: {
     title: "Quran Reflections",
     sub: "Tafsir of Surah Ankabut · Moulana Farhat Abbas",
     link: "https://forms.gle/Y3d2QzXqTmWiczvh9",
-    btnText: "Sign In",
-    flyerB64: null, flyerMime: null, removed: false
+    btnText: "Sign In", flyerB64: null, flyerMime: null, removed: false
   }
 };
 
 /* ── State ───────────────────────────── */
-let events       = JSON.parse(localStorage.getItem('aah_events') || '[]');
-let pinnedCards  = JSON.parse(localStorage.getItem('aah_pinned') || 'null');
+let events        = JSON.parse(localStorage.getItem('aah_events') || '[]');
+let pinnedCards   = JSON.parse(localStorage.getItem('aah_pinned') || 'null');
 if (!pinnedCards) {
   pinnedCards = JSON.parse(JSON.stringify(PINNED_DEFAULTS));
   localStorage.setItem('aah_pinned', JSON.stringify(pinnedCards));
 }
-let editingId     = null;
-let editingPinned = null; // null | 'sisters' | 'quran'
-let flyerB64      = null;
-let flyerMime     = null;
+let editingId      = null;
+let editingPinned  = null;
+let flyerB64       = null;
+let flyerMime      = null;
+let selectedIconId = 'calendar';
 
 /* ── Crypto ──────────────────────────── */
 async function sha256(str) {
@@ -522,8 +597,26 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('settingsDetails').open = true;
   });
 
+  renderIconPicker();
   loadGhSettings();
 });
+
+/* ── Icon picker ─────────────────────── */
+function renderIconPicker() {
+  const el = document.getElementById('iconPicker');
+  el.innerHTML = ICONS.map(ic => `
+    <div class="icon-option${selectedIconId === ic.id ? ' selected' : ''}"
+         onclick="selectIcon('${ic.id}')" title="${ic.label}">
+      <svg viewBox="0 0 24 24"><path d="${ic.path}"/></svg>
+      <span>${ic.label}</span>
+    </div>`).join('');
+}
+
+function selectIcon(id) {
+  selectedIconId = id;
+  renderIconPicker();
+  updatePreview();
+}
 
 /* ── GitHub settings ─────────────────── */
 function loadGhSettings() {
@@ -555,12 +648,8 @@ function getGhSettings() {
 function setStatus(state, msg) {
   const pill = document.getElementById('statusPill');
   pill.className = 'status-pill ' + state;
-  pill.innerHTML = state === 'publishing'
-    ? `<span class="spin">↻</span> ${msg}`
-    : msg;
-  if (state !== 'publishing') {
-    setTimeout(() => { pill.className = 'status-pill'; }, 4000);
-  }
+  pill.innerHTML = state === 'publishing' ? `<span class="spin">↻</span> ${msg}` : msg;
+  if (state !== 'publishing') setTimeout(() => { pill.className = 'status-pill'; }, 4000);
 }
 
 /* ── Dashboard ───────────────────────── */
@@ -576,11 +665,13 @@ function renderSidebar() {
   const pl = document.getElementById('pinnedList');
   pl.innerHTML = ['sisters', 'quran'].map(key => {
     const pc = pinnedCards[key];
-    const emoji = key === 'sisters' ? '👥' : '📖';
+    const iconPath = key === 'sisters'
+      ? ICONS.find(i => i.id === 'people').path
+      : ICONS.find(i => i.id === 'book').path;
     if (pc.removed) {
       return `
         <div class="event-item pinned-removed" id="pinned-${key}">
-          <div class="event-thumb">${emoji}</div>
+          <div class="event-thumb"><svg viewBox="0 0 24 24"><path d="${iconPath}"/></svg></div>
           <div class="event-info">
             <div class="event-name">${esc(pc.title)}</div>
             <div class="event-sub" style="color:#e07070;">Removed from site</div>
@@ -591,7 +682,9 @@ function renderSidebar() {
     return `
       <div class="event-item${editingPinned === key ? ' active' : ''}" id="pinned-${key}" onclick="openPinnedEditor('${key}')">
         <div class="event-thumb">
-          ${pc.flyerB64 ? `<img src="data:${pc.flyerMime};base64,${pc.flyerB64}" alt="">` : emoji}
+          ${pc.flyerB64
+            ? `<img src="data:${pc.flyerMime};base64,${pc.flyerB64}" alt="">`
+            : `<svg viewBox="0 0 24 24"><path d="${iconPath}"/></svg>`}
         </div>
         <div class="event-info">
           <div class="event-name">${esc(pc.title)}</div>
@@ -607,18 +700,22 @@ function renderSidebar() {
     el.innerHTML = '<p style="font-size:0.76rem;color:var(--text-muted);padding:2px;margin-bottom:8px;">No cards yet.</p>';
     return;
   }
-  el.innerHTML = events.map(ev => `
-    <div class="event-item${editingId === ev.id ? ' active' : ''}" id="item-${ev.id}" onclick="openEditor('${ev.id}')">
-      <div class="event-thumb">
-        ${ev.flyerB64 ? `<img src="data:${ev.flyerMime};base64,${ev.flyerB64}" alt="">` : '📋'}
-      </div>
-      <div class="event-info">
-        <div class="event-name">${esc(ev.title || 'Untitled')}</div>
-        <div class="event-sub">${esc(ev.sub || '')}</div>
-      </div>
-      <button class="btn-del" onclick="event.stopPropagation();deleteCard('${ev.id}')" title="Delete">✕</button>
-    </div>
-  `).join('');
+  el.innerHTML = events.map(ev => {
+    const iconPath = getIconPath(ev.iconId || 'calendar');
+    return `
+      <div class="event-item${editingId === ev.id ? ' active' : ''}" id="item-${ev.id}" onclick="openEditor('${ev.id}')">
+        <div class="event-thumb">
+          ${ev.flyerB64
+            ? `<img src="data:${ev.flyerMime};base64,${ev.flyerB64}" alt="">`
+            : `<svg viewBox="0 0 24 24"><path d="${iconPath}"/></svg>`}
+        </div>
+        <div class="event-info">
+          <div class="event-name">${esc(ev.title || 'Untitled')}</div>
+          <div class="event-sub">${esc(ev.sub || '')}</div>
+        </div>
+        <button class="btn-del" onclick="event.stopPropagation();deleteCard('${ev.id}')" title="Delete">✕</button>
+      </div>`;
+  }).join('');
 }
 
 /* ── Pinned card editor ───────────────── */
@@ -632,6 +729,8 @@ function openPinnedEditor(key) {
   document.getElementById('fTitle').value = pc.title || '';
   document.getElementById('fSub').value   = pc.sub   || '';
   document.getElementById('fLink').value  = pc.link  || '';
+  // Icon picker is hidden for pinned cards (icon is fixed by type)
+  document.getElementById('iconPicker').closest('.form-row').style.display = 'none';
   if (pc.flyerB64) {
     flyerB64 = pc.flyerB64; flyerMime = pc.flyerMime;
     showFlyerPreview(`data:${pc.flyerMime};base64,${pc.flyerB64}`);
@@ -664,7 +763,7 @@ function restorePinned(key) {
 function openEditor(id) {
   editingPinned = null;
   editingId = id;
-  const ev  = id ? events.find(e => e.id === id) : null;
+  const ev = id ? events.find(e => e.id === id) : null;
   document.getElementById('emptyState').style.display  = 'none';
   document.getElementById('editorWrap').style.display  = 'block';
   document.getElementById('editorHeading').textContent = ev ? 'Edit Card' : 'New Event Card';
@@ -672,6 +771,9 @@ function openEditor(id) {
   document.getElementById('fSub').value   = ev?.sub   || '';
   document.getElementById('fLink').value  = ev?.link  || '';
   document.getElementById('keepFlyerHint').style.display = 'none';
+  document.getElementById('iconPicker').closest('.form-row').style.display = 'block';
+  selectedIconId = ev?.iconId || 'calendar';
+  renderIconPicker();
   if (ev?.flyerB64) {
     flyerB64 = ev.flyerB64; flyerMime = ev.flyerMime;
     showFlyerPreview(`data:${ev.flyerMime};base64,${ev.flyerB64}`);
@@ -682,36 +784,36 @@ function openEditor(id) {
 }
 
 function closeEditor() {
-  editingId     = null;
-  editingPinned = null;
+  editingId = null; editingPinned = null;
   document.getElementById('editorWrap').style.display  = 'none';
   document.getElementById('emptyState').style.display  = 'flex';
   document.getElementById('keepFlyerHint').style.display = 'none';
+  document.getElementById('iconPicker').closest('.form-row').style.display = 'block';
   renderSidebar();
 }
 
 async function saveCard() {
-  const title = document.getElementById('fTitle').value.trim();
-  const sub   = document.getElementById('fSub').value.trim();
+  const title   = document.getElementById('fTitle').value.trim();
+  const sub     = document.getElementById('fSub').value.trim();
   const rawLink = document.getElementById('fLink').value.trim();
-  const link = rawLink && !/^https?:\/\//i.test(rawLink) ? 'https://' + rawLink : rawLink;
+  const link    = rawLink && !/^https?:\/\//i.test(rawLink) ? 'https://' + rawLink : rawLink;
   if (!title) { document.getElementById('fTitle').focus(); return; }
 
   if (editingPinned) {
     pinnedCards[editingPinned] = {
       ...pinnedCards[editingPinned],
       title, sub, link,
-      flyerB64: flyerB64 || pinnedCards[editingPinned].flyerB64,
+      flyerB64:  flyerB64  || pinnedCards[editingPinned].flyerB64,
       flyerMime: flyerMime || pinnedCards[editingPinned].flyerMime,
       removed: false
     };
     localStorage.setItem('aah_pinned', JSON.stringify(pinnedCards));
   } else if (editingId) {
     const idx = events.findIndex(e => e.id === editingId);
-    if (idx > -1) events[idx] = { ...events[idx], title, sub, link, flyerB64, flyerMime };
+    if (idx > -1) events[idx] = { ...events[idx], title, sub, link, flyerB64, flyerMime, iconId: selectedIconId };
     persist();
   } else {
-    events.push({ id: Date.now().toString(36), title, sub, link, flyerB64, flyerMime });
+    events.push({ id: Date.now().toString(36), title, sub, link, flyerB64, flyerMime, iconId: selectedIconId });
     persist();
   }
 
@@ -729,9 +831,7 @@ async function deleteCard(id) {
   await publishToGitHub();
 }
 
-function persist() {
-  localStorage.setItem('aah_events', JSON.stringify(events));
-}
+function persist() { localStorage.setItem('aah_events', JSON.stringify(events)); }
 
 /* ── Flyer upload ────────────────────── */
 function handleFlyerUpload(e) {
@@ -768,6 +868,7 @@ function clearFlyer() {
 function updatePreview() {
   document.getElementById('previewTitle').textContent = document.getElementById('fTitle').value || 'Event Title';
   document.getElementById('previewSub').textContent   = document.getElementById('fSub').value   || 'Subtitle';
+  document.getElementById('previewIconPath').setAttribute('d', getIconPath(selectedIconId));
   const body = document.getElementById('previewBody');
   if (flyerB64) {
     document.getElementById('previewImg').src = `data:${flyerMime};base64,${flyerB64}`;
@@ -777,7 +878,7 @@ function updatePreview() {
   }
 }
 
-/* ── Utility: extract flyer from HTML section ── */
+/* ── Extract flyer from HTML section ─── */
 function extractFlyerFromSection(html, startMarker, endMarker) {
   const si = html.indexOf(startMarker);
   const ei = html.indexOf(endMarker);
@@ -792,17 +893,16 @@ function buildPinnedCardHtml(key, pc, existingFlyer) {
   const t = esc(pc.title || '');
   const s = esc(pc.sub   || '');
   const l = esc(pc.link  || '#');
-  const btn = esc(pc.btnText || 'Register');
-
+  const btn  = esc(pc.btnText || 'Register');
   const b64  = pc.flyerB64  || (existingFlyer && existingFlyer.b64)  || null;
   const mime = pc.flyerMime || (existingFlyer && existingFlyer.mime) || null;
 
   const sistersSvg = `<svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>`;
   const quranSvg   = `<svg viewBox="0 0 24 24"><path d="M21 5c-1.11-.35-2.33-.5-3.5-.5-1.95 0-4.05.4-5.5 1.5-1.45-1.1-3.55-1.5-5.5-1.5S2.45 4.9 1 6v14.65c0 .25.25.5.5.5.1 0 .15-.05.25-.05C3.1 20.45 5.05 20 6.5 20c1.95 0 3.75.4 5 1.5 1.35-1.15 3.8-1.5 5.5-1.5 1.65 0 3.35.3 4.75 1.05.1.05.15.05.25.05.25 0 .5-.25.5-.5V6c-.6-.45-1.25-.75-2-1zm0 13.5c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5V8c1.35-.85 3.8-1.5 5.5-1.5 1.2 0 2.4.15 3.5.5v11.5z"/></svg>`;
 
-  const iconSvg  = key === 'sisters' ? sistersSvg : quranSvg;
-  const bodyId   = key === 'sisters' ? 'socialBody' : 'quranBody';
-  const fnName   = key === 'sisters' ? 'toggleSocial' : 'toggleQuran';
+  const iconSvg = key === 'sisters' ? sistersSvg : quranSvg;
+  const bodyId  = key === 'sisters' ? 'socialBody' : 'quranBody';
+  const fnName  = key === 'sisters' ? 'toggleSocial' : 'toggleQuran';
 
   if (b64) {
     return `      <div class="social-card">
@@ -821,8 +921,46 @@ function buildPinnedCardHtml(key, pc, existingFlyer) {
       <script>function ${fnName}(e){document.getElementById('${bodyId}').classList.toggle('open');}<\/script>`;
   }
 
-  // No flyer — simple link button
   return `      <a class="link-btn" href="${l}" target="_blank" rel="noopener">
+        <div class="icon">${iconSvg}</div>
+        <span class="btn-text">
+          <span class="btn-label">${t}</span>${s ? `\n          <span class="btn-sub">${s}</span>` : ''}
+        </span>
+        <span class="arrow">→</span>
+      </a>`;
+}
+
+/* ── Build regular card HTML ─────────── */
+function buildCardHtml(ev, idx) {
+  const delay  = (0.7 + idx * 0.1).toFixed(1);
+  const bodyId = `adminCard_${ev.id}`;
+  const fnName = `toggleAdminCard_${ev.id}`;
+  const t = esc(ev.title || '');
+  const s = esc(ev.sub   || '');
+  const l = esc(ev.link  || '#');
+  const iconPath = getIconPath(ev.iconId || 'calendar');
+  const iconSvg  = `<svg viewBox="0 0 24 24"><path d="${iconPath}"/></svg>`;
+
+  if (ev.flyerB64) {
+    return `      <!-- admin:${ev.id} -->
+      <div class="social-card" style="animation:fadeUp 0.6s ${delay}s ease both;">
+        <div class="social-card-header" onclick="${fnName}(event)">
+          <div class="icon">${iconSvg}</div>
+          <span class="btn-text">
+            <span class="btn-label">${t}</span>${s ? `\n            <span class="btn-sub">${s}</span>` : ''}
+          </span>
+          <a class="arrow-link" href="${l}" target="_blank" rel="noopener" onclick="event.stopPropagation()">→</a>
+        </div>
+        <div class="social-card-body" id="${bodyId}">
+          <img src="data:${ev.flyerMime};base64,${ev.flyerB64}" alt="${t} Flyer">
+          <a class="register-btn" href="${l}" target="_blank" rel="noopener">Register</a>
+        </div>
+      </div>
+      <script>function ${fnName}(){document.getElementById('${bodyId}').classList.toggle('open');}<\/script>`;
+  }
+
+  return `      <!-- admin:${ev.id} -->
+      <a class="link-btn" href="${l}" target="_blank" rel="noopener" style="animation-delay:${delay}s">
         <div class="icon">${iconSvg}</div>
         <span class="btn-text">
           <span class="btn-label">${t}</span>${s ? `\n          <span class="btn-sub">${s}</span>` : ''}
@@ -851,7 +989,6 @@ async function publishToGitHub() {
   setStatus('publishing', 'Publishing…');
 
   try {
-    // 1. Fetch current file
     const getResp = await fetch(`${apiBase}?ref=${branch}`, { headers });
     if (!getResp.ok) throw new Error(`GitHub fetch failed: ${getResp.status} ${await getResp.text()}`);
     const fileData    = await getResp.json();
@@ -860,62 +997,46 @@ async function publishToGitHub() {
 
     let newHtml = currentHtml;
 
-    // 2. Replace admin event cards
+    // Admin event cards
     const adminStart = '<!-- AAH-ADMIN-CARDS-START -->';
     const adminEnd   = '<!-- AAH-ADMIN-CARDS-END -->';
-    const asi = newHtml.indexOf(adminStart);
-    const aei = newHtml.indexOf(adminEnd);
+    const asi = newHtml.indexOf(adminStart), aei = newHtml.indexOf(adminEnd);
     if (asi === -1 || aei === -1) throw new Error('Admin cards markers not found in index.html.');
-
     const cardsHtml = events.length
       ? '\n' + events.map((ev, i) => buildCardHtml(ev, i)).join('\n') + '\n      '
       : '\n      ';
     newHtml = newHtml.slice(0, asi + adminStart.length) + cardsHtml + newHtml.slice(aei);
 
-    // 3. Replace Sisters pinned card
+    // Sisters pinned card
     const sistersStart = '<!-- AAH-SISTERS-CARD-START -->';
     const sistersEnd   = '<!-- AAH-SISTERS-CARD-END -->';
-    const ssi = newHtml.indexOf(sistersStart);
-    const sei = newHtml.indexOf(sistersEnd);
+    const ssi = newHtml.indexOf(sistersStart), sei = newHtml.indexOf(sistersEnd);
     if (ssi !== -1 && sei !== -1) {
       const pc = pinnedCards.sisters;
-      let sContent;
-      if (pc.removed) {
-        sContent = '\n      ';
-      } else {
-        const existingFlyer = extractFlyerFromSection(currentHtml, sistersStart, sistersEnd);
-        sContent = '\n' + buildPinnedCardHtml('sisters', pc, existingFlyer) + '\n      ';
-      }
-      newHtml = newHtml.slice(0, ssi + sistersStart.length) + sContent + newHtml.slice(sei);
+      const content = pc.removed ? '\n      ' :
+        '\n' + buildPinnedCardHtml('sisters', pc, extractFlyerFromSection(currentHtml, sistersStart, sistersEnd)) + '\n      ';
+      newHtml = newHtml.slice(0, ssi + sistersStart.length) + content + newHtml.slice(sei);
     }
 
-    // 4. Replace Quran pinned card
+    // Quran pinned card
     const quranStart = '<!-- AAH-QURAN-CARD-START -->';
     const quranEnd   = '<!-- AAH-QURAN-CARD-END -->';
-    const qsi = newHtml.indexOf(quranStart);
-    const qei = newHtml.indexOf(quranEnd);
+    const qsi = newHtml.indexOf(quranStart), qei = newHtml.indexOf(quranEnd);
     if (qsi !== -1 && qei !== -1) {
       const pc = pinnedCards.quran;
-      let qContent;
-      if (pc.removed) {
-        qContent = '\n      ';
-      } else {
-        const existingFlyer = extractFlyerFromSection(currentHtml, quranStart, quranEnd);
-        qContent = '\n' + buildPinnedCardHtml('quran', pc, existingFlyer) + '\n      ';
-      }
-      newHtml = newHtml.slice(0, qsi + quranStart.length) + qContent + newHtml.slice(qei);
+      const content = pc.removed ? '\n      ' :
+        '\n' + buildPinnedCardHtml('quran', pc, extractFlyerFromSection(currentHtml, quranStart, quranEnd)) + '\n      ';
+      newHtml = newHtml.slice(0, qsi + quranStart.length) + content + newHtml.slice(qei);
     }
 
-    // 5. Commit
+    // Commit
     const encoded = btoa(unescape(encodeURIComponent(newHtml)));
     const putResp = await fetch(`${apiBase}?ref=${branch}`, {
-      method:  'PUT',
+      method: 'PUT',
       headers: { ...headers, 'Content-Type': 'application/json' },
       body: JSON.stringify({
         message: `Update cards via admin panel (${new Date().toLocaleDateString()})`,
-        content: encoded,
-        sha:     currentSha,
-        branch,
+        content: encoded, sha: currentSha, branch,
       }),
     });
 
@@ -929,48 +1050,10 @@ async function publishToGitHub() {
   }
 }
 
-/* ── Regular card HTML generator ─────── */
-function buildCardHtml(ev, idx) {
-  const delay  = (0.7 + idx * 0.1).toFixed(1);
-  const bodyId = `adminCard_${ev.id}`;
-  const fnName = `toggleAdminCard_${ev.id}`;
-  const t = esc(ev.title || '');
-  const s = esc(ev.sub   || '');
-  const l = esc(ev.link  || '#');
-
-  if (ev.flyerB64) {
-    return `      <!-- admin:${ev.id} -->
-      <div class="social-card" style="animation:fadeUp 0.6s ${delay}s ease both;">
-        <div class="social-card-header" onclick="${fnName}(event)">
-          <div class="icon"><svg viewBox="0 0 24 24"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg></div>
-          <span class="btn-text">
-            <span class="btn-label">${t}</span>${s ? `\n            <span class="btn-sub">${s}</span>` : ''}
-          </span>
-          <a class="arrow-link" href="${l}" target="_blank" rel="noopener" onclick="event.stopPropagation()">→</a>
-        </div>
-        <div class="social-card-body" id="${bodyId}">
-          <img src="data:${ev.flyerMime};base64,${ev.flyerB64}" alt="${t} Flyer">
-          <a class="register-btn" href="${l}" target="_blank" rel="noopener">Register</a>
-        </div>
-      </div>
-      <script>function ${fnName}(){document.getElementById('${bodyId}').classList.toggle('open');}<\/script>`;
-  }
-
-  return `      <!-- admin:${ev.id} -->
-      <a class="link-btn" href="${l}" target="_blank" rel="noopener" style="animation-delay:${delay}s">
-        <div class="icon"><svg viewBox="0 0 24 24"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg></div>
-        <span class="btn-text">
-          <span class="btn-label">${t}</span>${s ? `\n          <span class="btn-sub">${s}</span>` : ''}
-        </span>
-        <span class="arrow">→</span>
-      </a>`;
-}
-
 /* ── Toast ───────────────────────────── */
 function showToast(msg, type = 'success') {
   const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className   = `toast ${type}`;
+  t.textContent = msg; t.className = `toast ${type}`;
   setTimeout(() => { t.className = 'toast'; }, 4000);
 }
 
