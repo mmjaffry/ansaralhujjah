@@ -686,6 +686,59 @@ function showDashboard() {
   document.getElementById('loginScreen').style.display = 'none';
   document.getElementById('dashboard').style.display   = 'flex';
   renderSidebar();
+  syncFromLiveSite();
+}
+
+/* ── Sync orphaned cards from live site ─ */
+async function syncFromLiveSite() {
+  try {
+    const resp = await fetch('../index.html', { cache: 'no-store' });
+    if (!resp.ok) return;
+    const html = await resp.text();
+
+    // Collect all admin card IDs present in the live HTML
+    const liveIds = [];
+    const re = /<!-- admin:([a-z0-9]+) -->/g;
+    let m;
+    while ((m = re.exec(html)) !== null) liveIds.push(m[1]);
+
+    let changed = false;
+    for (const id of liveIds) {
+      if (events.find(e => e.id === id)) continue; // already known
+
+      const anchor = `<!-- admin:${id} -->`;
+      const ai = html.indexOf(anchor);
+      if (ai === -1) continue;
+      const section = html.slice(ai, ai + 3000);
+
+      const titleM = section.match(/<span class="btn-label">([^<]+)<\/span>/);
+      const subM   = section.match(/<span class="btn-sub">([^<]+)<\/span>/);
+      const linkM  = section.match(/href="([^"]+)"/);
+      const svgM   = section.match(/<path d="([^"]+)"/);
+      const flyerM = section.match(/src="data:([^;]+);base64,([^"]+)"/);
+
+      let iconId = 'calendar';
+      if (svgM) {
+        const ic = ICONS.find(ic => ic.path === svgM[1]);
+        if (ic) iconId = ic.id;
+      }
+
+      events.push({
+        id, iconId,
+        title:     titleM ? titleM[1] : 'Unknown Card',
+        sub:       subM   ? subM[1]   : '',
+        link:      linkM  ? linkM[1]  : '',
+        flyerMime: flyerM ? flyerM[1] : null,
+        flyerB64:  flyerM ? flyerM[2] : null,
+      });
+      if (!cardOrder.includes(id)) cardOrder.push(id);
+      changed = true;
+    }
+
+    if (changed) { persist(); persistOrder(); renderSidebar(); }
+  } catch (e) {
+    console.warn('Live site sync failed:', e);
+  }
 }
 
 /* ── Sidebar ─────────────────────────── */
