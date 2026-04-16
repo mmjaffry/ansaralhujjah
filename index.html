@@ -41,16 +41,14 @@
     }
     .container { width: 100%; max-width: 520px; display: flex; flex-direction: column; align-items: center; }
     .logo-wrap {
-      width: 110px; height: 110px; border-radius: 50%; overflow: hidden;
-      border: 2px solid rgba(180,90,45,0.4);
-      box-shadow: 0 0 22px rgba(148,62,12,0.16), 0 0 44px rgba(148,62,12,0.06);
+      width: 110px; height: 110px;
       margin-bottom: 28px; animation: fadeDown 0.7s ease both;
     }
-    .logo-wrap img { width: 100%; height: 100%; object-fit: cover; }
+    .logo-wrap img { width: 100%; height: 100%; object-fit: contain; }
     h1 {
       font-family: "Cinzel", serif; font-size: 1.85rem; font-weight: 600;
       letter-spacing: 0.08em; text-align: center;
-      background: linear-gradient(135deg, var(--accent-glow) 0%, var(--accent-light) 50%, var(--accent-mid) 100%);
+      background: linear-gradient(135deg, rgb(160,70,10) 0%, rgb(110,38,0) 50%, rgb(75,18,0) 100%);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
       margin-bottom: 18px; animation: fadeDown 0.7s 0.1s ease both;
     }
@@ -89,10 +87,10 @@
     .icon svg { width: 18px; height: 18px; fill: var(--accent-light); }
     .btn-text { flex: 1; display: flex; flex-direction: column; gap: 2px; }
     .btn-label { font-size: 0.95rem; color: var(--text); }
-    .btn-sub { font-size: 0.75rem; color: var(--text-muted); letter-spacing: 0.04em; }
+    .btn-sub { font-size: 0.75rem; color: rgba(70,28,4,0.82); letter-spacing: 0.04em; }
     .arrow { color: var(--accent-dark); font-size: 1rem; transition: transform 0.2s, color 0.2s; }
     .link-btn:hover .arrow { transform: translateX(4px); color: var(--accent-light); }
-    footer { margin-top: 52px; font-size: 0.72rem; color: rgba(110,55,12,0.5); letter-spacing: 0.1em; text-transform: uppercase; animation: fadeIn 1s 0.8s ease both; }
+    footer { margin-top: 52px; font-size: 0.72rem; color: rgba(70,28,4,0.70); letter-spacing: 0.1em; text-transform: uppercase; animation: fadeIn 1s 0.8s ease both; }
     @keyframes fadeDown { from { opacity: 0; transform: translateY(-14px); } to { opacity: 1; transform: translateY(0); } }
     @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
@@ -124,14 +122,13 @@
           <a class="arrow-link" href="https://www.instagram.com/ansaralhujjah/" target="_blank" rel="noopener" onclick="event.stopPropagation()">→</a>
         </div>
         <div class="social-card-body" id="instaBody">
-          <div style="padding:10px 10px 2px; background:#fff; border-radius:0 0 8px 8px;">
+          <div style="padding:10px 10px 10px; background:#d9ccbc; border-radius:0 0 8px 8px;">
             <blockquote class="instagram-media"
               data-instgrm-permalink="https://www.instagram.com/ansaralhujjah/?utm_source=ig_embed&amp;utm_campaign=loading"
               data-instgrm-version="14"
               style="background:#FFF;border:0;border-radius:3px;box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15);margin:1px;max-width:540px;min-width:326px;padding:0;width:calc(100% - 2px);">
             </blockquote>
           </div>
-          <a class="register-btn" href="https://www.instagram.com/ansaralhujjah/" target="_blank" rel="noopener">Open Instagram</a>
         </div>
       </div>
       <script>
@@ -175,7 +172,7 @@
           display: block; font-size: 0.95rem; font-weight: 400; color: var(--text);
         }
         .social-card-header .btn-sub {
-          display: block; font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;
+          display: block; font-size: 0.75rem; color: rgba(70,28,4,0.82); margin-top: 2px;
         }
         .social-card-header .arrow-link {
           width: 36px; height: 36px; border-radius: 8px; flex-shrink: 0;
