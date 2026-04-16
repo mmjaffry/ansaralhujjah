@@ -989,9 +989,18 @@ function extractFlyerForPinned(html, bodyId) {
   const anchor = `id="${bodyId}"`;
   const ai = html.indexOf(anchor);
   if (ai === -1) return null;
-  const section = html.slice(ai, ai + 2000);
-  const m = section.match(/src="data:([^;]+);base64,([^"]{20,})"/);
-  return m ? { mime: m[1], b64: m[2] } : null;
+  // Find src="data: within 500 chars of the anchor (right after the div tag)
+  const nearSrc = html.indexOf('src="data:', ai);
+  if (nearSrc === -1 || nearSrc - ai > 500) return null;
+  // Extract from the full html string — no truncation — so large base64 works
+  const afterSrc = html.slice(nearSrc + 10); // skip 'src="data:'
+  const semi = afterSrc.indexOf(';base64,');
+  if (semi === -1) return null;
+  const mime = afterSrc.slice(0, semi);
+  const b64Start = semi + 8;
+  const b64End = afterSrc.indexOf('"', b64Start);
+  if (b64End === -1) return null;
+  return { mime, b64: afterSrc.slice(b64Start, b64End) };
 }
 
 /* ── Build pinned card HTML ───────────── */
