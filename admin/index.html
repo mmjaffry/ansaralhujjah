@@ -167,6 +167,16 @@
     }
     .btn-restore:hover { background: rgba(40,140,60,0.15); }
 
+    .move-btns { display: flex; flex-direction: column; gap: 2px; flex-shrink: 0; }
+    .btn-move {
+      width: 20px; height: 20px; border-radius: 4px; border: none; background: transparent;
+      color: var(--text-muted); cursor: pointer; display: flex; align-items: center;
+      justify-content: center; font-size: 0.7rem; line-height: 1; padding: 0;
+      transition: background 0.15s, color 0.15s;
+    }
+    .btn-move:hover:not(:disabled) { background: var(--accent-dim); color: var(--accent-light); }
+    .btn-move:disabled { opacity: 0.2; cursor: default; }
+
     .btn-add {
       width: 100%; background: transparent; border: 1px dashed rgba(180,90,45,0.35);
       border-radius: 10px; padding: 11px; color: var(--accent-light); font-size: 0.83rem;
@@ -368,13 +378,8 @@
         </div>
       </div>
 
-      <div class="sidebar-label">Pinned Cards</div>
-      <div id="pinnedList"></div>
-
-      <hr class="sidebar-divider" style="margin: 10px 0 16px;">
-
-      <div class="sidebar-label">Event Cards</div>
-      <div id="eventList"></div>
+      <div class="sidebar-label">All Cards</div>
+      <div id="allCardsList"></div>
       <button class="btn-add" id="addBtn">+ Add New Card</button>
 
       <hr class="sidebar-divider">
@@ -566,6 +571,12 @@ if (!pinnedCards) {
   pinnedCards = JSON.parse(JSON.stringify(PINNED_DEFAULTS));
   localStorage.setItem('aah_pinned', JSON.stringify(pinnedCards));
 }
+// cardOrder: master ordered list of all card IDs ('sisters', 'quran', or event ids)
+let cardOrder = JSON.parse(localStorage.getItem('aah_card_order') || 'null');
+if (!cardOrder) {
+  cardOrder = ['sisters', 'quran', ...events.map(e => e.id)];
+  localStorage.setItem('aah_card_order', JSON.stringify(cardOrder));
+}
 let editingId      = null;
 let editingPinned  = null;
 let flyerB64       = null;
@@ -679,24 +690,34 @@ function showDashboard() {
 
 /* ── Sidebar ─────────────────────────── */
 function renderSidebar() {
-  // Pinned cards
-  const pl = document.getElementById('pinnedList');
-  pl.innerHTML = ['sisters', 'quran'].map(key => {
-    const pc = pinnedCards[key];
-    const iconPath = getIconPath(pc.iconId || (key === 'sisters' ? 'people' : 'book'));
-    if (pc.removed) {
-      return `
-        <div class="event-item pinned-removed" id="pinned-${key}">
-          <div class="event-thumb"><svg viewBox="0 0 24 24"><path d="${iconPath}"/></svg></div>
-          <div class="event-info">
-            <div class="event-name">${esc(pc.title)}</div>
-            <div class="event-sub" style="color:#e07070;">Removed from site</div>
-          </div>
-          <button class="btn-restore" onclick="event.stopPropagation();restorePinned('${key}')" title="Restore">↺</button>
+  const al = document.getElementById('allCardsList');
+  const last = cardOrder.length - 1;
+
+  al.innerHTML = cardOrder.map((id, idx) => {
+    const isFirst = idx === 0;
+    const isLast  = idx === last;
+    const moveBtns = `
+        <div class="move-btns">
+          <button class="btn-move" onclick="event.stopPropagation();moveCard('${id}','up')" title="Move up" ${isFirst ? 'disabled' : ''}>▲</button>
+          <button class="btn-move" onclick="event.stopPropagation();moveCard('${id}','down')" title="Move down" ${isLast ? 'disabled' : ''}>▼</button>
         </div>`;
-    }
-    return `
-      <div class="event-item${editingPinned === key ? ' active' : ''}" id="pinned-${key}" onclick="openPinnedEditor('${key}')">
+
+    if (id === 'sisters' || id === 'quran') {
+      const pc = pinnedCards[id];
+      const iconPath = getIconPath(pc.iconId || (id === 'sisters' ? 'people' : 'book'));
+      if (pc.removed) {
+        return `
+      <div class="event-item pinned-removed" id="pinned-${id}">${moveBtns}
+        <div class="event-thumb"><svg viewBox="0 0 24 24"><path d="${iconPath}"/></svg></div>
+        <div class="event-info">
+          <div class="event-name">${esc(pc.title)}</div>
+          <div class="event-sub" style="color:#e07070;">Removed from site</div>
+        </div>
+        <button class="btn-restore" onclick="event.stopPropagation();restorePinned('${id}')" title="Restore">↺</button>
+      </div>`;
+      }
+      return `
+      <div class="event-item${editingPinned === id ? ' active' : ''}" id="pinned-${id}" onclick="openPinnedEditor('${id}')">${moveBtns}
         <div class="event-thumb">
           ${pc.flyerB64
             ? `<img src="data:${pc.flyerMime};base64,${pc.flyerB64}" alt="">`
@@ -706,20 +727,15 @@ function renderSidebar() {
           <div class="event-name">${esc(pc.title)}</div>
           <div class="event-sub">${esc(pc.sub || '')}</div>
         </div>
-        <button class="btn-del" onclick="event.stopPropagation();removePinned('${key}')" title="Remove from site">✕</button>
+        <button class="btn-del" onclick="event.stopPropagation();removePinned('${id}')" title="Remove from site">✕</button>
       </div>`;
-  }).join('');
+    }
 
-  // Regular event cards
-  const el = document.getElementById('eventList');
-  if (!events.length) {
-    el.innerHTML = '<p style="font-size:0.76rem;color:var(--text-muted);padding:2px;margin-bottom:8px;">No cards yet.</p>';
-    return;
-  }
-  el.innerHTML = events.map(ev => {
+    const ev = events.find(e => e.id === id);
+    if (!ev) return '';
     const iconPath = getIconPath(ev.iconId || 'calendar');
     return `
-      <div class="event-item${editingId === ev.id ? ' active' : ''}" id="item-${ev.id}" onclick="openEditor('${ev.id}')">
+      <div class="event-item${editingId === ev.id ? ' active' : ''}" id="item-${ev.id}" onclick="openEditor('${ev.id}')">${moveBtns}
         <div class="event-thumb">
           ${ev.flyerB64
             ? `<img src="data:${ev.flyerMime};base64,${ev.flyerB64}" alt="">`
@@ -733,6 +749,21 @@ function renderSidebar() {
       </div>`;
   }).join('');
 }
+
+/* ── Move card ───────────────────────── */
+function moveCard(id, direction) {
+  const idx = cardOrder.indexOf(id);
+  if (direction === 'up' && idx > 0) {
+    [cardOrder[idx - 1], cardOrder[idx]] = [cardOrder[idx], cardOrder[idx - 1]];
+  } else if (direction === 'down' && idx < cardOrder.length - 1) {
+    [cardOrder[idx], cardOrder[idx + 1]] = [cardOrder[idx + 1], cardOrder[idx]];
+  } else { return; }
+  persistOrder();
+  renderSidebar();
+  publishToGitHub();
+}
+
+function persistOrder() { localStorage.setItem('aah_card_order', JSON.stringify(cardOrder)); }
 
 /* ── Pinned card editor ───────────────── */
 function openPinnedEditor(key) {
@@ -830,8 +861,11 @@ async function saveCard() {
     if (idx > -1) events[idx] = { ...events[idx], title, sub, link, flyerB64, flyerMime, iconId: selectedIconId };
     persist();
   } else {
-    events.push({ id: Date.now().toString(36), title, sub, link, flyerB64, flyerMime, iconId: selectedIconId });
+    const newId = Date.now().toString(36);
+    events.push({ id: newId, title, sub, link, flyerB64, flyerMime, iconId: selectedIconId });
+    cardOrder.push(newId);
     persist();
+    persistOrder();
   }
 
   renderSidebar();
@@ -842,7 +876,9 @@ async function saveCard() {
 async function deleteCard(id) {
   if (!confirm('Delete this card?')) return;
   events = events.filter(e => e.id !== id);
+  cardOrder = cardOrder.filter(i => i !== id);
   persist();
+  persistOrder();
   if (editingId === id) closeEditor();
   else renderSidebar();
   await publishToGitHub();
@@ -895,13 +931,13 @@ function updatePreview() {
   }
 }
 
-/* ── Extract flyer from HTML section ─── */
-function extractFlyerFromSection(html, startMarker, endMarker) {
-  const si = html.indexOf(startMarker);
-  const ei = html.indexOf(endMarker);
-  if (si === -1 || ei === -1) return null;
-  const section = html.slice(si + startMarker.length, ei);
-  const m = section.match(/src="data:([^;]+);base64,([^"]+)"/);
+/* ── Extract flyer for pinned card by body-div id ─── */
+function extractFlyerForPinned(html, bodyId) {
+  const anchor = `id="${bodyId}"`;
+  const ai = html.indexOf(anchor);
+  if (ai === -1) return null;
+  const section = html.slice(ai, ai + 2000);
+  const m = section.match(/src="data:([^;]+);base64,([^"]{20,})"/);
   return m ? { mime: m[1], b64: m[2] } : null;
 }
 
@@ -1011,37 +1047,28 @@ async function publishToGitHub() {
 
     let newHtml = currentHtml;
 
-    // Admin event cards
-    const adminStart = '<!-- AAH-ADMIN-CARDS-START -->';
-    const adminEnd   = '<!-- AAH-ADMIN-CARDS-END -->';
-    const asi = newHtml.indexOf(adminStart), aei = newHtml.indexOf(adminEnd);
-    if (asi === -1 || aei === -1) throw new Error('Admin cards markers not found in index.html.');
-    const cardsHtml = events.length
-      ? '\n' + events.map((ev, i) => buildCardHtml(ev, i)).join('\n') + '\n      '
-      : '\n      ';
-    newHtml = newHtml.slice(0, asi + adminStart.length) + cardsHtml + newHtml.slice(aei);
+    // All cards section — rebuild in cardOrder sequence
+    const allStart = '<!-- AAH-ALL-CARDS-START -->';
+    const allEnd   = '<!-- AAH-ALL-CARDS-END -->';
+    const allSi = newHtml.indexOf(allStart), allEi = newHtml.indexOf(allEnd);
+    if (allSi === -1 || allEi === -1) throw new Error('All-cards markers not found in index.html.');
 
-    // Sisters pinned card
-    const sistersStart = '<!-- AAH-SISTERS-CARD-START -->';
-    const sistersEnd   = '<!-- AAH-SISTERS-CARD-END -->';
-    const ssi = newHtml.indexOf(sistersStart), sei = newHtml.indexOf(sistersEnd);
-    if (ssi !== -1 && sei !== -1) {
-      const pc = pinnedCards.sisters;
-      const content = pc.removed ? '\n      ' :
-        '\n' + buildPinnedCardHtml('sisters', pc, extractFlyerFromSection(currentHtml, sistersStart, sistersEnd)) + '\n      ';
-      newHtml = newHtml.slice(0, ssi + sistersStart.length) + content + newHtml.slice(sei);
-    }
+    let liveEventIdx = 0;
+    const allCardsHtml = cardOrder.map(id => {
+      if (id === 'sisters' || id === 'quran') {
+        const pc = pinnedCards[id];
+        if (pc.removed) return '';
+        const bodyId = id === 'sisters' ? 'socialBody' : 'quranBody';
+        const existingFlyer = extractFlyerForPinned(currentHtml, bodyId);
+        return buildPinnedCardHtml(id, pc, existingFlyer);
+      }
+      const ev = events.find(e => e.id === id);
+      if (!ev) return '';
+      return buildCardHtml(ev, liveEventIdx++);
+    }).filter(Boolean).join('\n');
 
-    // Quran pinned card
-    const quranStart = '<!-- AAH-QURAN-CARD-START -->';
-    const quranEnd   = '<!-- AAH-QURAN-CARD-END -->';
-    const qsi = newHtml.indexOf(quranStart), qei = newHtml.indexOf(quranEnd);
-    if (qsi !== -1 && qei !== -1) {
-      const pc = pinnedCards.quran;
-      const content = pc.removed ? '\n      ' :
-        '\n' + buildPinnedCardHtml('quran', pc, extractFlyerFromSection(currentHtml, quranStart, quranEnd)) + '\n      ';
-      newHtml = newHtml.slice(0, qsi + quranStart.length) + content + newHtml.slice(qei);
-    }
+    const allContent = allCardsHtml ? '\n' + allCardsHtml + '\n      ' : '\n      ';
+    newHtml = newHtml.slice(0, allSi + allStart.length) + allContent + newHtml.slice(allEi);
 
     // Commit
     const encoded = btoa(unescape(encodeURIComponent(newHtml)));
