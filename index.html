@@ -44,7 +44,7 @@
       width: 150px; height: 150px;
       margin-bottom: 28px; animation: fadeDown 0.7s ease both;
     }
-    .logo-wrap img { width: 100%; height: 100%; object-fit: contain; mix-blend-mode: multiply; }
+    .logo-wrap img { width: 100%; height: 100%; object-fit: contain; }
     h1 {
       font-family: "Cinzel", serif; font-size: 1.85rem; font-weight: 600;
       letter-spacing: 0.08em; text-align: center;
@@ -254,5 +254,24 @@
     <footer>Ansar Al-Hujjah &nbsp;·&nbsp; Houston, TX</footer>
   </div>
   <script async src="https://www.instagram.com/embed.js"></script>
+  <script>
+    (function() {
+      var img = document.querySelector('.logo-wrap img');
+      function removeBlack() {
+        var c = document.createElement('canvas');
+        c.width = img.naturalWidth; c.height = img.naturalHeight;
+        var ctx = c.getContext('2d');
+        ctx.drawImage(img, 0, 0);
+        var d = ctx.getImageData(0, 0, c.width, c.height), px = d.data;
+        for (var i = 0; i < px.length; i += 4) {
+          var r = px[i], g = px[i+1], b = px[i+2];
+          if (r < 50 && g < 50 && b < 50) px[i+3] = 0;
+        }
+        ctx.putImageData(d, 0, 0);
+        img.src = c.toDataURL('image/png');
+      }
+      img.complete ? removeBlack() : img.addEventListener('load', removeBlack);
+    })();
+  </script>
 </body>
 </html>
