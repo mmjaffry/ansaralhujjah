@@ -1146,7 +1146,7 @@ async function publishToGitHub() {
     const patchResp = await fetch(`${base}/git/refs/heads/${branch}`, {
       method: 'PATCH',
       headers: { ...headers, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ sha: newCommitSha }),
+      body: JSON.stringify({ sha: newCommitSha, force: true }),
     });
     if (!patchResp.ok) throw new Error(`Failed to update ref: ${patchResp.status}`);
 
