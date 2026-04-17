@@ -1013,14 +1013,13 @@ function buildCardHtml(ev, idx) {
       </a>`;
 }
 
-/* ── GitHub API publish ──────────────── */
+/* ── GitHub API publish (Git Data API — supports files > 1 MB) ── */
 async function publishToGitHub() {
   const gh = getGhSettings();
-  const branch   = gh.branch || 'main';
-  const filePath = 'index.html';
-  const apiBase  = `https://api.github.com/repos/${gh.owner}/${gh.repo}/contents/${filePath}`;
-  const headers  = {
-    'Authorization': `Bearer ${gh.token}`,
+  const { token, owner, repo, branch } = gh;
+  const base = `https://api.github.com/repos/${owner}/${repo}`;
+  const headers = {
+    'Authorization': `Bearer ${token}`,
     'Accept': 'application/vnd.github+json',
     'X-GitHub-Api-Version': '2022-11-28',
   };
@@ -1028,15 +1027,31 @@ async function publishToGitHub() {
   setStatus('publishing', 'Publishing…');
 
   try {
-    const getResp = await fetch(`${apiBase}?ref=${branch}`, { headers });
-    if (!getResp.ok) throw new Error(`GitHub fetch failed: ${getResp.status} ${await getResp.text()}`);
-    const fileData    = await getResp.json();
-    const currentSha  = fileData.sha;
-    const currentHtml = decodeURIComponent(escape(atob(fileData.content.replace(/\n/g, ''))));
+    // 1. Get latest commit SHA on branch
+    const refResp = await fetch(`${base}/git/ref/heads/${branch}`, { headers });
+    if (!refResp.ok) throw new Error(`Failed to get ref: ${refResp.status}`);
+    const { object: { sha: commitSha } } = await refResp.json();
 
+    // 2. Get tree SHA from commit
+    const commitResp = await fetch(`${base}/git/commits/${commitSha}`, { headers });
+    if (!commitResp.ok) throw new Error(`Failed to get commit: ${commitResp.status}`);
+    const { tree: { sha: treeSha } } = await commitResp.json();
+
+    // 3. Find index.html blob SHA in tree
+    const treeResp = await fetch(`${base}/git/trees/${treeSha}`, { headers });
+    if (!treeResp.ok) throw new Error(`Failed to get tree: ${treeResp.status}`);
+    const treeData = await treeResp.json();
+    const fileEntry = treeData.tree.find(item => item.path === 'index.html');
+    if (!fileEntry) throw new Error('index.html not found in repo root');
+
+    // 4. Fetch blob content (handles files > 1 MB, unlike Contents API)
+    const blobResp = await fetch(`${base}/git/blobs/${fileEntry.sha}`, { headers });
+    if (!blobResp.ok) throw new Error(`Failed to get blob: ${blobResp.status}`);
+    const blobData = await blobResp.json();
+    const currentHtml = decodeURIComponent(escape(atob(blobData.content.replace(/\n/g, ''))));
+
+    // 5. Inject updated cards between markers
     let newHtml = currentHtml;
-
-    // All cards section — rebuild in cardOrder sequence
     const allStart = '<!-- AAH-ALL-CARDS-START -->';
     const allEnd   = '<!-- AAH-ALL-CARDS-END -->';
     const allSi = newHtml.indexOf(allStart), allEi = newHtml.indexOf(allEnd);
@@ -1059,18 +1074,41 @@ async function publishToGitHub() {
     const allContent = allCardsHtml ? '\n' + allCardsHtml + '\n      ' : '\n      ';
     newHtml = newHtml.slice(0, allSi + allStart.length) + allContent + newHtml.slice(allEi);
 
-    // Commit
-    const encoded = btoa(unescape(encodeURIComponent(newHtml)));
-    const putResp = await fetch(`${apiBase}?ref=${branch}`, {
-      method: 'PUT',
+    // 6. Create new blob with updated content
+    const newBlobResp = await fetch(`${base}/git/blobs`, {
+      method: 'POST',
       headers: { ...headers, 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        message: `Update cards via admin panel (${new Date().toLocaleDateString()})`,
-        content: encoded, sha: currentSha, branch,
-      }),
+      body: JSON.stringify({ content: btoa(unescape(encodeURIComponent(newHtml))), encoding: 'base64' }),
     });
+    if (!newBlobResp.ok) throw new Error(`Failed to create blob: ${newBlobResp.status}`);
+    const { sha: newBlobSha } = await newBlobResp.json();
 
-    if (!putResp.ok) throw new Error(`GitHub commit failed: ${putResp.status} ${await putResp.text()}`);
+    // 7. Create new tree pointing to updated blob
+    const newTreeResp = await fetch(`${base}/git/trees`, {
+      method: 'POST',
+      headers: { ...headers, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ base_tree: treeSha, tree: [{ path: 'index.html', mode: '100644', type: 'blob', sha: newBlobSha }] }),
+    });
+    if (!newTreeResp.ok) throw new Error(`Failed to create tree: ${newTreeResp.status}`);
+    const { sha: newTreeSha } = await newTreeResp.json();
+
+    // 8. Create commit
+    const newCommitResp = await fetch(`${base}/git/commits`, {
+      method: 'POST',
+      headers: { ...headers, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: `Update cards via admin panel (${new Date().toLocaleDateString()})`, tree: newTreeSha, parents: [commitSha] }),
+    });
+    if (!newCommitResp.ok) throw new Error(`Failed to create commit: ${newCommitResp.status}`);
+    const { sha: newCommitSha } = await newCommitResp.json();
+
+    // 9. Advance branch ref
+    const patchResp = await fetch(`${base}/git/refs/heads/${branch}`, {
+      method: 'PATCH',
+      headers: { ...headers, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ sha: newCommitSha }),
+    });
+    if (!patchResp.ok) throw new Error(`Failed to update ref: ${patchResp.status}`);
+
     setStatus('published', '✓ Live in ~30s');
 
   } catch (err) {
