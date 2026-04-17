@@ -955,10 +955,17 @@ function updatePreview() {
 }
 
 /* ── Extract flyer starting from a known position in HTML ─── */
-function extractFlyerAt(html, anchorPos, maxDistance = 800) {
+function extractFlyerAt(html, anchorPos) {
   if (anchorPos === -1) return null;
+  // Bound search to this card only — stop at the next card marker
+  let nextMarker = html.length;
+  const a = html.indexOf('<!-- admin:',  anchorPos + 1);
+  const p = html.indexOf('<!-- pinned:', anchorPos + 1);
+  if (a !== -1) nextMarker = Math.min(nextMarker, a);
+  if (p !== -1) nextMarker = Math.min(nextMarker, p);
+
   const nearSrc = html.indexOf('src="data:', anchorPos);
-  if (nearSrc === -1 || nearSrc - anchorPos > maxDistance) return null;
+  if (nearSrc === -1 || nearSrc > nextMarker) return null;
   // Extract from full string — no truncation — so large base64 works
   const afterSrc = html.slice(nearSrc + 10); // skip 'src="data:'
   const semi = afterSrc.indexOf(';base64,');
