@@ -621,53 +621,91 @@ function showDashboard() {
   syncFromLiveSite();
 }
 
-/* ── Sync orphaned cards from live site ─ */
+/* ── Full state sync from live site on login ─ */
 async function syncFromLiveSite() {
   try {
     const resp = await fetch('../index.html', { cache: 'no-store' });
     if (!resp.ok) return;
     const html = await resp.text();
 
-    // Collect all admin card IDs present in the live HTML
-    const liveIds = [];
-    const re = /<!-- admin:([a-z0-9]+) -->/g;
+    const allStart = '<!-- AAH-ALL-CARDS-START -->';
+    const allEnd   = '<!-- AAH-ALL-CARDS-END -->';
+    const allSi = html.indexOf(allStart);
+    const allEi = html.indexOf(allEnd);
+    if (allSi === -1 || allEi === -1) return;
+    const section = html.slice(allSi + allStart.length, allEi);
+
+    // Build live card order from markers (<!-- pinned:key --> and <!-- admin:id -->)
+    const liveOrder = [];
+    const markerRe = /<!-- (pinned|admin):([a-z0-9]+) -->/g;
     let m;
-    while ((m = re.exec(html)) !== null) liveIds.push(m[1]);
+    while ((m = markerRe.exec(section)) !== null) liveOrder.push(m[2]);
 
-    let changed = false;
-    for (const id of liveIds) {
-      if (events.find(e => e.id === id)) continue; // already known
+    // Legacy fallback: detect pinned cards published before marker system was added
+    for (const key of ['sisters', 'quran']) {
+      if (liveOrder.includes(key)) continue;
+      const fnName = key === 'sisters' ? 'toggleSocial' : 'toggleQuran';
+      const bodyId = key === 'sisters' ? 'socialBody'   : 'quranBody';
+      const linkUrl = pinnedCards[key]?.link || PINNED_DEFAULTS[key].link;
+      if (section.includes(fnName) || section.includes(`id="${bodyId}"`) || section.includes(linkUrl)) {
+        liveOrder.unshift(key);
+      }
+    }
 
+    if (liveOrder.length === 0) return;
+
+    // Rebuild events array from live HTML (full re-sync, not just orphans)
+    const liveEvents = [];
+    for (const id of liveOrder) {
+      if (id === 'sisters' || id === 'quran') continue;
       const anchor = `<!-- admin:${id} -->`;
       const ai = html.indexOf(anchor);
       if (ai === -1) continue;
-      const section = html.slice(ai, ai + 3000);
 
-      const titleM = section.match(/<span class="btn-label">([^<]+)<\/span>/);
-      const subM   = section.match(/<span class="btn-sub">([^<]+)<\/span>/);
-      const linkM  = section.match(/href="([^"]+)"/);
-      const svgM   = section.match(/<path d="([^"]+)"/);
-      const flyerM = section.match(/src="data:([^;]+);base64,([^"]+)"/);
+      const nearby = html.slice(ai, ai + 1500);
+      const titleM = nearby.match(/<span class="btn-label">([^<]+)<\/span>/);
+      const subM   = nearby.match(/<span class="btn-sub">([^<]+)<\/span>/);
+      const linkM  = nearby.match(/href="([^"]+)"/);
+      const svgM   = nearby.match(/<path d="([^"]+)"/);
+      const flyer  = extractFlyerAt(html, ai);
 
       let iconId = 'calendar';
-      if (svgM) {
-        const ic = ICONS.find(ic => ic.path === svgM[1]);
-        if (ic) iconId = ic.id;
-      }
+      if (svgM) { const ic = ICONS.find(ic => ic.path === svgM[1]); if (ic) iconId = ic.id; }
 
-      events.push({
+      liveEvents.push({
         id, iconId,
         title:     titleM ? titleM[1] : 'Unknown Card',
         sub:       subM   ? subM[1]   : '',
         link:      linkM  ? linkM[1]  : '',
-        flyerMime: flyerM ? flyerM[1] : null,
-        flyerB64:  flyerM ? flyerM[2] : null,
+        flyerMime: flyer  ? flyer.mime : null,
+        flyerB64:  flyer  ? flyer.b64  : null,
       });
-      if (!cardOrder.includes(id)) cardOrder.push(id);
-      changed = true;
     }
 
-    if (changed) { persist(); persistOrder(); renderSidebar(); }
+    // Sync pinned card flyers and removed state from live HTML
+    for (const key of ['sisters', 'quran']) {
+      const bodyId = key === 'sisters' ? 'socialBody' : 'quranBody';
+      const flyer  = extractFlyerForPinned(html, bodyId);
+      if (flyer) {
+        pinnedCards[key].flyerB64  = flyer.b64;
+        pinnedCards[key].flyerMime = flyer.mime;
+      } else if (liveOrder.includes(key)) {
+        pinnedCards[key].flyerB64  = null;
+        pinnedCards[key].flyerMime = null;
+      }
+      pinnedCards[key].removed = !liveOrder.includes(key);
+    }
+
+    // Preserve any locally-created cards not yet published
+    const localOnlyIds = events.filter(e => !liveEvents.find(le => le.id === e.id)).map(e => e.id);
+
+    events    = liveEvents;
+    cardOrder = [...liveOrder, ...localOnlyIds];
+
+    persist();
+    persistOrder();
+    localStorage.setItem('aah_pinned', JSON.stringify(pinnedCards));
+    renderSidebar();
   } catch (e) {
     console.warn('Live site sync failed:', e);
   }
@@ -916,15 +954,12 @@ function updatePreview() {
   }
 }
 
-/* ── Extract flyer for pinned card by body-div id ─── */
-function extractFlyerForPinned(html, bodyId) {
-  const anchor = `id="${bodyId}"`;
-  const ai = html.indexOf(anchor);
-  if (ai === -1) return null;
-  // Find src="data: within 500 chars of the anchor (right after the div tag)
-  const nearSrc = html.indexOf('src="data:', ai);
-  if (nearSrc === -1 || nearSrc - ai > 500) return null;
-  // Extract from the full html string — no truncation — so large base64 works
+/* ── Extract flyer starting from a known position in HTML ─── */
+function extractFlyerAt(html, anchorPos, maxDistance = 800) {
+  if (anchorPos === -1) return null;
+  const nearSrc = html.indexOf('src="data:', anchorPos);
+  if (nearSrc === -1 || nearSrc - anchorPos > maxDistance) return null;
+  // Extract from full string — no truncation — so large base64 works
   const afterSrc = html.slice(nearSrc + 10); // skip 'src="data:'
   const semi = afterSrc.indexOf(';base64,');
   if (semi === -1) return null;
@@ -933,6 +968,10 @@ function extractFlyerForPinned(html, bodyId) {
   const b64End = afterSrc.indexOf('"', b64Start);
   if (b64End === -1) return null;
   return { mime, b64: afterSrc.slice(b64Start, b64End) };
+}
+
+function extractFlyerForPinned(html, bodyId) {
+  return extractFlyerAt(html, html.indexOf(`id="${bodyId}"`));
 }
 
 /* ── Build pinned card HTML ───────────── */
@@ -949,7 +988,8 @@ function buildPinnedCardHtml(key, pc, existingFlyer) {
   const fnName  = key === 'sisters' ? 'toggleSocial' : 'toggleQuran';
 
   if (b64) {
-    return `      <div class="social-card">
+    return `      <!-- pinned:${key} -->
+      <div class="social-card">
         <div class="social-card-header" onclick="${fnName}(event)">
           <div class="icon">${iconSvg}</div>
           <span class="btn-text">
@@ -965,7 +1005,8 @@ function buildPinnedCardHtml(key, pc, existingFlyer) {
       <script>function ${fnName}(e){document.getElementById('${bodyId}').classList.toggle('open');}<\/script>`;
   }
 
-  return `      <a class="link-btn" href="${l}" target="_blank" rel="noopener">
+  return `      <!-- pinned:${key} -->
+      <a class="link-btn" href="${l}" target="_blank" rel="noopener">
         <div class="icon">${iconSvg}</div>
         <span class="btn-text">
           <span class="btn-label">${t}</span>${s ? `\n          <span class="btn-sub">${s}</span>` : ''}
