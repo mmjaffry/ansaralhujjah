@@ -318,8 +318,7 @@ def inject_sessions(sessions):
 
     if sessions:
         links = '\n'.join(
-            f'        <a class="session-link" href="{PROGRAM_URL}/{slug}/">'
-            f'<span>{title}</span><span class="session-arrow">→</span></a>'
+            f'        <a class="session-link" href="{PROGRAM_URL}/{slug}/">{title}</a>'
             for title, slug in sessions
         )
         inner = f'\n{links}\n        '

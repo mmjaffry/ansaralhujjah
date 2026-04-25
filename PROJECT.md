@@ -152,6 +152,7 @@ Program sub-pages (e.g., Quran Reflections) are static HTML managed via a Python
   - Session list entries injected into `quran-reflections/index.html`
   - Prev/next labels on generated session pages
 - Injects the session list between `<!-- SESSIONS-START -->` / `<!-- SESSIONS-END -->` markers in `quran-reflections/index.html`
+- Session list entries are plain stacked links (not card UI blocks)
 
 ### What the Quran builder does (`build_quran.py`)
 

@@ -132,6 +132,7 @@ When re-publishing without a new flyer, the existing base64 image is extracted f
 7. Wraps in article page template (site design tokens, breadcrumb nav, prev/next session nav)
 8. Writes to `quran-reflections/{slug}/index.html`
 9. Calls `inject_sessions()` to replace content between `SESSIONS-START/END` in the program index using H1 display titles
+10. Session list is rendered as plain stacked links (no card-style row wrappers/arrows)
 
 Filename governs URL; first markdown H1 governs displayed title (session list + prev/next labels).
 

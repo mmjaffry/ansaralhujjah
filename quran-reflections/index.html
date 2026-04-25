@@ -116,24 +116,23 @@
       margin-bottom: 14px;
     }
     .sessions-list {
-      display: flex; flex-direction: column; gap: 10px;
+      display: flex; flex-direction: column; gap: 6px;
     }
     .session-link {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 14px 20px; border-radius: 12px; text-decoration: none;
-      background: var(--bg-card); border: 1px solid rgba(180,90,45,0.18);
-      color: var(--text); font-size: 0.9rem;
-      transition: background 0.2s, border-color 0.2s, transform 0.2s;
+      display: block;
+      text-decoration: none;
+      color: var(--accent-mid);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      padding: 2px 0;
+      transition: color 0.2s;
     }
     .session-link:hover {
-      background: rgba(255,255,255,0.7);
-      border-color: rgba(148,62,12,0.4);
-      transform: translateX(3px);
+      color: var(--accent-dark);
     }
-    .session-link .session-arrow { color: var(--accent-dark); font-size: 0.9rem; }
     .sessions-empty {
       font-size: 0.88rem; color: var(--text-muted); font-style: italic;
-      padding: 16px 20px;
+      padding: 4px 0;
     }
 
     footer {
@@ -176,10 +175,12 @@
       <h2>Sessions</h2>
       <div class="sessions-list">
         <!-- SESSIONS-START -->
-        <a class="session-link" href="/quran-reflections/2026-03-07-surah-ankabut-big-picture/"><span>2026-03-07 - Surah Ankabut Big Picture</span><span class="session-arrow">→</span></a>
-        <a class="session-link" href="/quran-reflections/2026-03-14-lifes-tests-shaytaans-traps-fragility-of-false-power/"><span>2026-03-14 - Life's Tests, Shaytaan's Traps, Fragility of False Power</span><span class="session-arrow">→</span></a>
-        <a class="session-link" href="/quran-reflections/2026-04-04-tools-for-trial-sabr-and-tawakkul/"><span>2026-04-04 - Tools for Trial, Sabr and Tawakkul</span><span class="session-arrow">→</span></a>
-        <a class="session-link" href="/quran-reflections/2026-04-11-sabr-tawakkul-and-dunya-is-a-play/"><span>2026-04-11 - Sabr, Tawakkul, and Dunya is a Play</span><span class="session-arrow">→</span></a>
+        <a class="session-link" href="/quran-reflections/2026-03-07-surah-ankabut-big-picture/">Surah Ankabut - Big Picture</a>
+        <a class="session-link" href="/quran-reflections/2026-03-14-lifes-tests-shaytaans-traps-fragility-of-false-power/">Surah Ankabut - Life's Tests, Shaytaan's Psychological Traps, and the Fragility of False Power</a>
+        <a class="session-link" href="/quran-reflections/2026-04-04-tools-for-trial-sabr-and-tawakkul/">Surah Ankabut - Tools for the Trial: Levels of Quran, Sabr & Tawakkul</a>
+        <a class="session-link" href="/quran-reflections/2026-04-11-sabr-tawakkul-and-dunya-is-a-play/">Surah Ankabut - Last Day: Sabr, Tawakkul, and Dunya is a Play</a>
+        <a class="session-link" href="/quran-reflections/2026-04-18-surah-nas-shield-for-the-soul/">Surah Nas - Shield for the Soul</a>
+        <a class="session-link" href="/quran-reflections/quran-reflections-overview/">Quran Reflections - Overview</a>
         <!-- SESSIONS-END -->
       </div>
     </div>
