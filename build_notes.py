@@ -328,6 +328,15 @@ def render_page(title, content_html, prev_session, next_session):
       color: var(--accent-dark);
       margin-bottom: 10px; line-height: 1.25;
     }}
+    .article h1 + p {{
+      font-family: "Alegreya SC", serif; font-size: 0.88rem;
+      color: var(--text-muted); line-height: 1.5; margin-bottom: 28px;
+    }}
+    .article h1 + p a {{
+      color: var(--text-muted); text-decoration: none; transition: color 0.2s;
+    }}
+    .article h1 + p a:hover {{ color: var(--accent-mid); }}
+    .article h1 + p strong {{ color: var(--text); font-weight: 600; }}
     .article h2 {{
       font-family: "Playfair Display", serif; font-size: 1.2rem; font-weight: 600;
       color: var(--accent-mid);

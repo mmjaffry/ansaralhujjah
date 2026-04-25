@@ -8,9 +8,7 @@ surahs:
 ---
 
 # Surah Ankabut - Last Day: Sabr, Tawakkul, and Dunya is a Play
-**Sat. April 11, 2026 · Molana Farhat Abbas · [[Quran Reflections - Overview|Quran Reflections]]**
-
-← [[2026-04-04 - Tools for Trial, Sabr and Tawakkul]] | Series: [[Quran Reflections - Overview]] | Next: [[2026-04-18 - Surah Nas, Shield for the Soul]] →
+[[2026-04-04 - Tools for Trial, Sabr and Tawakkul|←]] **Sat. April 11, 2026 · Molana Farhat Abbas · [[Quran Reflections - Overview|Overview]]** [[2026-04-18 - Surah Nas, Shield for the Soul|→]]
 
 ---
 
