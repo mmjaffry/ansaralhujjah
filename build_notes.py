@@ -377,13 +377,15 @@ def render_page(title, content_html, prev_session, next_session):
     .article pre code {{ background: none; padding: 0; }}
     .article table {{
       width: 100%; border-collapse: collapse; margin-bottom: 16px;
-      font-size: 1rem;
+      font-size: 1rem; table-layout: fixed;
     }}
     .article th, .article td {{
       padding: 8px 14px; text-align: left;
       border-bottom: 1px solid rgba(148,62,12,0.15);
     }}
     .article th {{ font-weight: 700; color: var(--accent-mid); }}
+    .article table th:first-child, .article table td:first-child {{ width: 5.5em; }}
+    .article table th:nth-child(2), .article table td:nth-child(2) {{ width: 6.5em; white-space: nowrap; }}
 
     /* ── Inline Quran verse embeds ── */
     .verse-embed-card {{

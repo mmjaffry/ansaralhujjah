@@ -120,7 +120,7 @@
     }
     .program-desc table {
       width: 100%; border-collapse: collapse; margin-bottom: 14px;
-      font-size: 1rem;
+      font-size: 1rem; table-layout: fixed;
     }
     .program-desc th, .program-desc td {
       padding: 8px 10px; text-align: left;
@@ -128,6 +128,8 @@
       vertical-align: top;
     }
     .program-desc th { font-weight: 700; color: var(--accent-mid); }
+    .program-desc table th:first-child, .program-desc table td:first-child { width: 5.5em; }
+    .program-desc table th:nth-child(2), .program-desc table td:nth-child(2) { width: 6.5em; white-space: nowrap; }
 
     /* ── Sign-in button ── */
     .signin-btn {
