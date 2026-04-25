@@ -400,7 +400,7 @@ def render_page(title, content_html, prev_session, next_session):
       letter-spacing: 0.05em;
       color: var(--text-muted);
       text-decoration: none;
-      margin-bottom: 12px;
+      margin-bottom: 18px;
     }}
     .verse-embed-ref:hover {{ color: var(--accent-mid); }}
     .verse-embed-arabic {{
