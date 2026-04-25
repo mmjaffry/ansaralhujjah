@@ -1,7 +1,7 @@
 ---
 speaker: Molana Farhat
 venue: Ansar
-dates: March 7 – April 18, 2026
+dates: March 7 – April 25, 2026
 surahs:
   - "[[29 - Surah al-'Ankabut]]"
   - "[[114 - Surah an-Nas]]"
@@ -14,20 +14,22 @@ surahs:
 
 ## Session Index
 
-### [[29 - Surah al-'Ankabut]] — Sessions 1–4
+### [[29 - Surah al-'Ankabut]] — Sessions 1–5
 
 | #   | Date     | Title                                                                                                                                                     |
 | --- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 1   | Sat 3/7  | [[2026-03-07 - Surah Ankabut Big Picture|Surah Ankabut - Big Picture]]                                                                                    |
 | 2   | Sat 3/14 | [[2026-03-14 - Life's Tests, Shaytaan's Traps, Fragility of False Power|Surah Ankabut - Life's Tests, Shaytaan's Psychological Traps, and the Fragility of False Power]] |
-| 3   | Sat 4/4  | [[2026-04-04 - Tools for Trial, Sabr and Tawakkul|Surah Ankabut - Tools for the Trial: Levels of Quran, Sabr & Tawakkul]]                               |
-| 4   | Sat 4/11 | [[2026-04-11 - Sabr, Tawakkul, and Dunya is a Play|Surah Ankabut - Last Day: Sabr, Tawakkul, and Dunya is a Play]]                                      |
+| 3   | Sat 3/21 | *(Missing note — will be added)*                                                                                                                          |
+| 4   | Sat 4/4  | [[2026-04-04 - Tools for Trial, Sabr and Tawakkul|Surah Ankabut - Tools for the Trial: Levels of Quran, Sabr & Tawakkul]]                               |
+| 5   | Sat 4/11 | [[2026-04-11 - Sabr, Tawakkul, and Dunya is a Play|Surah Ankabut - Last Day: Sabr, Tawakkul, and Dunya is a Play]]                                      |
 
-### [[114 - Surah an-Nas]] — Session 6
+### [[114 - Surah an-Nas]] — Sessions 6–7
 
 | # | Date | Title |
 |---|------|-------|
 | 6 | Sat 4/18 | [[2026-04-18 - Surah Nas, Shield for the Soul|Surah Nas - Shield for the Soul]] |
+| 7 | Sat 4/25 | [[2026-04-25 - Surah Nas, Shield of the Soul|Surah Nas - Shield of the Soul]] |
 
 ---
 
@@ -41,8 +43,8 @@ surahs:
 
 ## Surahs Covered
 
-- [[29 - Surah al-'Ankabut]] — Primary surah of the series (Sessions 1–4)
-- [[114 - Surah an-Nas]] — Session 5
+- [[29 - Surah al-'Ankabut]] — Primary surah of the series (Sessions 1–5)
+- [[114 - Surah an-Nas]] — Sessions 6–7
 
 ---
 

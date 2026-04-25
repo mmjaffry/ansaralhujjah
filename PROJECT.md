@@ -151,8 +151,9 @@ Program sub-pages (e.g., Quran Reflections) are static HTML managed via a Python
 - Uses each note's first markdown H1 as the display title for:
   - Session list entries injected into `quran-reflections/index.html`
   - Prev/next labels on generated session pages
-- Injects the session list between `<!-- SESSIONS-START -->` / `<!-- SESSIONS-END -->` markers in `quran-reflections/index.html`
+- Injects the session list between `<!-- SESSIONS-START -->` / `<!-- SESSIONS-END -->` markers inside the `program-desc` area of `quran-reflections/index.html` (the main session hub area)
 - Session list entries are plain stacked links (not card UI blocks)
+- `Quran Reflections - Overview.md` still builds to its own page, but is excluded from the injected homepage session link list
 
 ### What the Quran builder does (`build_quran.py`)
 

@@ -33,6 +33,7 @@ SESSIONS_START = "<!-- SESSIONS-START -->"
 SESSIONS_END   = "<!-- SESSIONS-END -->"
 PROGRAM_TITLE  = "Quran Reflections"
 PROGRAM_URL    = "/quran-reflections"
+OVERVIEW_NOTE_NAME = "Quran Reflections - Overview"
 
 # ── Dependency check ──────────────────────────────────────────────────────────
 
@@ -366,6 +367,10 @@ def main():
             'display_title': display_title,
         })
 
+    # Notes shown in the main session index / prev-next sequence.
+    navigable_entries = [e for e in session_entries if e['note_name'] != OVERVIEW_NOTE_NAME]
+    nav_idx_by_name = {e['note_name']: i for i, e in enumerate(navigable_entries)}
+
     # Generate each session page
     for i, entry in enumerate(session_entries):
         title = entry['note_name']
@@ -380,14 +385,19 @@ def main():
 
         display_title = entry['display_title']
 
-        prev_session = (
-            (session_entries[i - 1]['display_title'], session_entries[i - 1]['slug'])
-            if i > 0 else None
-        )
-        next_session = (
-            (session_entries[i + 1]['display_title'], session_entries[i + 1]['slug'])
-            if i < len(session_entries) - 1 else None
-        )
+        if title in nav_idx_by_name:
+            nav_i = nav_idx_by_name[title]
+            prev_session = (
+                (navigable_entries[nav_i - 1]['display_title'], navigable_entries[nav_i - 1]['slug'])
+                if nav_i > 0 else None
+            )
+            next_session = (
+                (navigable_entries[nav_i + 1]['display_title'], navigable_entries[nav_i + 1]['slug'])
+                if nav_i < len(navigable_entries) - 1 else None
+            )
+        else:
+            prev_session = None
+            next_session = None
 
         page_html = render_page(display_title, content_html, prev_session, next_session)
 
@@ -400,7 +410,7 @@ def main():
         print(f"  Built: {out_path}")
 
     # Update session list in quran-reflections/index.html
-    inject_sessions([(e['display_title'], e['slug']) for e in session_entries])
+    inject_sessions([(e['display_title'], e['slug']) for e in navigable_entries])
 
     print(f"\nDone. {len(session_entries)} session page(s) generated.")
     print("Run 'git push origin main' to publish.")
