@@ -56,6 +56,7 @@ These markers are contracts — do not remove or reformat them:
 | `<!-- admin:{cardId} -->` | `index.html` (inside cards) | Admin sync parser |
 | `<!-- SESSIONS-START -->` / `<!-- SESSIONS-END -->` | `quran-reflections/index.html` | `build_notes.py` |
 | `<!-- QURAN-FLYER-START -->` / `<!-- QURAN-FLYER-END -->` | `quran-reflections/index.html` | Admin publish (quran flyer sync) |
+| `<!-- QURAN-DESC-START -->` / `<!-- QURAN-DESC-END -->` | `quran-reflections/index.html` | Admin publish (quran description sync) |
 
 ### Publishing Flow
 

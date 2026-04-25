@@ -216,12 +216,14 @@
     .form-row { margin-bottom: 20px; }
     .form-row label { display: block; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 7px; }
     .form-row input[type="text"],
-    .form-row input[type="url"] {
+    .form-row input[type="url"],
+    .form-row textarea {
       width: 100%; background: rgba(255,255,255,0.60); border: 1px solid var(--accent-border);
       border-radius: 10px; padding: 12px 15px; color: var(--text);
       font-family: 'Lato', sans-serif; font-size: 0.92rem; outline: none; transition: border-color 0.2s;
     }
-    .form-row input:focus { border-color: var(--accent); }
+    .form-row textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
+    .form-row input:focus, .form-row textarea:focus { border-color: var(--accent); }
 
     /* ── ICON PICKER ── */
     .icon-picker {
@@ -398,6 +400,11 @@
           <input type="url" id="fLink" placeholder="https://forms.gle/...">
         </div>
 
+        <div class="form-row" id="descRow" style="display:none">
+          <label>Program Description <span style="color:var(--text-muted);font-size:0.7rem;text-transform:none;letter-spacing:0">(shown on the program page)</span></label>
+          <textarea id="fDesc" rows="4" placeholder="Brief description shown on the Quran Reflections program page…"></textarea>
+        </div>
+
         <div class="form-row">
           <label>Card Icon</label>
           <div class="icon-picker" id="iconPicker"></div>
@@ -518,9 +525,10 @@ const PINNED_DEFAULTS = {
   },
   quran: {
     title: "Quran Reflections",
-    sub: "Tafsir of Surah Ankabut · Moulana Farhat Abbas",
+    sub: "Tafsīr of Surah an-Nās · Moulana Farhat Abbas",
     link: "/quran-reflections",
-    btnText: "Sign In", iconId: "book", flyerB64: null, flyerMime: null, removed: false
+    btnText: "Sign In", iconId: "book", flyerB64: null, flyerMime: null, removed: false,
+    desc: "Weekly Tafsīr sessions exploring Surah an-Nās with Moulana Farhat Abbas. Each session covers selected ayat with commentary, historical context, and practical reflections. Session notes are available below."
   }
 };
 
@@ -682,7 +690,7 @@ async function syncFromLiveSite() {
       });
     }
 
-    // Sync pinned card flyers and removed state from live HTML
+    // Sync pinned card flyers, desc, and removed state from live HTML
     for (const key of ['sisters', 'quran']) {
       const flyer  = extractFlyerForPinned(html, key);
       if (flyer) {
@@ -693,6 +701,15 @@ async function syncFromLiveSite() {
         pinnedCards[key].flyerMime = null;
       }
       pinnedCards[key].removed = !liveOrder.includes(key);
+      if (key === 'quran') {
+        const markerPos = html.indexOf('<!-- pinned:quran -->');
+        if (markerPos !== -1) {
+          const near = html.slice(markerPos, markerPos + 600);
+          const descM = near.match(/data-qdesc="([^"]*)"/);
+          if (descM) pinnedCards['quran'].desc = descM[1]
+            .replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'");
+        }
+      }
     }
 
     // Preserve any locally-created cards not yet published
@@ -798,6 +815,13 @@ function openPinnedEditor(key) {
   document.getElementById('fTitle').value = pc.title || '';
   document.getElementById('fSub').value   = pc.sub   || '';
   document.getElementById('fLink').value  = pc.link  || '';
+  const descRow = document.getElementById('descRow');
+  if (key === 'quran') {
+    descRow.style.display = 'block';
+    document.getElementById('fDesc').value = pc.desc || '';
+  } else {
+    descRow.style.display = 'none';
+  }
   document.getElementById('iconPicker').closest('.form-row').style.display = 'block';
   selectedIconId = pc.iconId || (key === 'sisters' ? 'people' : 'book');
   renderIconPicker();
@@ -840,6 +864,7 @@ function openEditor(id) {
   document.getElementById('fTitle').value = ev?.title || '';
   document.getElementById('fSub').value   = ev?.sub   || '';
   document.getElementById('fLink').value  = ev?.link  || '';
+  document.getElementById('descRow').style.display = 'none';
   document.getElementById('keepFlyerHint').style.display = 'none';
   document.getElementById('iconPicker').closest('.form-row').style.display = 'block';
   selectedIconId = ev?.iconId || 'calendar';
@@ -870,12 +895,14 @@ async function saveCard() {
   if (!title) { document.getElementById('fTitle').focus(); return; }
 
   if (editingPinned) {
+    const descVal = editingPinned === 'quran' ? document.getElementById('fDesc').value.trim() : undefined;
     pinnedCards[editingPinned] = {
       ...pinnedCards[editingPinned],
       title, sub, link, iconId: selectedIconId,
       flyerB64:  flyerB64  || pinnedCards[editingPinned].flyerB64,
       flyerMime: flyerMime || pinnedCards[editingPinned].flyerMime,
-      removed: false
+      removed: false,
+      ...(descVal !== undefined && { desc: descVal }),
     };
     localStorage.setItem('aah_pinned', JSON.stringify(pinnedCards));
   } else if (editingId) {
@@ -991,9 +1018,10 @@ function buildPinnedCardHtml(key, pc, existingFlyer) {
   const flyerHtml = b64
     ? `<div class="program-card-flyer"><img src="data:${mime};base64,${b64}" alt="${t} Flyer"></div>`
     : `<div class="program-card-flyer">${iconSvg}</div>`;
+  const descAttr = key === 'quran' ? ` data-qdesc="${esc(pc.desc || '')}"` : '';
 
   return `      <!-- pinned:${key} -->
-      <a class="program-card" href="${l}" target="_blank" rel="noopener">
+      <a class="program-card" href="${l}" target="_blank" rel="noopener"${descAttr}>
         ${flyerHtml}
         <div class="program-card-info">
           <div class="icon">${iconSvg}</div>
@@ -1100,22 +1128,41 @@ async function publishToGitHub() {
     if (!newBlobResp.ok) throw new Error(`Failed to create blob: ${newBlobResp.status}`);
     const { sha: newBlobSha } = await newBlobResp.json();
 
-    // 6b. If quran card has a flyer, also update quran-reflections/index.html flyer section
+    // 6b. Update quran-reflections/index.html with flyer and/or description if quran card is present
     const treeEntries = [{ path: 'index.html', mode: '100644', type: 'blob', sha: newBlobSha }];
     const quranCard = pinnedCards['quran'];
     const quranB64  = quranCard && (quranCard.flyerB64 || (() => { const ef = extractFlyerForPinned(currentHtml, 'quran'); return ef && ef.b64; })());
     const quranMime = quranCard && (quranCard.flyerMime || (() => { const ef = extractFlyerForPinned(currentHtml, 'quran'); return ef && ef.mime; })());
-    if (qrEntry && quranB64 && quranMime) {
+    const quranDesc = quranCard && quranCard.desc;
+    if (qrEntry && (quranB64 || quranDesc != null)) {
       const qrBlobResp = await fetch(`${base}/git/blobs/${qrEntry.sha}`, { headers });
       if (qrBlobResp.ok) {
         const qrBlobData = await qrBlobResp.json();
         let qrHtml = decodeURIComponent(escape(atob(qrBlobData.content.replace(/\n/g, ''))));
-        const flyerStart = '<!-- QURAN-FLYER-START -->';
-        const flyerEnd   = '<!-- QURAN-FLYER-END -->';
-        const fsi = qrHtml.indexOf(flyerStart), fei = qrHtml.indexOf(flyerEnd);
-        if (fsi !== -1 && fei !== -1) {
-          const newFlyerHtml = `    <div class="program-flyer">\n      <img src="data:${quranMime};base64,${quranB64}" alt="Quran Reflections Flyer">\n    </div>`;
-          qrHtml = qrHtml.slice(0, fsi + flyerStart.length) + '\n' + newFlyerHtml + '\n    ' + qrHtml.slice(fei);
+        let qrChanged = false;
+
+        if (quranB64 && quranMime) {
+          const flyerStart = '<!-- QURAN-FLYER-START -->';
+          const flyerEnd   = '<!-- QURAN-FLYER-END -->';
+          const fsi = qrHtml.indexOf(flyerStart), fei = qrHtml.indexOf(flyerEnd);
+          if (fsi !== -1 && fei !== -1) {
+            const newFlyerHtml = `    <div class="program-flyer">\n      <img src="data:${quranMime};base64,${quranB64}" alt="Quran Reflections Flyer">\n    </div>`;
+            qrHtml = qrHtml.slice(0, fsi + flyerStart.length) + '\n' + newFlyerHtml + '\n    ' + qrHtml.slice(fei);
+            qrChanged = true;
+          }
+        }
+
+        if (quranDesc != null) {
+          const descStart = '<!-- QURAN-DESC-START -->';
+          const descEnd   = '<!-- QURAN-DESC-END -->';
+          const dsi = qrHtml.indexOf(descStart), dei = qrHtml.indexOf(descEnd);
+          if (dsi !== -1 && dei !== -1) {
+            qrHtml = qrHtml.slice(0, dsi + descStart.length) + '\n      <p>' + quranDesc + '</p>\n    ' + qrHtml.slice(dei);
+            qrChanged = true;
+          }
+        }
+
+        if (qrChanged) {
           const qrNewBlobResp = await fetch(`${base}/git/blobs`, {
             method: 'POST',
             headers: { ...headers, 'Content-Type': 'application/json' },
