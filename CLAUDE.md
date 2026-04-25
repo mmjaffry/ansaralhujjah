@@ -134,6 +134,7 @@ When re-publishing without a new flyer, the existing base64 image is extracted f
 9. Excludes `Quran Reflections - Overview` from the homepage session list and prev/next session chain
 10. Calls `inject_sessions()` to replace content between `SESSIONS-START/END` in the program index using H1 display titles
 11. Session list is rendered as plain stacked links (no card-style row wrappers/arrows)
+12. `[[Quran Reflections - Overview]]` wikilinks inside notes resolve to `/quran-reflections/` (hub page)
 
 Filename governs URL; first markdown H1 governs displayed title (session list + prev/next labels).
 
@@ -150,6 +151,7 @@ Wikilink → URL: `[[Session 2 - Ayat 3]]` → `/quran-reflections/session-2-aya
 4. Reads surah files from Obsidian vault:
    - `Quran/Surahs/{N} - *.md`
 5. Generates verse pages with Arabic text, translation, attribution, breadcrumbs, and backlinks
+   - If Surah an-Nas source Arabic is blank in vault files, uses internal fallback text for `114:1–6`
 6. Generates surah pages with metadata, referenced verses list, and backlinks
 
 ### Icons

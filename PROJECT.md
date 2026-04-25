@@ -154,6 +154,7 @@ Program sub-pages (e.g., Quran Reflections) are static HTML managed via a Python
 - Injects the session list between `<!-- SESSIONS-START -->` / `<!-- SESSIONS-END -->` markers inside the `program-desc` area of `quran-reflections/index.html` (the main session hub area)
 - Session list entries are plain stacked links (not card UI blocks)
 - `Quran Reflections - Overview.md` still builds to its own page, but is excluded from the injected homepage session link list
+- Any `[[Quran Reflections - Overview]]` wikilink inside session notes resolves to `/quran-reflections/` (hub page) rather than the generated overview slug page
 
 ### What the Quran builder does (`build_quran.py`)
 
@@ -165,6 +166,7 @@ Program sub-pages (e.g., Quran Reflections) are static HTML managed via a Python
   - Arabic text (Amiri font, RTL)
   - Translation + translator attribution
   - Backlinks to session notes that referenced that verse
+  - Surah an-Nas fallback Arabic (`114:1–6`) if source vault verse files have blank Arabic blocks
 - Generates surah pages at `/quran/surahs/N/` with:
   - Surah metadata
   - Referenced verse list

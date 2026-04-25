@@ -44,6 +44,16 @@ except ImportError:
 _VERSE_RE = re.compile(r'!?\[\[Quran (\d+)-(\d+)\]\]')
 _SURAH_RE = re.compile(r'!?\[\[(\d+) - Surah .+?\]\]')
 
+# Fallback Arabic text for Surah an-Nas when source vault entries are blank.
+_NAS_ARABIC_FALLBACK = {
+    1: "قُلْ أَعُوذُ بِرَبِّ النَّاسِ",
+    2: "مَلِكِ النَّاسِ",
+    3: "إِلَٰهِ النَّاسِ",
+    4: "مِنْ شَرِّ الْوَسْوَاسِ الْخَنَّاسِ",
+    5: "الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ",
+    6: "مِنَ الْجِنَّةِ وَالنَّاسِ",
+}
+
 # ── Vault readers ─────────────────────────────────────────────────────────────
 
 def parse_frontmatter(text):
@@ -77,6 +87,8 @@ def read_verse(surah_num, verse_num):
     arabic_m = re.search(r'<big><big><big>(.*?)</big></big></big>', body, re.DOTALL)
     if arabic_m:
         arabic = arabic_m.group(1).strip()
+    if not arabic and int(surah_num) == 114:
+        arabic = _NAS_ARABIC_FALLBACK.get(int(verse_num), '')
 
     # Translator name: ##### heading
     translator = ''

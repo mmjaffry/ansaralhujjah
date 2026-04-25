@@ -132,6 +132,9 @@ def resolve_wikilinks(text, slug_map):
         if sm:
             return f'[{display}](/quran/surahs/{sm.group(1)}/)'
 
+        if note_name == OVERVIEW_NOTE_NAME:
+            return f'[{display}]({PROGRAM_URL}/)'
+
         if note_name in slug_map:
             return f'[{display}]({PROGRAM_URL}/{slug_map[note_name]}/)'
 
