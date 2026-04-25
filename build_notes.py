@@ -208,7 +208,7 @@ def replace_verse_embeds(text):
     out = []
     for line in text.split('\n'):
         stripped = line.lstrip()
-        if stripped.startswith('#') or stripped.startswith('|'):
+        if stripped.startswith('#') or stripped.startswith('|') or stripped.startswith('>'):
             out.append(line)
         else:
             out.append(_VERSE_EMBED_PATTERN.sub(repl, line))

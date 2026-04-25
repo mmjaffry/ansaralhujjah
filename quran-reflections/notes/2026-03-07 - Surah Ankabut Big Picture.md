@@ -27,18 +27,18 @@ surahs:
 
 ### Key Theme 1 — Faith is Proven Through Trials
 
-> *"Do the people think that they will be let off because they say, 'We have faith' and they will not be tested?"* — [[Quran 29-2]]
-
 - One's claim of faith will be tested
+
+[[Quran 29-2]]
 
 ---
 
 ### Key Theme 2 — Systems Built Without Allah are Fragile
 
-> *"The case of those who took others than Allah as their protectors is that of a spider who builds a house; but the frailest of all houses is the spider's house."* — [[Quran 29-41]]
-
 - Like the system of the taghut/oppressors: a spider's web is complex and well-designed, but fragile, temporary, and unable to protect anything
 - Gives examples of the fall of empires and corrupt oppressors: ʿĀd, Thamūd, Pharaoh
+
+[[Quran 29-41]]
 
 ---
 
@@ -53,7 +53,10 @@ surahs:
 
 ### Key Theme 4 — Prayer as Spiritual Discipline
 
-- Builds moral discipline — [[Quran 29-45]]
+- Builds moral discipline
+
+[[Quran 29-45]]
+
 - **Practical strategy**: Prioritize the meanings of the small surahs and dhikr recited every day (in salah, for example). Understand them in depth. Think about the meanings of each ayah in a paraphrased/personalized way, as if talking to God.
 
 ---
