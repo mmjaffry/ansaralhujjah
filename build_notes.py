@@ -77,6 +77,29 @@ def extract_markdown_h1(text, fallback):
     m = re.search(r'(?m)^\s*#\s+(.+?)\s*$', text)
     return m.group(1).strip() if m else fallback
 
+def extract_overview_session_index_html(content_html):
+    """
+    Extract the overview block from H1 through Session Index tables.
+    Stops before "Core Framework" section when present.
+    """
+    start = content_html.find('<h1')
+    if start == -1:
+        start = 0
+
+    end_candidates = []
+    for marker in (
+        '<h2 id="core-framework"',
+        '<h2 id="surahs-covered"',
+        '<h2 id="central-themes"',
+        '<h2 id="key-verses"',
+    ):
+        pos = content_html.find(marker, start)
+        if pos != -1:
+            end_candidates.append(pos)
+
+    end = min(end_candidates) if end_candidates else len(content_html)
+    return content_html[start:end].strip()
+
 # ── Wikilink resolution ───────────────────────────────────────────────────────
 
 _VERSE_PATTERN = re.compile(r'^Quran (\d+)-(\d+)$')
@@ -302,7 +325,7 @@ def render_page(title, content_html, prev_session, next_session):
 
 # ── Session index injection ───────────────────────────────────────────────────
 
-def inject_sessions(sessions):
+def inject_sessions(sessions, overview_index_html=None):
     """Replace content between SESSIONS-START and SESSIONS-END in program index."""
     if not os.path.exists(PROGRAM_INDEX):
         print(f"  Warning: {PROGRAM_INDEX} not found — skipping session list injection.")
@@ -317,7 +340,9 @@ def inject_sessions(sessions):
         print(f"  Warning: SESSIONS-START/END markers not found in {PROGRAM_INDEX}.")
         return
 
-    if sessions:
+    if overview_index_html:
+        inner = f'\n        {overview_index_html}\n        '
+    elif sessions:
         links = '\n'.join(
             f'        <a class="session-link" href="{PROGRAM_URL}/{slug}/">{title}</a>'
             for title, slug in sessions
@@ -371,6 +396,8 @@ def main():
     navigable_entries = [e for e in session_entries if e['note_name'] != OVERVIEW_NOTE_NAME]
     nav_idx_by_name = {e['note_name']: i for i, e in enumerate(navigable_entries)}
 
+    overview_index_html = None
+
     # Generate each session page
     for i, entry in enumerate(session_entries):
         title = entry['note_name']
@@ -382,6 +409,9 @@ def main():
 
         # Parse markdown → HTML (extra adds tables, footnotes; toc adds heading ids)
         content_html = md_lib.markdown(processed, extensions=['extra', 'toc'])
+
+        if title == OVERVIEW_NOTE_NAME:
+            overview_index_html = extract_overview_session_index_html(content_html)
 
         display_title = entry['display_title']
 
@@ -410,7 +440,10 @@ def main():
         print(f"  Built: {out_path}")
 
     # Update session list in quran-reflections/index.html
-    inject_sessions([(e['display_title'], e['slug']) for e in navigable_entries])
+    inject_sessions(
+        [(e['display_title'], e['slug']) for e in navigable_entries],
+        overview_index_html=overview_index_html
+    )
 
     print(f"\nDone. {len(session_entries)} session page(s) generated.")
     print("Run 'git push origin main' to publish.")
