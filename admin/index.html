@@ -519,7 +519,7 @@ const PINNED_DEFAULTS = {
   quran: {
     title: "Quran Reflections",
     sub: "Tafsir of Surah Ankabut · Moulana Farhat Abbas",
-    link: "https://forms.gle/Y3d2QzXqTmWiczvh9",
+    link: "/quran-reflections",
     btnText: "Sign In", iconId: "book", flyerB64: null, flyerMime: null, removed: false
   }
 };
@@ -983,81 +983,51 @@ function extractFlyerForPinned(html, bodyId) {
 
 /* ── Build pinned card HTML ───────────── */
 function buildPinnedCardHtml(key, pc, existingFlyer) {
-  const t = esc(pc.title || '');
-  const s = esc(pc.sub   || '');
-  const l = esc(pc.link  || '#');
-  const btn  = esc(pc.btnText || 'Register');
+  const t    = esc(pc.title || '');
+  const s    = esc(pc.sub   || '');
+  const l    = esc(pc.link  || '#');
   const b64  = pc.flyerB64  || (existingFlyer && existingFlyer.b64)  || null;
   const mime = pc.flyerMime || (existingFlyer && existingFlyer.mime) || null;
+  const iconSvg   = `<svg viewBox="0 0 24 24"><path d="${getIconPath(pc.iconId || (key === 'sisters' ? 'people' : 'book'))}"/></svg>`;
+  const flyerHtml = b64
+    ? `<div class="program-card-flyer"><img src="data:${mime};base64,${b64}" alt="${t} Flyer"></div>`
+    : `<div class="program-card-flyer">${iconSvg}</div>`;
 
-  const iconSvg = `<svg viewBox="0 0 24 24"><path d="${getIconPath(pc.iconId || (key === 'sisters' ? 'people' : 'book'))}"/></svg>`;
-  const bodyId  = key === 'sisters' ? 'socialBody' : 'quranBody';
-  const fnName  = key === 'sisters' ? 'toggleSocial' : 'toggleQuran';
-
-  if (b64) {
-    return `      <!-- pinned:${key} -->
-      <div class="social-card">
-        <div class="social-card-header" onclick="${fnName}(event)">
+  return `      <!-- pinned:${key} -->
+      <a class="program-card" href="${l}" target="_blank" rel="noopener">
+        ${flyerHtml}
+        <div class="program-card-info">
           <div class="icon">${iconSvg}</div>
           <span class="btn-text">
             <span class="btn-label">${t}</span>${s ? `\n            <span class="btn-sub">${s}</span>` : ''}
           </span>
-          <a class="arrow-link" href="${l}" target="_blank" rel="noopener" onclick="event.stopPropagation()">→</a>
+          <span class="arrow">→</span>
         </div>
-        <div class="social-card-body" id="${bodyId}">
-          <img src="data:${mime};base64,${b64}" alt="${t} Flyer">
-          <a class="register-btn" href="${l}" target="_blank" rel="noopener">${btn}</a>
-        </div>
-      </div>
-      <script>function ${fnName}(e){document.getElementById('${bodyId}').classList.toggle('open');}<\/script>`;
-  }
-
-  return `      <!-- pinned:${key} -->
-      <a class="link-btn" href="${l}" target="_blank" rel="noopener">
-        <div class="icon">${iconSvg}</div>
-        <span class="btn-text">
-          <span class="btn-label">${t}</span>${s ? `\n          <span class="btn-sub">${s}</span>` : ''}
-        </span>
-        <span class="arrow">→</span>
       </a>`;
 }
 
 /* ── Build regular card HTML ─────────── */
 function buildCardHtml(ev, idx) {
-  const delay  = (0.7 + idx * 0.1).toFixed(1);
-  const bodyId = `adminCard_${ev.id}`;
-  const fnName = `toggleAdminCard_${ev.id}`;
-  const t = esc(ev.title || '');
-  const s = esc(ev.sub   || '');
-  const l = esc(ev.link  || '#');
+  const delay    = (0.7 + idx * 0.1).toFixed(1);
+  const t        = esc(ev.title || '');
+  const s        = esc(ev.sub   || '');
+  const l        = esc(ev.link  || '#');
   const iconPath = getIconPath(ev.iconId || 'calendar');
   const iconSvg  = `<svg viewBox="0 0 24 24"><path d="${iconPath}"/></svg>`;
+  const flyerHtml = ev.flyerB64
+    ? `<div class="program-card-flyer"><img src="data:${ev.flyerMime};base64,${ev.flyerB64}" alt="${t} Flyer"></div>`
+    : `<div class="program-card-flyer">${iconSvg}</div>`;
 
-  if (ev.flyerB64) {
-    return `      <!-- admin:${ev.id} -->
-      <div class="social-card" style="animation:fadeUp 0.6s ${delay}s ease both;">
-        <div class="social-card-header" onclick="${fnName}(event)">
+  return `      <!-- admin:${ev.id} -->
+      <a class="program-card" href="${l}" target="_blank" rel="noopener" style="animation-delay:${delay}s">
+        ${flyerHtml}
+        <div class="program-card-info">
           <div class="icon">${iconSvg}</div>
           <span class="btn-text">
             <span class="btn-label">${t}</span>${s ? `\n            <span class="btn-sub">${s}</span>` : ''}
           </span>
-          <a class="arrow-link" href="${l}" target="_blank" rel="noopener" onclick="event.stopPropagation()">→</a>
+          <span class="arrow">→</span>
         </div>
-        <div class="social-card-body" id="${bodyId}">
-          <img src="data:${ev.flyerMime};base64,${ev.flyerB64}" alt="${t} Flyer">
-          <a class="register-btn" href="${l}" target="_blank" rel="noopener">Register</a>
-        </div>
-      </div>
-      <script>function ${fnName}(){document.getElementById('${bodyId}').classList.toggle('open');}<\/script>`;
-  }
-
-  return `      <!-- admin:${ev.id} -->
-      <a class="link-btn" href="${l}" target="_blank" rel="noopener" style="animation-delay:${delay}s">
-        <div class="icon">${iconSvg}</div>
-        <span class="btn-text">
-          <span class="btn-label">${t}</span>${s ? `\n          <span class="btn-sub">${s}</span>` : ''}
-        </span>
-        <span class="arrow">→</span>
       </a>`;
 }
 
