@@ -8,7 +8,7 @@ surahs:
 ---
 
 # Surah Ankabut - Tools for the Trial: Levels of Quran, Sabr & Tawakkul
-**Sat. April 4, 2026 · Molana Farhat**
+**Sat. April 4, 2026 · Molana Farhat Abbas · [[Quran Reflections - Overview|Quran Reflections]]**
 
 ← [[2026-03-14 - Life's Tests, Shaytaan's Traps, Fragility of False Power]] | Series: [[Quran Reflections - Overview]] | Next: [[2026-04-11 - Sabr, Tawakkul, and Dunya is a Play]] →
 

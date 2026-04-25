@@ -9,7 +9,7 @@ surahs:
 ---
 
 # Surah Nas - Shield for the Soul
-**Sat. April 18, 2026 · Molana Farhat**
+**Sat. April 18, 2026 · Molana Farhat Abbas · [[Quran Reflections - Overview|Quran Reflections]]**
 
 ← [[2026-04-11 - Sabr, Tawakkul, and Dunya is a Play]] | Series: [[Quran Reflections - Overview]]
 

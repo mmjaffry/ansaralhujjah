@@ -12,7 +12,7 @@ surahs:
 ---
 
 # Surah Nas - Shield of the Soul
-**Sat. April 25, 2026 · Molana Farhat**
+**Sat. April 25, 2026 · Molana Farhat Abbas · [[Quran Reflections - Overview|Quran Reflections]]**
 
 ← [[2026-04-18 - Surah Nas, Shield for the Soul]] | Series: [[Quran Reflections - Overview]]
 
