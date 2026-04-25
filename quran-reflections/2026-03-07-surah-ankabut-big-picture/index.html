@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Session 1 — Surah Ankabut: Big Picture · Quran Reflections · Ansar Al-Hujjah</title>
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Lato:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --accent-light: rgb(195,95,38);
+      --accent-mid:   rgb(148,62,12);
+      --accent-dark:  rgb(98,28,0);
+      --bg:           #d9ccbc;
+      --bg-card:      rgba(255,255,255,0.48);
+      --text:         #1a0d05;
+      --text-muted:   rgba(110,55,12,0.72);
+    }
+    html, body {
+      min-height: 100vh; background: var(--bg);
+      color: var(--text); font-family: "Lato", sans-serif; font-weight: 300;
+    }
+    body {
+      background:
+        radial-gradient(ellipse 80% 60% at 50% -10%, rgba(148,62,12,0.10) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 40% at 80% 80%, rgba(120,50,8,0.07) 0%, transparent 60%),
+        #d9ccbc;
+      display: flex; flex-direction: column; align-items: center;
+      padding: 48px 20px 80px;
+    }
+    .container { width: 100%; max-width: 680px; }
+
+    /* ── Nav ── */
+    .breadcrumb {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 0.78rem; letter-spacing: 0.05em; text-transform: uppercase;
+      color: var(--text-muted); margin-bottom: 36px;
+    }
+    .breadcrumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+    .breadcrumb a:hover { color: var(--accent-mid); }
+    .breadcrumb svg { width: 12px; height: 12px; fill: currentColor; opacity: 0.5; }
+
+    /* ── Article ── */
+    .article-card {
+      background: var(--bg-card); border: 1px solid rgba(180,90,45,0.18);
+      border-radius: 20px; padding: 36px 40px; margin-bottom: 24px;
+    }
+    .article-card h1 {
+      font-family: "Cinzel", serif; font-size: 1.55rem; font-weight: 600;
+      letter-spacing: 0.05em; color: var(--accent-dark);
+      margin-bottom: 8px; line-height: 1.3;
+    }
+    .article-card h2 {
+      font-family: "Cinzel", serif; font-size: 1.1rem; font-weight: 600;
+      letter-spacing: 0.04em; color: var(--accent-mid);
+      margin: 28px 0 10px;
+    }
+    .article-card h3 {
+      font-family: "Cinzel", serif; font-size: 0.95rem; font-weight: 600;
+      letter-spacing: 0.04em; color: var(--text);
+      margin: 20px 0 8px;
+    }
+    .article-card p {
+      font-size: 0.95rem; line-height: 1.8; color: var(--text);
+      margin-bottom: 14px;
+    }
+    .article-card ul, .article-card ol {
+      padding-left: 22px; margin-bottom: 14px;
+    }
+    .article-card li {
+      font-size: 0.95rem; line-height: 1.75; color: var(--text);
+      margin-bottom: 4px;
+    }
+    .article-card a {
+      color: var(--accent-light); text-decoration: underline;
+      text-underline-offset: 3px;
+      transition: color 0.2s;
+    }
+    .article-card a:hover { color: var(--accent-mid); }
+    .article-card blockquote {
+      border-left: 3px solid var(--accent-mid);
+      margin: 16px 0; padding: 10px 18px;
+      background: rgba(148,62,12,0.05); border-radius: 0 8px 8px 0;
+      font-style: italic;
+    }
+    .article-card blockquote p { margin-bottom: 0; color: var(--text-muted); }
+    .article-card hr {
+      border: none; border-top: 1px solid rgba(148,62,12,0.18);
+      margin: 28px 0;
+    }
+    .article-card code {
+      background: rgba(148,62,12,0.08); border-radius: 4px;
+      padding: 2px 6px; font-size: 0.85em;
+    }
+    .article-card pre {
+      background: rgba(148,62,12,0.06); border-radius: 8px;
+      padding: 16px; overflow-x: auto; margin-bottom: 14px;
+    }
+    .article-card pre code { background: none; padding: 0; }
+    .article-card table {
+      width: 100%; border-collapse: collapse; margin-bottom: 14px;
+      font-size: 0.9rem;
+    }
+    .article-card th, .article-card td {
+      padding: 8px 14px; text-align: left;
+      border-bottom: 1px solid rgba(148,62,12,0.15);
+    }
+    .article-card th { font-weight: 600; color: var(--accent-mid); }
+
+    /* ── Session nav ── */
+    .session-nav {
+      display: flex; justify-content: space-between; gap: 12px;
+      margin-bottom: 40px;
+    }
+    .session-nav a {
+      display: flex; align-items: center; gap: 6px;
+      padding: 12px 18px; border-radius: 10px; text-decoration: none;
+      background: var(--bg-card); border: 1px solid rgba(180,90,45,0.18);
+      font-size: 0.82rem; color: var(--text-muted); letter-spacing: 0.03em;
+      transition: border-color 0.2s, color 0.2s, transform 0.15s;
+      max-width: 48%;
+    }
+    .session-nav a:hover {
+      border-color: rgba(148,62,12,0.4); color: var(--accent-mid);
+      transform: translateY(-1px);
+    }
+    .session-nav .nav-next { margin-left: auto; text-align: right; }
+
+    footer {
+      margin-top: 20px; font-size: 0.8rem; color: rgba(70,28,4,0.65);
+      letter-spacing: 0.1em; text-transform: uppercase; text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <nav class="breadcrumb">
+      <a href="/">Ansar Al-Hujjah</a>
+      <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+      <a href="/quran-reflections/">Quran Reflections</a>
+      <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+      <span>Session 1 — Surah Ankabut: Big Picture</span>
+    </nav>
+
+    <article class="article-card">
+      <hr />
+<p>tags:
+  - speech
+  - quran-reflections
+  - Molana-Farhat
+  - Ansar
+  - surah-ankabut
+  - trials
+  - shaytan
+speaker: Molana Farhat
+series: "Quran Reflections - Overview"
+date: 2026-03-07
+session_num: 1
+surahs:
+  - "<a href="/quran/surahs/29/">29 - Surah al-'Ankabut</a>"</p>
+<hr />
+<h1 id="session-1-surah-ankabut-big-picture">Session 1 — Surah Ankabut: Big Picture</h1>
+<p><strong>Sat. March 7, 2026 · Molana Farhat</strong></p>
+<p>← Series: Quran Reflections - Overview | Next: <a href="/quran-reflections/2026-03-14-lifes-tests-shaytaans-traps-fragility-of-false-power/">2026-03-14 - Life's Tests, Shaytaan's Traps, Fragility of False Power</a> →</p>
+<hr />
+<h2 id="opening-principles">Opening Principles</h2>
+<ul>
+<li><strong>"Surah"</strong> means protective outer wall (<em>sur</em>) — we must find security within the protective wall of each surah from life's challenges</li>
+<li>Beautiful recitation is important, but it should be built on a <strong>foundation of knowledge</strong> — recitation and beautification is the <em>next step</em>, not the barrier to meaning</li>
+<li>Framework for approaching the Quran: <strong>Tab'een</strong></li>
+<li><em>How is this ayah addressing a problem in my life/world? How is it talking to me at this moment?</em></li>
+</ul>
+<hr />
+<h2 id="surah-ankabut-big-picture">Surah Ankabut: Big Picture</h2>
+<h3 id="key-theme-1-faith-is-proven-through-trials">Key Theme 1 — Faith is Proven Through Trials</h3>
+<blockquote>
+<p><em>"Do the people think that they will be let off because they say, 'We have faith' and they will not be tested?"</em> — <a href="/quran/verses/29-2/">Quran 29-2</a></p>
+</blockquote>
+<ul>
+<li>One's claim of faith will be tested</li>
+</ul>
+<hr />
+<h3 id="key-theme-2-systems-built-without-allah-are-fragile">Key Theme 2 — Systems Built Without Allah are Fragile</h3>
+<blockquote>
+<p><em>"The case of those who took others than Allah as their protectors is that of a spider who builds a house; but the frailest of all houses is the spider's house."</em> — <a href="/quran/verses/29-41/">Quran 29-41</a></p>
+</blockquote>
+<ul>
+<li>Like the system of the taghut/oppressors: a spider's web is complex and well-designed, but fragile, temporary, and unable to protect anything</li>
+<li>Gives examples of the fall of empires and corrupt oppressors: ʿĀd, Thamūd, Pharaoh</li>
+</ul>
+<hr />
+<h3 id="key-theme-3-believers-grow-through-struggle">Key Theme 3 — Believers Grow Through Struggle</h3>
+<ul>
+<li>Tests — the fire of trials — remove impurities from the soul</li>
+<li>You will be effective in the test if you follow the directions of the Designer</li>
+<li><strong>Lens of Hazrat Zaynab</strong>: <em>"I see nothing but beauty"</em> — she saw that the spilled blood of Husain would destroy Banu Umayya and create a path toward God for the rest of humanity</li>
+<li>The beauty we see is the <strong>eventual fall of Empire</strong>, not just one tyrant or another</li>
+</ul>
+<hr />
+<h3 id="key-theme-4-prayer-as-spiritual-discipline">Key Theme 4 — Prayer as Spiritual Discipline</h3>
+<ul>
+<li>Builds moral discipline — <a href="/quran/verses/29-45/">Quran 29-45</a></li>
+<li><strong>Practical strategy</strong>: Prioritize the meanings of the small surahs and dhikr recited every day (in salah, for example). Understand them in depth. Think about the meanings of each ayah in a paraphrased/personalized way, as if talking to God.</li>
+</ul>
+<hr />
+<h2 id="other-themes-in-surah-ankabut">Other Themes in Surah Ankabut</h2>
+<table>
+<thead>
+<tr>
+<th>Ayah</th>
+<th>Theme</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="/quran/verses/29-10/">Quran 29-10</a></td>
+<td>Social pressure as a test</td>
+</tr>
+<tr>
+<td><a href="/quran/verses/29-38/">Quran 29-38</a></td>
+<td>Shaytan beautifies evil actions</td>
+</tr>
+<tr>
+<td><a href="/quran/verses/29-59/">Quran 29-59</a></td>
+<td>Trust in Allah (Sabr + Tawakkul)</td>
+</tr>
+<tr>
+<td><a href="/quran/verses/29-64/">Quran 29-64</a></td>
+<td>Temporary nature of the world/this body</td>
+</tr>
+<tr>
+<td><a href="/quran/verses/29-69/">Quran 29-69</a></td>
+<td>Striving leads to guidance</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="backlinks">Backlinks</h2>
+<ul>
+<li>Quran Reflections - Overview</li>
+<li><a href="/quran/surahs/29/">29 - Surah al-'Ankabut</a></li>
+<li><a href="/quran-reflections/2026-03-14-lifes-tests-shaytaans-traps-fragility-of-false-power/">2026-03-14 - Life's Tests, Shaytaan's Traps, Fragility of False Power</a></li>
+</ul>
+    </article>
+
+    <nav class="session-nav">
+      <span></span>
+      <a class="nav-next" href="/quran-reflections/2026-03-14-lifes-tests-shaytaans-traps-fragility-of-false-power/">2026-03-14 - Life's Tests, Shaytaan's Traps, Fragility of False Power →</a>
+    </nav>
+
+  </div>
+  <footer>Ansar Al-Hujjah · Houston, TX</footer>
+</body>
+</html>

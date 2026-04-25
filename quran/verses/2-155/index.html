@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;1,300&family=Playfair+Display:wght@400;600&family=Alegreya+SC:wght@400;500&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --accent-light: rgb(195,95,38);
+      --accent-mid:   rgb(148,62,12);
+      --accent-dark:  rgb(98,28,0);
+      --bg:           #d9ccbc;
+      --bg-card:      rgba(255,255,255,0.48);
+      --text:         #1a0d05;
+      --text-muted:   rgba(110,55,12,0.72);
+    }
+    html, body {
+      min-height: 100vh; background: var(--bg);
+      color: var(--text); font-family: "Spectral", Georgia, serif; font-weight: 300;
+    }
+    body {
+      background:
+        radial-gradient(ellipse 80% 60% at 50% -10%, rgba(148,62,12,0.10) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 40% at 80% 80%, rgba(120,50,8,0.07) 0%, transparent 60%),
+        #d9ccbc;
+      display: flex; flex-direction: column; align-items: center;
+      padding: 48px 20px 80px;
+    }
+    .container { width: 100%; max-width: 680px; }
+
+    /* Breadcrumb */
+    .breadcrumb {
+      display: flex; align-items: center; flex-wrap: wrap; gap: 6px;
+      font-family: "Alegreya SC", serif; font-size: 0.78rem; letter-spacing: 0.05em;
+      color: var(--text-muted); margin-bottom: 36px;
+    }
+    .breadcrumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+    .breadcrumb a:hover { color: var(--accent-mid); }
+    .breadcrumb svg { width: 12px; height: 12px; fill: currentColor; opacity: 0.5; }
+
+    /* Card */
+    .card {
+      background: var(--bg-card); border: 1px solid rgba(180,90,45,0.18);
+      border-radius: 20px; padding: 36px 40px; margin-bottom: 24px;
+    }
+    @media (max-width: 520px) { .card { padding: 24px 20px; } }
+
+    h1 { font-family: "Playfair Display", serif; font-size: 1.55rem; font-weight: 600;
+         color: var(--accent-dark); margin-bottom: 6px; line-height: 1.3; }
+    h2 { font-family: "Playfair Display", serif; font-size: 1.1rem; font-weight: 600;
+         color: var(--accent-mid); margin: 28px 0 10px; }
+    .surah-ref { font-family: "Alegreya SC", serif; font-size: 0.88rem;
+                 color: var(--text-muted); margin-bottom: 28px; }
+    .surah-meta { font-family: "Alegreya SC", serif; font-size: 0.85rem;
+                  color: var(--text-muted); margin-bottom: 28px; letter-spacing: 0.03em; }
+
+    /* Arabic */
+    .arabic {
+      font-family: "Amiri", serif; direction: rtl; text-align: right;
+      font-size: 1.85rem; line-height: 2.1; color: var(--text);
+      margin-bottom: 28px; padding: 20px 0 16px;
+      border-bottom: 1px solid rgba(148,62,12,0.15);
+    }
+
+    /* Translation blockquote */
+    blockquote.translation {
+      border-left: 3px solid var(--accent-mid);
+      margin: 0 0 0 0; padding: 12px 20px;
+      background: rgba(148,62,12,0.05); border-radius: 0 8px 8px 0;
+    }
+    blockquote.translation p {
+      font-style: italic; font-size: 1rem; line-height: 1.8;
+      color: var(--text); margin-bottom: 8px;
+    }
+    blockquote.translation cite {
+      font-family: "Alegreya SC", serif; font-size: 0.78rem;
+      color: var(--text-muted); font-style: normal;
+    }
+
+    /* Backlinks */
+    .backlinks-list { list-style: none; padding: 0; }
+    .backlinks-list li { margin-bottom: 8px; }
+    .backlinks-list a {
+      font-family: "Alegreya SC", serif; font-size: 0.9rem;
+      color: var(--accent-light); text-decoration: underline;
+      text-underline-offset: 3px; transition: color 0.2s;
+    }
+    .backlinks-list a:hover { color: var(--accent-mid); }
+
+    /* Verse nav */
+    .verse-nav {
+      display: flex; justify-content: space-between; gap: 12px;
+      margin-bottom: 40px;
+    }
+    .verse-nav a {
+      display: flex; align-items: center; gap: 6px;
+      padding: 12px 18px; border-radius: 10px; text-decoration: none;
+      background: var(--bg-card); border: 1px solid rgba(180,90,45,0.18);
+      font-family: "Alegreya SC", serif; font-size: 0.82rem;
+      color: var(--text-muted); letter-spacing: 0.03em;
+      transition: border-color 0.2s, color 0.2s, transform 0.15s;
+    }
+    .verse-nav a:hover {
+      border-color: rgba(148,62,12,0.4); color: var(--accent-mid);
+      transform: translateY(-1px);
+    }
+    .verse-nav .nav-next { margin-left: auto; text-align: right; }
+
+    /* Verse list on surah page */
+    .verse-list { list-style: none; padding: 0; }
+    .verse-list li { margin-bottom: 6px; }
+    .verse-list a {
+      font-family: "Alegreya SC", serif; font-size: 0.88rem;
+      color: var(--accent-light); text-decoration: underline;
+      text-underline-offset: 3px; transition: color 0.2s;
+    }
+    .verse-list a:hover { color: var(--accent-mid); }
+
+    footer {
+      margin-top: 20px; font-size: 0.8rem; color: rgba(70,28,4,0.65);
+      letter-spacing: 0.1em; text-transform: uppercase; text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <nav class="breadcrumb">
+      <a href="/">Ansar Al-Hujjah</a>
+      <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+      <a href="/quran-reflections/">Quran Reflections</a>
+      <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+      <a href="/quran/surahs/2/">Surah 2</a>
+      <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+      <span>Verse 155</span>
+    </nav>
+
+    <div class="card">
+      <h1>Quran 2:155</h1>
+      <p class="surah-ref"><a href="/quran/surahs/2/" style="color:var(--text-muted);text-decoration:none">Surah 2 — <span style="font-family:Amiri,serif;direction:rtl">البَقَرَة</span> · The Cow</a></p>
+      <div class="arabic">وَلَنَبۡلُوَنَّكُم بِشَیۡءࣲ مِّنَ ٱلۡخَوۡفِ وَٱلۡجُوعِ وَنَقۡصࣲ مِّنَ ٱلۡأَمۡوَ ٰلِ وَٱلۡأَنفُسِ وَٱلثَّمَرَ ٰتِۗ وَبَشِّرِ ٱلصَّـٰبِرِینَ</div>
+      <blockquote class="translation"><p>We will surely test you with a measure of fear and hunger and a loss of wealth, lives, and fruits; and give good news to the patien</p><cite>— Ali Quli Qara'i</cite></blockquote>
+    </div>
+
+    <div class="card">
+      <h2>Mentioned In</h2>
+      <ul class="backlinks-list">
+        <li><a href="/quran-reflections/2026-04-04-tools-for-trial-sabr-and-tawakkul/">2026-04-04 - Tools for Trial, Sabr and Tawakkul</a></li>
+      </ul>
+    </div>
+    <nav class="verse-nav">
+      <span></span>
+      <span></span>
+    </nav>
+
+  </div>
+  <footer>Ansar Al-Hujjah · Houston, TX</footer>
+</body>
+</html>

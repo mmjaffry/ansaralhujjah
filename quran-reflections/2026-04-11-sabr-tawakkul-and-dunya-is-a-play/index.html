@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Session 5 — Last Day of Surah Ankabut: Sabr, Tawakkul, and Dunya is a Play · Quran Reflections · Ansar Al-Hujjah</title>
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Lato:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --accent-light: rgb(195,95,38);
+      --accent-mid:   rgb(148,62,12);
+      --accent-dark:  rgb(98,28,0);
+      --bg:           #d9ccbc;
+      --bg-card:      rgba(255,255,255,0.48);
+      --text:         #1a0d05;
+      --text-muted:   rgba(110,55,12,0.72);
+    }
+    html, body {
+      min-height: 100vh; background: var(--bg);
+      color: var(--text); font-family: "Lato", sans-serif; font-weight: 300;
+    }
+    body {
+      background:
+        radial-gradient(ellipse 80% 60% at 50% -10%, rgba(148,62,12,0.10) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 40% at 80% 80%, rgba(120,50,8,0.07) 0%, transparent 60%),
+        #d9ccbc;
+      display: flex; flex-direction: column; align-items: center;
+      padding: 48px 20px 80px;
+    }
+    .container { width: 100%; max-width: 680px; }
+
+    /* ── Nav ── */
+    .breadcrumb {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 0.78rem; letter-spacing: 0.05em; text-transform: uppercase;
+      color: var(--text-muted); margin-bottom: 36px;
+    }
+    .breadcrumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+    .breadcrumb a:hover { color: var(--accent-mid); }
+    .breadcrumb svg { width: 12px; height: 12px; fill: currentColor; opacity: 0.5; }
+
+    /* ── Article ── */
+    .article-card {
+      background: var(--bg-card); border: 1px solid rgba(180,90,45,0.18);
+      border-radius: 20px; padding: 36px 40px; margin-bottom: 24px;
+    }
+    .article-card h1 {
+      font-family: "Cinzel", serif; font-size: 1.55rem; font-weight: 600;
+      letter-spacing: 0.05em; color: var(--accent-dark);
+      margin-bottom: 8px; line-height: 1.3;
+    }
+    .article-card h2 {
+      font-family: "Cinzel", serif; font-size: 1.1rem; font-weight: 600;
+      letter-spacing: 0.04em; color: var(--accent-mid);
+      margin: 28px 0 10px;
+    }
+    .article-card h3 {
+      font-family: "Cinzel", serif; font-size: 0.95rem; font-weight: 600;
+      letter-spacing: 0.04em; color: var(--text);
+      margin: 20px 0 8px;
+    }
+    .article-card p {
+      font-size: 0.95rem; line-height: 1.8; color: var(--text);
+      margin-bottom: 14px;
+    }
+    .article-card ul, .article-card ol {
+      padding-left: 22px; margin-bottom: 14px;
+    }
+    .article-card li {
+      font-size: 0.95rem; line-height: 1.75; color: var(--text);
+      margin-bottom: 4px;
+    }
+    .article-card a {
+      color: var(--accent-light); text-decoration: underline;
+      text-underline-offset: 3px;
+      transition: color 0.2s;
+    }
+    .article-card a:hover { color: var(--accent-mid); }
+    .article-card blockquote {
+      border-left: 3px solid var(--accent-mid);
+      margin: 16px 0; padding: 10px 18px;
+      background: rgba(148,62,12,0.05); border-radius: 0 8px 8px 0;
+      font-style: italic;
+    }
+    .article-card blockquote p { margin-bottom: 0; color: var(--text-muted); }
+    .article-card hr {
+      border: none; border-top: 1px solid rgba(148,62,12,0.18);
+      margin: 28px 0;
+    }
+    .article-card code {
+      background: rgba(148,62,12,0.08); border-radius: 4px;
+      padding: 2px 6px; font-size: 0.85em;
+    }
+    .article-card pre {
+      background: rgba(148,62,12,0.06); border-radius: 8px;
+      padding: 16px; overflow-x: auto; margin-bottom: 14px;
+    }
+    .article-card pre code { background: none; padding: 0; }
+    .article-card table {
+      width: 100%; border-collapse: collapse; margin-bottom: 14px;
+      font-size: 0.9rem;
+    }
+    .article-card th, .article-card td {
+      padding: 8px 14px; text-align: left;
+      border-bottom: 1px solid rgba(148,62,12,0.15);
+    }
+    .article-card th { font-weight: 600; color: var(--accent-mid); }
+
+    /* ── Session nav ── */
+    .session-nav {
+      display: flex; justify-content: space-between; gap: 12px;
+      margin-bottom: 40px;
+    }
+    .session-nav a {
+      display: flex; align-items: center; gap: 6px;
+      padding: 12px 18px; border-radius: 10px; text-decoration: none;
+      background: var(--bg-card); border: 1px solid rgba(180,90,45,0.18);
+      font-size: 0.82rem; color: var(--text-muted); letter-spacing: 0.03em;
+      transition: border-color 0.2s, color 0.2s, transform 0.15s;
+      max-width: 48%;
+    }
+    .session-nav a:hover {
+      border-color: rgba(148,62,12,0.4); color: var(--accent-mid);
+      transform: translateY(-1px);
+    }
+    .session-nav .nav-next { margin-left: auto; text-align: right; }
+
+    footer {
+      margin-top: 20px; font-size: 0.8rem; color: rgba(70,28,4,0.65);
+      letter-spacing: 0.1em; text-transform: uppercase; text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <nav class="breadcrumb">
+      <a href="/">Ansar Al-Hujjah</a>
+      <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+      <a href="/quran-reflections/">Quran Reflections</a>
+      <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+      <span>Session 5 — Last Day of Surah Ankabut: Sabr, Tawakkul, and Dunya is a Play</span>
+    </nav>
+
+    <article class="article-card">
+      <hr />
+<p>tags:
+  - speech
+  - quran-reflections
+  - Molana-Farhat
+  - Ansar
+  - surah-ankabut
+  - sabr
+  - tawakkul
+  - dunya
+  - trials
+  - shaytan
+speaker: Molana Farhat
+series: "Quran Reflections - Overview"
+date: 2026-04-11
+session_num: 5
+surahs:
+  - "<a href="/quran/surahs/29/">29 - Surah al-'Ankabut</a>"</p>
+<hr />
+<h1 id="session-5-last-day-of-surah-ankabut-sabr-tawakkul-and-dunya-is-a-play">Session 5 — Last Day of Surah Ankabut: Sabr, Tawakkul, and Dunya is a Play</h1>
+<p><strong>Sat. April 11, 2026 · Molana Farhat</strong></p>
+<p>← <a href="/quran-reflections/2026-04-04-tools-for-trial-sabr-and-tawakkul/">2026-04-04 - Tools for Trial, Sabr and Tawakkul</a> | Series: Quran Reflections - Overview | Next: 2026-04-18 - Surah Nas, Shield for the Soul →</p>
+<hr />
+<h2 id="review">Review</h2>
+<ol>
+<li>Why does Allah test us?</li>
+<li>How He tests us: <strong>fear, hunger, loss of: wealth, life, fruits of labor/life</strong> <em>(children, job, respect, etc.)</em></li>
+</ol>
+<p>The answer to getting through these tests: <strong>Sabr</strong> — <a href="/quran/verses/29-59/">Quran 29-59</a></p>
+<hr />
+<h2 id="how-to-do-sabr-tawakkul">How to Do Sabr &amp; Tawakkul</h2>
+<h3 id="1-sabr">1. Sabr</h3>
+<ul>
+<li><strong>NOT</strong> passive, <strong>NOT</strong> suppressed emotion — not <em>"bardash karna"</em></li>
+<li>Steadfastness of the soul across <strong>4 fronts</strong>:</li>
+<li>Against Anger</li>
+<li>In Obedience</li>
+<li>Against Sin</li>
+<li>During Hardship</li>
+</ul>
+<blockquote>
+<p><em>"Sabr is to faith what the head is to the body."</em>
+— Nahjul Balagha</p>
+</blockquote>
+<p>Multiple dimensions of success → health problems, spouse problems, school, career, etc. Putting in the work to fix these things <em>is</em> success.</p>
+<hr />
+<h3 id="why-we-fail-at-sabr">Why We Fail at Sabr</h3>
+<table>
+<thead>
+<tr>
+<th>Reason</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>No Knowledge</strong></td>
+<td>We endure through school because we know it leads to a career. Without understanding why hardship exists and Allah's divine reasoning, we may fail at sabr</td>
+</tr>
+<tr>
+<td><strong>No Meaning</strong></td>
+<td>Pain without meaning is unbearable. The soul cannot accept randomness</td>
+</tr>
+<tr>
+<td><strong>No Patience</strong></td>
+<td>Leads to rage, despair, abandonment of faith, succumbing to Shaytaan's whisper</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Root issue is lack of knowledge.</strong> You can go through pain if you understand why hardship occurs — that something better comes out of every trial (<em>"that's life!"</em>).</p>
+<ul>
+<li>Sometimes the wisdom is not obvious. That's where you transition to <strong>Tawakkul</strong>.</li>
+</ul>
+<hr />
+<h3 id="4-steps-to-develop-real-patience-in-trial">4 Steps to Develop Real Patience in Trial</h3>
+<ol>
+<li><strong>Learn Allah's wisdom through past trials</strong> — study Quran verses, why trials exist</li>
+<li><strong>Reflect on past hidden blessings</strong> — what pains ultimately brought good? What delays became doors for growth?</li>
+<li><strong>Study the sabr of the prophets</strong> — Yusuf in prison, Ayyub with illness, Zaynab in Karbala</li>
+<li><strong>Deepen Marifah of Qadr</strong> — understand that nothing happens without Allah knowing about it; every detail is measured</li>
+</ol>
+<hr />
+<h3 id="2-tawakkul">2. Tawakkul</h3>
+<p><strong>Complete Trust in Allah</strong> → take every legitimate means, then leave the rest to Allah. Accept what comes after trying your best.</p>
+<ul>
+<li><strong>NOT</strong> dropping all responsibility and doing nothing, waiting for God to save you — <em>"tie your camel first!"</em></li>
+</ul>
+<hr />
+<h2 id="dunya-is-a-play-quran-29-64">Dunya is a Play — <a href="/quran/verses/29-64/">Quran 29-64</a></h2>
+<ul>
+<li>Dunya is not an evil place — just <strong>temporary</strong></li>
+</ul>
+<blockquote>
+<p><em>"All the world's a stage, and all the men and women merely players."</em>
+— William Shakespeare</p>
+</blockquote>
+<ul>
+<li><strong>Analogy</strong>: We once took Monopoly seriously, but now laugh at kids doing the same. We are living in a big game of Monopoly. Angels look down at us and laugh.</li>
+<li>We need to work hard and care about issues and each other — but <strong>this is not the ultimate reality</strong>.</li>
+<li><strong>Don't fall into extremes.</strong></li>
+</ul>
+<blockquote>
+<p><em>Dunya is a play — have sabr. Therefore, build trust with Allah. This is not where the story ends.</em></p>
+</blockquote>
+<p>Key verses: <a href="/quran/verses/29-64/">Quran 29-64</a> + <a href="/quran/verses/29-59/">Quran 29-59</a></p>
+<hr />
+<h2 id="backlinks">Backlinks</h2>
+<ul>
+<li>Quran Reflections - Overview</li>
+<li><a href="/quran/surahs/29/">29 - Surah al-'Ankabut</a></li>
+<li><a href="/quran-reflections/2026-04-04-tools-for-trial-sabr-and-tawakkul/">2026-04-04 - Tools for Trial, Sabr and Tawakkul</a></li>
+<li>2026-04-18 - Surah Nas, Shield for the Soul</li>
+</ul>
+    </article>
+
+    <nav class="session-nav">
+      <a class="nav-prev" href="/quran-reflections/2026-04-04-tools-for-trial-sabr-and-tawakkul/">← 2026-04-04 - Tools for Trial, Sabr and Tawakkul</a>
+      <span></span>
+    </nav>
+
+  </div>
+  <footer>Ansar Al-Hujjah · Houston, TX</footer>
+</body>
+</html>

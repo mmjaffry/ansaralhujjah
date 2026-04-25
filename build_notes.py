@@ -62,12 +62,18 @@ def build_slug_map(notes_dir):
 
 # ── Wikilink resolution ───────────────────────────────────────────────────────
 
+_VERSE_PATTERN = re.compile(r'^Quran (\d+)-(\d+)$')
+_SURAH_PATTERN = re.compile(r'^(\d+) - Surah .+$')
+
 def resolve_wikilinks(text, slug_map):
     """
     Convert Obsidian [[wikilinks]] to standard Markdown links before parsing.
+      [[Quran S-V]]              → [Quran S-V](/quran/verses/S-V/)
+      [[N - Surah name]]         → [N - Surah name](/quran/surahs/N/)
       [[Note Name]]              → [Note Name](/quran-reflections/note-name/)
-      [[Note Name|Display Text]] → [Display Text](/quran-reflections/note-name/)
-    Links to notes not in the slug_map are slugified from the note name.
+      [[Note Name|Display Text]] → [Display Text](...) with the same routing
+    Wikilinks that match none of the above are rendered as plain text.
+    Handles both [[...]] and ![[...]] (Obsidian embed syntax).
     """
     def replace(m):
         inner = m.group(1)
@@ -77,11 +83,23 @@ def resolve_wikilinks(text, slug_map):
             note_name = display = inner
         note_name = note_name.strip()
         display   = display.strip()
-        slug = slug_map.get(note_name, slugify(note_name))
-        url  = f"{PROGRAM_URL}/{slug}/"
-        return f'[{display}]({url})'
 
-    return re.sub(r'\[\[([^\]]+)\]\]', replace, text)
+        vm = _VERSE_PATTERN.match(note_name)
+        if vm:
+            return f'[{display}](/quran/verses/{vm.group(1)}-{vm.group(2)}/)'
+
+        sm = _SURAH_PATTERN.match(note_name)
+        if sm:
+            return f'[{display}](/quran/surahs/{sm.group(1)}/)'
+
+        if note_name in slug_map:
+            return f'[{display}]({PROGRAM_URL}/{slug_map[note_name]}/)'
+
+        return display
+
+    text = re.sub(r'!\[\[([^\]]+)\]\]', replace, text)
+    text = re.sub(r'\[\[([^\]]+)\]\]', replace, text)
+    return text
 
 # ── Page template ─────────────────────────────────────────────────────────────
 

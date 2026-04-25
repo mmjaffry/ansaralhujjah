@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Session 2 — Surah Ankabut: Life's Tests, Shaytaan's Psychological Traps, and the Fragility of False Power · Quran Reflections · Ansar Al-Hujjah</title>
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Lato:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --accent-light: rgb(195,95,38);
+      --accent-mid:   rgb(148,62,12);
+      --accent-dark:  rgb(98,28,0);
+      --bg:           #d9ccbc;
+      --bg-card:      rgba(255,255,255,0.48);
+      --text:         #1a0d05;
+      --text-muted:   rgba(110,55,12,0.72);
+    }
+    html, body {
+      min-height: 100vh; background: var(--bg);
+      color: var(--text); font-family: "Lato", sans-serif; font-weight: 300;
+    }
+    body {
+      background:
+        radial-gradient(ellipse 80% 60% at 50% -10%, rgba(148,62,12,0.10) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 40% at 80% 80%, rgba(120,50,8,0.07) 0%, transparent 60%),
+        #d9ccbc;
+      display: flex; flex-direction: column; align-items: center;
+      padding: 48px 20px 80px;
+    }
+    .container { width: 100%; max-width: 680px; }
+
+    /* ── Nav ── */
+    .breadcrumb {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 0.78rem; letter-spacing: 0.05em; text-transform: uppercase;
+      color: var(--text-muted); margin-bottom: 36px;
+    }
+    .breadcrumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+    .breadcrumb a:hover { color: var(--accent-mid); }
+    .breadcrumb svg { width: 12px; height: 12px; fill: currentColor; opacity: 0.5; }
+
+    /* ── Article ── */
+    .article-card {
+      background: var(--bg-card); border: 1px solid rgba(180,90,45,0.18);
+      border-radius: 20px; padding: 36px 40px; margin-bottom: 24px;
+    }
+    .article-card h1 {
+      font-family: "Cinzel", serif; font-size: 1.55rem; font-weight: 600;
+      letter-spacing: 0.05em; color: var(--accent-dark);
+      margin-bottom: 8px; line-height: 1.3;
+    }
+    .article-card h2 {
+      font-family: "Cinzel", serif; font-size: 1.1rem; font-weight: 600;
+      letter-spacing: 0.04em; color: var(--accent-mid);
+      margin: 28px 0 10px;
+    }
+    .article-card h3 {
+      font-family: "Cinzel", serif; font-size: 0.95rem; font-weight: 600;
+      letter-spacing: 0.04em; color: var(--text);
+      margin: 20px 0 8px;
+    }
+    .article-card p {
+      font-size: 0.95rem; line-height: 1.8; color: var(--text);
+      margin-bottom: 14px;
+    }
+    .article-card ul, .article-card ol {
+      padding-left: 22px; margin-bottom: 14px;
+    }
+    .article-card li {
+      font-size: 0.95rem; line-height: 1.75; color: var(--text);
+      margin-bottom: 4px;
+    }
+    .article-card a {
+      color: var(--accent-light); text-decoration: underline;
+      text-underline-offset: 3px;
+      transition: color 0.2s;
+    }
+    .article-card a:hover { color: var(--accent-mid); }
+    .article-card blockquote {
+      border-left: 3px solid var(--accent-mid);
+      margin: 16px 0; padding: 10px 18px;
+      background: rgba(148,62,12,0.05); border-radius: 0 8px 8px 0;
+      font-style: italic;
+    }
+    .article-card blockquote p { margin-bottom: 0; color: var(--text-muted); }
+    .article-card hr {
+      border: none; border-top: 1px solid rgba(148,62,12,0.18);
+      margin: 28px 0;
+    }
+    .article-card code {
+      background: rgba(148,62,12,0.08); border-radius: 4px;
+      padding: 2px 6px; font-size: 0.85em;
+    }
+    .article-card pre {
+      background: rgba(148,62,12,0.06); border-radius: 8px;
+      padding: 16px; overflow-x: auto; margin-bottom: 14px;
+    }
+    .article-card pre code { background: none; padding: 0; }
+    .article-card table {
+      width: 100%; border-collapse: collapse; margin-bottom: 14px;
+      font-size: 0.9rem;
+    }
+    .article-card th, .article-card td {
+      padding: 8px 14px; text-align: left;
+      border-bottom: 1px solid rgba(148,62,12,0.15);
+    }
+    .article-card th { font-weight: 600; color: var(--accent-mid); }
+
+    /* ── Session nav ── */
+    .session-nav {
+      display: flex; justify-content: space-between; gap: 12px;
+      margin-bottom: 40px;
+    }
+    .session-nav a {
+      display: flex; align-items: center; gap: 6px;
+      padding: 12px 18px; border-radius: 10px; text-decoration: none;
+      background: var(--bg-card); border: 1px solid rgba(180,90,45,0.18);
+      font-size: 0.82rem; color: var(--text-muted); letter-spacing: 0.03em;
+      transition: border-color 0.2s, color 0.2s, transform 0.15s;
+      max-width: 48%;
+    }
+    .session-nav a:hover {
+      border-color: rgba(148,62,12,0.4); color: var(--accent-mid);
+      transform: translateY(-1px);
+    }
+    .session-nav .nav-next { margin-left: auto; text-align: right; }
+
+    footer {
+      margin-top: 20px; font-size: 0.8rem; color: rgba(70,28,4,0.65);
+      letter-spacing: 0.1em; text-transform: uppercase; text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <nav class="breadcrumb">
+      <a href="/">Ansar Al-Hujjah</a>
+      <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+      <a href="/quran-reflections/">Quran Reflections</a>
+      <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+      <span>Session 2 — Surah Ankabut: Life's Tests, Shaytaan's Psychological Traps, and the Fragility of False Power</span>
+    </nav>
+
+    <article class="article-card">
+      <hr />
+<p>tags:
+  - speech
+  - quran-reflections
+  - Molana-Farhat
+  - Ansar
+  - surah-ankabut
+  - trials
+  - divine-testing
+  - shaytan
+speaker: Molana Farhat
+series: "Quran Reflections - Overview"
+date: 2026-03-14
+session_num: 2
+surahs:
+  - "<a href="/quran/surahs/29/">29 - Surah al-'Ankabut</a>"</p>
+<hr />
+<h1 id="session-2-surah-ankabut-lifes-tests-shaytaans-psychological-traps-and-the-fragility-of-false-power">Session 2 — Surah Ankabut: Life's Tests, Shaytaan's Psychological Traps, and the Fragility of False Power</h1>
+<p><strong>Sat. March 14, 2026 · Molana Farhat</strong></p>
+<p>← <a href="/quran-reflections/2026-03-07-surah-ankabut-big-picture/">2026-03-07 - Surah Ankabut Big Picture</a> | Series: Quran Reflections - Overview | Next: <a href="/quran-reflections/2026-04-04-tools-for-trial-sabr-and-tawakkul/">2026-04-04 - Tools for Trial, Sabr and Tawakkul</a> →</p>
+<hr />
+<h2 id="the-quran-as-instruction-manual">The Quran as Instruction Manual</h2>
+<ul>
+<li>The Quran applies across all times and contexts — it shows us the path and the solutions to any obstacles</li>
+<li>The lives of the prophets show us <strong>how the manual is applied</strong></li>
+<li>Different prophets faced different types of trials (broad categories applicable to our lives):</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Prophet</th>
+<th>Trial Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Prophet Lut</td>
+<td>Desire / Instincts</td>
+</tr>
+<tr>
+<td>Prophet Shu'ayb</td>
+<td>Greed</td>
+</tr>
+<tr>
+<td>Prophet Musa</td>
+<td>Fir'aun / Taghut</td>
+</tr>
+<tr>
+<td>Prophet Ibrahim</td>
+<td>Idols</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>"Sūr"</strong>: the protective wall around a city — "Surah" comes from this root; each surah carries a message that acts as a warning/protection from some danger</li>
+</ul>
+<hr />
+<h2 id="key-theme-1-law-of-divine-testing">Key Theme 1 — Law of Divine Testing</h2>
+<blockquote>
+<p><em>"Do people think once they say, 'We believe,' that they will be left without being put to the test? We certainly tested those before them. And in this way Allah will clearly distinguish between those who are truthful and those who are liars."</em>
+— <a href="/quran/verses/29-2/">Quran 29-2</a>, <a href="/quran/verses/29-3/">Quran 29-3</a></p>
+</blockquote>
+<ul>
+<li>Every claim is tested. Faith must be proved through trials.</li>
+</ul>
+<blockquote>
+<p><em>"Or do the evildoers simply think that they will escape Us? How wrong is their judgment!"</em>
+— <a href="/quran/verses/29-4/">Quran 29-4</a></p>
+</blockquote>
+<ul>
+<li>Allah calls out the absurdity of the evil-doers' assumption</li>
+<li>Humans have the <strong>highest potential</strong> amongst all creations, making human shayateen more dangerous than shayateen of jinn</li>
+<li>Humans have all the <em>asma'</em> of Allah, which allows us to become <em>khalifatullah</em></li>
+<li>Angels have limited capacity — e.g., Jibrail has the <em>ism</em> of <em>ʿilm</em> and acts accordingly</li>
+</ul>
+<blockquote>
+<p><em>"As for those who believe and do good, We will certainly cover their sins, and reward them according to the best of what they used to do."</em>
+— <a href="/quran/verses/29-7/">Quran 29-7</a></p>
+</blockquote>
+<ul>
+<li>Allah uses لَنُكَفِّرَنَّ — <strong>"Kafir"</strong> is one who covers</li>
+<li>Allah will do <em>"kufr"</em> over the misdeeds of those who believe and do good deeds</li>
+</ul>
+<blockquote>
+<p><em>"As for those who struggle in Our cause, We will surely guide them along Our Way. And Allah is certainly with the good-doers."</em>
+— <a href="/quran/verses/29-69/">Quran 29-69</a></p>
+</blockquote>
+<ul>
+<li>Allah guides <em>through</em> the trials</li>
+<li><strong>Lesson from history</strong>: Allah's Will carries out over time. Success is not the elimination of a trial — it is the <em>passing</em> of the trial.</li>
+</ul>
+<hr />
+<h2 id="key-theme-2-systems-built-without-allah-are-fragile">Key Theme 2 — Systems Built Without Allah are Fragile</h2>
+<blockquote>
+<p><em>"The case of those who took others than Allah as their protectors is that of a spider who builds a house; but the frailest of all houses is the spider's house; if they only knew."</em>
+— <a href="/quran/verses/29-41/">Quran 29-41</a></p>
+</blockquote>
+<ul>
+<li>The <em>ankabut</em> (spider) is he who relies on any other than Allah (and waliullah)</li>
+</ul>
+<hr />
+<h2 id="backlinks">Backlinks</h2>
+<ul>
+<li>Quran Reflections - Overview</li>
+<li><a href="/quran/surahs/29/">29 - Surah al-'Ankabut</a></li>
+<li><a href="/quran-reflections/2026-03-07-surah-ankabut-big-picture/">2026-03-07 - Surah Ankabut Big Picture</a></li>
+<li><a href="/quran-reflections/2026-04-04-tools-for-trial-sabr-and-tawakkul/">2026-04-04 - Tools for Trial, Sabr and Tawakkul</a></li>
+</ul>
+    </article>
+
+    <nav class="session-nav">
+      <a class="nav-prev" href="/quran-reflections/2026-03-07-surah-ankabut-big-picture/">← 2026-03-07 - Surah Ankabut Big Picture</a>
+      <a class="nav-next" href="/quran-reflections/2026-04-04-tools-for-trial-sabr-and-tawakkul/">2026-04-04 - Tools for Trial, Sabr and Tawakkul →</a>
+    </nav>
+
+  </div>
+  <footer>Ansar Al-Hujjah · Houston, TX</footer>
+</body>
+</html>
