@@ -1,13 +1,4 @@
 ---
-tags:
-  - speech
-  - quran-reflections
-  - Molana-Farhat
-  - Ansar
-  - surah-ankabut
-  - trials
-  - divine-testing
-  - shaytan
 speaker: Molana Farhat
 series: "[[Quran Reflections - Overview]]"
 date: 2026-03-14
@@ -16,7 +7,7 @@ surahs:
   - "[[29 - Surah al-'Ankabut]]"
 ---
 
-# Session 2 — Surah Ankabut: Life's Tests, Shaytaan's Psychological Traps, and the Fragility of False Power
+# Surah Ankabut - Life's Tests, Shaytaan's Psychological Traps, and the Fragility of False Power
 **Sat. March 14, 2026 · Molana Farhat**
 
 ← [[2026-03-07 - Surah Ankabut Big Picture]] | Series: [[Quran Reflections - Overview]] | Next: [[2026-04-04 - Tools for Trial, Sabr and Tawakkul]] →

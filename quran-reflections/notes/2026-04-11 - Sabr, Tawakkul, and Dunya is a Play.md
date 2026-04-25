@@ -1,15 +1,4 @@
 ---
-tags:
-  - speech
-  - quran-reflections
-  - Molana-Farhat
-  - Ansar
-  - surah-ankabut
-  - sabr
-  - tawakkul
-  - dunya
-  - trials
-  - shaytan
 speaker: Molana Farhat
 series: "[[Quran Reflections - Overview]]"
 date: 2026-04-11
@@ -18,7 +7,7 @@ surahs:
   - "[[29 - Surah al-'Ankabut]]"
 ---
 
-# Session 5 — Last Day of Surah Ankabut: Sabr, Tawakkul, and Dunya is a Play
+# Surah Ankabut - Last Day: Sabr, Tawakkul, and Dunya is a Play
 **Sat. April 11, 2026 · Molana Farhat**
 
 ← [[2026-04-04 - Tools for Trial, Sabr and Tawakkul]] | Series: [[Quran Reflections - Overview]] | Next: [[2026-04-18 - Surah Nas, Shield for the Soul]] →

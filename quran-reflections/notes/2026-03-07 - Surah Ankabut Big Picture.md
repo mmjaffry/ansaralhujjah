@@ -1,12 +1,4 @@
 ---
-tags:
-  - speech
-  - quran-reflections
-  - Molana-Farhat
-  - Ansar
-  - surah-ankabut
-  - trials
-  - shaytan
 speaker: Molana Farhat
 series: "[[Quran Reflections - Overview]]"
 date: 2026-03-07
@@ -15,7 +7,7 @@ surahs:
   - "[[29 - Surah al-'Ankabut]]"
 ---
 
-# Session 1 — Surah Ankabut: Big Picture
+# Surah Ankabut - Big Picture
 **Sat. March 7, 2026 · Molana Farhat**
 
 ← Series: [[Quran Reflections - Overview]] | Next: [[2026-03-14 - Life's Tests, Shaytaan's Traps, Fragility of False Power]] →
