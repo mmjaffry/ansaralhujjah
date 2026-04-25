@@ -1055,12 +1055,13 @@ async function publishToGitHub() {
     if (!commitResp.ok) throw new Error(`Failed to get commit: ${commitResp.status}`);
     const { tree: { sha: treeSha } } = await commitResp.json();
 
-    // 3. Find index.html blob SHA in tree
-    const treeResp = await fetch(`${base}/git/trees/${treeSha}`, { headers });
+    // 3. Find index.html and quran-reflections/index.html blob SHAs in tree
+    const treeResp = await fetch(`${base}/git/trees/${treeSha}?recursive=1`, { headers });
     if (!treeResp.ok) throw new Error(`Failed to get tree: ${treeResp.status}`);
     const treeData = await treeResp.json();
     const fileEntry = treeData.tree.find(item => item.path === 'index.html');
     if (!fileEntry) throw new Error('index.html not found in repo root');
+    const qrEntry = treeData.tree.find(item => item.path === 'quran-reflections/index.html');
 
     // 4. Fetch blob content (handles files > 1 MB, unlike Contents API)
     const blobResp = await fetch(`${base}/git/blobs/${fileEntry.sha}`, { headers });
@@ -1092,7 +1093,7 @@ async function publishToGitHub() {
     const allContent = allCardsHtml ? '\n' + allCardsHtml + '\n      ' : '\n      ';
     newHtml = newHtml.slice(0, allSi + allStart.length) + allContent + newHtml.slice(allEi);
 
-    // 6. Create new blob with updated content
+    // 6. Create new blob for index.html
     const newBlobResp = await fetch(`${base}/git/blobs`, {
       method: 'POST',
       headers: { ...headers, 'Content-Type': 'application/json' },
@@ -1101,11 +1102,40 @@ async function publishToGitHub() {
     if (!newBlobResp.ok) throw new Error(`Failed to create blob: ${newBlobResp.status}`);
     const { sha: newBlobSha } = await newBlobResp.json();
 
-    // 7. Create new tree pointing to updated blob
+    // 6b. If quran card has a flyer, also update quran-reflections/index.html flyer section
+    const treeEntries = [{ path: 'index.html', mode: '100644', type: 'blob', sha: newBlobSha }];
+    const quranCard = pinnedCards['quran'];
+    const quranB64  = quranCard && (quranCard.flyerB64 || (() => { const ef = extractFlyerForPinned(currentHtml, 'quranBody'); return ef && ef.b64; })());
+    const quranMime = quranCard && (quranCard.flyerMime || (() => { const ef = extractFlyerForPinned(currentHtml, 'quranBody'); return ef && ef.mime; })());
+    if (qrEntry && quranB64 && quranMime) {
+      const qrBlobResp = await fetch(`${base}/git/blobs/${qrEntry.sha}`, { headers });
+      if (qrBlobResp.ok) {
+        const qrBlobData = await qrBlobResp.json();
+        let qrHtml = decodeURIComponent(escape(atob(qrBlobData.content.replace(/\n/g, ''))));
+        const flyerStart = '<!-- QURAN-FLYER-START -->';
+        const flyerEnd   = '<!-- QURAN-FLYER-END -->';
+        const fsi = qrHtml.indexOf(flyerStart), fei = qrHtml.indexOf(flyerEnd);
+        if (fsi !== -1 && fei !== -1) {
+          const newFlyerHtml = `    <div class="program-flyer">\n      <img src="data:${quranMime};base64,${quranB64}" alt="Quran Reflections Flyer">\n    </div>`;
+          qrHtml = qrHtml.slice(0, fsi + flyerStart.length) + '\n' + newFlyerHtml + '\n    ' + qrHtml.slice(fei);
+          const qrNewBlobResp = await fetch(`${base}/git/blobs`, {
+            method: 'POST',
+            headers: { ...headers, 'Content-Type': 'application/json' },
+            body: JSON.stringify({ content: btoa(unescape(encodeURIComponent(qrHtml))), encoding: 'base64' }),
+          });
+          if (qrNewBlobResp.ok) {
+            const { sha: qrNewBlobSha } = await qrNewBlobResp.json();
+            treeEntries.push({ path: 'quran-reflections/index.html', mode: '100644', type: 'blob', sha: qrNewBlobSha });
+          }
+        }
+      }
+    }
+
+    // 7. Create new tree pointing to updated blobs
     const newTreeResp = await fetch(`${base}/git/trees`, {
       method: 'POST',
       headers: { ...headers, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ base_tree: treeSha, tree: [{ path: 'index.html', mode: '100644', type: 'blob', sha: newBlobSha }] }),
+      body: JSON.stringify({ base_tree: treeSha, tree: treeEntries }),
     });
     if (!newTreeResp.ok) throw new Error(`Failed to create tree: ${newTreeResp.status}`);
     const { sha: newTreeSha } = await newTreeResp.json();
