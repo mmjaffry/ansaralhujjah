@@ -117,6 +117,21 @@ When re-publishing without a new flyer, the existing base64 image is extracted f
 
 `syncFromLiveSite()` runs on every admin login. It fetches `../index.html` and rebuilds localStorage state (card order, event data, pinned flyers). Local state that was never published is lost on login from a different device.
 
+### Obsidian Vault Dependency
+
+Both `build_notes.py` and `build_quran.py` read verse/surah data directly from the local Obsidian vault:
+
+```
+VAULT_PATH = ~/Library/Mobile Documents/iCloud~md~obsidian/Documents/الدفتر
+```
+
+This constant is **hardcoded in both files** — if the vault moves, update it in both. The vault is only needed for rendering inline `![[Quran S-V]]` verse cards and generating `/quran/verses/*` + `/quran/surahs/*` pages. Notes without verse embeds build fine without vault access.
+
+**Vault file format** (used by `load_verse_data()`):
+- Arabic text: wrapped in `<big><big><big>…</big></big></big>` in the vault `.md` body
+- Translation: body text under a level-5 heading (`#####`) — heading text = translator name
+- Missing Arabic for Surah an-Nas (114) falls back to `_NAS_ARABIC_FALLBACK` dict in both scripts
+
 ### `build_notes.py` Architecture
 
 1. Scans `quran-reflections/notes/*.md` (skips `README.md`)
@@ -136,6 +151,8 @@ When re-publishing without a new flyer, the existing base64 image is extracted f
 10. Calls `inject_sessions()` to replace content between `SESSIONS-START/END` in the program index using H1 display titles
 11. Session list is rendered as plain stacked links (no card-style row wrappers/arrows)
 12. `[[Quran Reflections - Overview]]` wikilinks inside notes resolve to `/quran-reflections/` (hub page)
+
+**Overview note special handling:** `extract_overview_session_index_html()` renders the Overview note and slices its HTML from the first `<h1>` up to (but not including) the first of these H2 sections if present: `#core-framework`, `#surahs-covered`, `#central-themes`, `#key-verses`. This excerpt is embedded inline on `quran-reflections/index.html` above the session list. Structure the Overview note's H2 sections with one of those IDs to control how much is shown.
 
 Filename governs URL; first markdown H1 governs displayed title (session list + prev/next labels).
 
@@ -164,5 +181,14 @@ Wikilink → URL: `[[Session 2 - Ayat 3]]` → `/quran-reflections/session-2-aya
 CSS custom properties — see `PROJECT.md` for the full token table. Key values:
 - Accent mid: `rgb(148,62,12)` (warm brown)
 - Background: `#d9ccbc` (beige)
-- Cards: glassmorphism (`rgba(255,255,255,0.48)`)
-- Fonts: Cinzel (headings), Lato (body) via Google Fonts
+- Cards: glassmorphism (`rgba(255,255,255,0.48)`) — homepage only; inner pages use plain article layout
+- Fonts (inner pages): EB Garamond (body), Playfair Display (headings), Alegreya SC (nav/metadata), Amiri (Arabic) via Google Fonts
+- Fonts (homepage `index.html`): Cinzel/Lato remain unchanged
+
+### Inner Page Layout Rule
+
+Cards (glassmorphism boxes) are restricted to `index.html` (homepage). All inner pages use a plain article style — content flows directly on the warm beige gradient with a `border-top: 2px solid var(--accent-mid)` rule as visual anchoring. Do not introduce card wrappers on session, verse, or surah pages.
+
+### Verse Reference Display
+
+In session notes, both `[[Quran S-V]]` and `![[Quran S-V]]` render as full inline Arabic + translation cards. The distinction is only skipped for heading lines (starting with `#`) and table rows (starting with `|`) — those remain plain links. This is enforced in `replace_verse_embeds()` in `build_notes.py` via line-level prefix check, and by the `_VERSE_EMBED_PATTERN` matching `!?[[...]]`.

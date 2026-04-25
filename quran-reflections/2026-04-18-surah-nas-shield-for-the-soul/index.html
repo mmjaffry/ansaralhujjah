@@ -10,7 +10,7 @@
   <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Lato:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,700;1,400&family=Playfair+Display:wght@400;600&family=Alegreya+SC:wght@400;500&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -24,7 +24,7 @@
     }
     html, body {
       min-height: 100vh; background: var(--bg);
-      color: var(--text); font-family: "Lato", sans-serif; font-weight: 300;
+      color: var(--text); font-family: "EB Garamond", Georgia, serif;
     }
     body {
       background:
@@ -39,7 +39,7 @@
     /* ── Nav ── */
     .breadcrumb {
       display: flex; align-items: center; gap: 8px;
-      font-size: 0.78rem; letter-spacing: 0.05em; text-transform: uppercase;
+      font-family: "Alegreya SC", serif; font-size: 0.78rem; letter-spacing: 0.05em;
       color: var(--text-muted); margin-bottom: 36px;
     }
     .breadcrumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
@@ -47,110 +47,105 @@
     .breadcrumb svg { width: 12px; height: 12px; fill: currentColor; opacity: 0.5; }
 
     /* ── Article ── */
-    .article-card {
-      background: var(--bg-card); border: 1px solid rgba(180,90,45,0.18);
-      border-radius: 20px; padding: 36px 40px; margin-bottom: 24px;
+    .article {
+      border-top: 2px solid var(--accent-mid);
+      padding-top: 32px; margin-bottom: 40px;
     }
-    .article-card h1 {
-      font-family: "Cinzel", serif; font-size: 1.55rem; font-weight: 600;
-      letter-spacing: 0.05em; color: var(--accent-dark);
-      margin-bottom: 8px; line-height: 1.3;
+    .article h1 {
+      font-family: "Playfair Display", serif; font-size: 1.8rem; font-weight: 600;
+      color: var(--accent-dark);
+      margin-bottom: 10px; line-height: 1.25;
     }
-    .article-card h2 {
-      font-family: "Cinzel", serif; font-size: 1.1rem; font-weight: 600;
-      letter-spacing: 0.04em; color: var(--accent-mid);
-      margin: 28px 0 10px;
+    .article h2 {
+      font-family: "Playfair Display", serif; font-size: 1.2rem; font-weight: 600;
+      color: var(--accent-mid);
+      margin: 32px 0 12px;
     }
-    .article-card h3 {
-      font-family: "Cinzel", serif; font-size: 0.95rem; font-weight: 600;
-      letter-spacing: 0.04em; color: var(--text);
-      margin: 20px 0 8px;
+    .article h3 {
+      font-family: "Playfair Display", serif; font-size: 1.05rem; font-weight: 600;
+      color: var(--text);
+      margin: 22px 0 8px;
     }
-    .article-card p {
-      font-size: 0.95rem; line-height: 1.8; color: var(--text);
-      margin-bottom: 14px;
+    .article p {
+      font-size: 1.05rem; line-height: 1.85; color: var(--text);
+      margin-bottom: 16px;
     }
-    .article-card ul, .article-card ol {
-      padding-left: 22px; margin-bottom: 14px;
+    .article ul, .article ol {
+      padding-left: 24px; margin-bottom: 16px;
     }
-    .article-card li {
-      font-size: 0.95rem; line-height: 1.75; color: var(--text);
-      margin-bottom: 4px;
+    .article li {
+      font-size: 1.05rem; line-height: 1.8; color: var(--text);
+      margin-bottom: 6px;
     }
-    .article-card a {
+    .article a {
       color: var(--accent-light); text-decoration: underline;
       text-underline-offset: 3px;
       transition: color 0.2s;
     }
-    .article-card a:hover { color: var(--accent-mid); }
-    .article-card blockquote {
+    .article a:hover { color: var(--accent-mid); }
+    .article blockquote {
       border-left: 3px solid var(--accent-mid);
-      margin: 16px 0; padding: 10px 18px;
-      background: rgba(148,62,12,0.05); border-radius: 0 8px 8px 0;
+      margin: 18px 0; padding: 10px 20px;
+      background: rgba(148,62,12,0.04);
       font-style: italic;
     }
-    .article-card blockquote p { margin-bottom: 0; color: var(--text-muted); }
-    .article-card hr {
+    .article blockquote p { margin-bottom: 0; color: var(--text-muted); }
+    .article hr {
       border: none; border-top: 1px solid rgba(148,62,12,0.18);
-      margin: 28px 0;
+      margin: 32px 0;
     }
-    .article-card code {
+    .article code {
       background: rgba(148,62,12,0.08); border-radius: 4px;
-      padding: 2px 6px; font-size: 0.85em;
+      padding: 2px 6px; font-size: 0.9em;
     }
-    .article-card pre {
+    .article pre {
       background: rgba(148,62,12,0.06); border-radius: 8px;
-      padding: 16px; overflow-x: auto; margin-bottom: 14px;
+      padding: 16px; overflow-x: auto; margin-bottom: 16px;
     }
-    .article-card pre code { background: none; padding: 0; }
-    .article-card table {
-      width: 100%; border-collapse: collapse; margin-bottom: 14px;
-      font-size: 0.9rem;
+    .article pre code { background: none; padding: 0; }
+    .article table {
+      width: 100%; border-collapse: collapse; margin-bottom: 16px;
+      font-size: 1rem;
     }
-    .article-card th, .article-card td {
+    .article th, .article td {
       padding: 8px 14px; text-align: left;
       border-bottom: 1px solid rgba(148,62,12,0.15);
     }
-    .article-card th { font-weight: 600; color: var(--accent-mid); }
+    .article th { font-weight: 700; color: var(--accent-mid); }
 
-    /* ── Inline Quran verse embeds from ![[Quran S-V]] ── */
+    /* ── Inline Quran verse embeds ── */
     .verse-embed-card {
-      border: 1px solid rgba(180,90,45,0.18);
-      background: rgba(255,255,255,0.40);
-      border-radius: 12px;
-      padding: 14px 16px;
-      margin: 14px 0;
+      border-left: 3px solid var(--accent-mid);
+      padding: 12px 0 12px 20px;
+      margin: 22px 0;
     }
     .verse-embed-ref {
       display: inline-block;
-      font-family: "Cinzel", serif;
-      font-size: 0.78rem;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
+      font-family: "Alegreya SC", serif;
+      font-size: 0.82rem;
+      letter-spacing: 0.05em;
       color: var(--text-muted);
       text-decoration: none;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
     }
     .verse-embed-ref:hover { color: var(--accent-mid); }
     .verse-embed-arabic {
       font-family: "Amiri", serif;
       direction: rtl; text-align: right;
-      font-size: 1.65rem; line-height: 2.0;
+      font-size: 1.8rem; line-height: 2.0;
       color: var(--text);
-      margin-bottom: 10px;
+      margin-bottom: 12px;
+      padding-bottom: 12px;
       border-bottom: 1px solid rgba(148,62,12,0.12);
-      padding-bottom: 10px;
     }
     .verse-embed-translation {
-      border-left: 3px solid var(--accent-mid);
-      margin: 0; padding: 8px 14px;
-      background: rgba(148,62,12,0.04); border-radius: 0 8px 8px 0;
+      margin: 0;
     }
     .verse-embed-translation p {
-      margin: 0 0 6px; font-size: 0.92rem; color: var(--text); line-height: 1.7;
+      margin: 0 0 6px; font-size: 1.0rem; font-style: italic; color: var(--text); line-height: 1.75;
     }
     .verse-embed-translation cite {
-      font-size: 0.75rem; color: var(--text-muted); font-style: normal;
+      font-family: "Alegreya SC", serif; font-size: 0.78rem; color: var(--text-muted); font-style: normal;
     }
 
     /* ── Session nav ── */
@@ -162,7 +157,8 @@
       display: flex; align-items: center; gap: 6px;
       padding: 12px 18px; border-radius: 10px; text-decoration: none;
       background: var(--bg-card); border: 1px solid rgba(180,90,45,0.18);
-      font-size: 0.82rem; color: var(--text-muted); letter-spacing: 0.03em;
+      font-family: "Alegreya SC", serif; font-size: 0.82rem;
+      color: var(--text-muted); letter-spacing: 0.03em;
       transition: border-color 0.2s, color 0.2s, transform 0.15s;
       max-width: 48%;
     }
@@ -189,7 +185,7 @@
       <span>Surah Nas - Shield for the Soul</span>
     </nav>
 
-    <article class="article-card">
+    <article class="article">
       <h1 id="surah-nas-shield-for-the-soul">Surah Nas - Shield for the Soul</h1>
 <p><strong>Sat. April 18, 2026 · Molana Farhat</strong></p>
 <p>← <a href="/quran-reflections/2026-04-11-sabr-tawakkul-and-dunya-is-a-play/">2026-04-11 - Sabr, Tawakkul, and Dunya is a Play</a> | Series: <a href="/quran-reflections/">Quran Reflections - Overview</a></p>
@@ -242,7 +238,7 @@
 </ul>
 <h3 id="the-nafs">The Nafs</h3>
 <blockquote>
-<p><em>"We know what his own self whispers to him."</em> — <a href="/quran/verses/50-16/">Quran 50-16</a></p>
+<p><em>"We know what his own self whispers to him."</em> — <div class="verse-embed-card"><a class="verse-embed-ref" href="/quran/verses/50-16/">Quran 50:16</a><div class="verse-embed-arabic">وَلَقَدۡ خَلَقۡنَا ٱلۡإِنسَـٰنَ وَنَعۡلَمُ مَا تُوَسۡوِسُ بِهِۦ نَفۡسُهُۥۖ وَنَحۡنُ أَقۡرَبُ إِلَیۡهِ مِنۡ حَبۡلِ ٱلۡوَرِیدِ</div><blockquote class="verse-embed-translation"><p>Certainly We have created man and We know to what his soul tempts him, and We are nearer to him than his jugular vein</p><cite>— Ali Quli Qara'i</cite></blockquote></div></p>
 </blockquote>
 <div class="verse-embed-card"><a class="verse-embed-ref" href="/quran/verses/50-16/">Quran 50:16</a><div class="verse-embed-arabic">وَلَقَدۡ خَلَقۡنَا ٱلۡإِنسَـٰنَ وَنَعۡلَمُ مَا تُوَسۡوِسُ بِهِۦ نَفۡسُهُۥۖ وَنَحۡنُ أَقۡرَبُ إِلَیۡهِ مِنۡ حَبۡلِ ٱلۡوَرِیدِ</div><blockquote class="verse-embed-translation"><p>Certainly We have created man and We know to what his soul tempts him, and We are nearer to him than his jugular vein</p><cite>— Ali Quli Qara'i</cite></blockquote></div>
 

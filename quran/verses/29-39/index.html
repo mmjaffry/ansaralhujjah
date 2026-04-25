@@ -9,7 +9,7 @@
   <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;1,300&family=Playfair+Display:wght@400;600&family=Alegreya+SC:wght@400;500&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,700;1,400&family=Playfair+Display:wght@400;600&family=Alegreya+SC:wght@400;500&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -23,7 +23,7 @@
     }
     html, body {
       min-height: 100vh; background: var(--bg);
-      color: var(--text); font-family: "Spectral", Georgia, serif; font-weight: 300;
+      color: var(--text); font-family: "EB Garamond", Georgia, serif;
     }
     body {
       background:
@@ -38,19 +38,22 @@
     /* Breadcrumb */
     .breadcrumb {
       display: flex; align-items: center; flex-wrap: wrap; gap: 6px;
-      font-family: "Alegreya SC", serif; font-size: 0.78rem; letter-spacing: 0.05em;
+      font-family: "Alegreya SC", serif; font-size: 0.78rem; letter-spacing: 0.05em; text-transform: uppercase;
       color: var(--text-muted); margin-bottom: 36px;
     }
     .breadcrumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
     .breadcrumb a:hover { color: var(--accent-mid); }
     .breadcrumb svg { width: 12px; height: 12px; fill: currentColor; opacity: 0.5; }
 
-    /* Card */
+    /* Section dividers */
     .card {
-      background: var(--bg-card); border: 1px solid rgba(180,90,45,0.18);
-      border-radius: 20px; padding: 36px 40px; margin-bottom: 24px;
+      border-top: 2px solid var(--accent-mid);
+      padding-top: 32px; margin-bottom: 40px;
     }
-    @media (max-width: 520px) { .card { padding: 24px 20px; } }
+    .card + .card {
+      border-top: 1px solid rgba(148,62,12,0.18);
+      padding-top: 28px; margin-top: 0;
+    }
 
     h1 { font-family: "Playfair Display", serif; font-size: 1.55rem; font-weight: 600;
          color: var(--accent-dark); margin-bottom: 6px; line-height: 1.3; }

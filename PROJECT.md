@@ -205,7 +205,9 @@ All styling is inline in each HTML file with CSS custom properties. There are no
 | `--text` | `#1a0d05` | Body text (dark brown) |
 | `--text-muted` | `rgba(110,55,12,0.72)` | Subtitles, secondary text |
 
-Fonts: **Cinzel** (headings, admin labels) and **Lato** (body) loaded from Google Fonts.
+**Homepage fonts:** Cinzel (headings, admin labels) and Lato (body).
+
+**Inner page fonts** (session notes, verse pages, surah pages, program overview): EB Garamond (body), Playfair Display (headings), Alegreya SC (navigation / metadata / small caps), Amiri (Arabic text). All loaded from Google Fonts.
 
 ---
 
@@ -219,6 +221,8 @@ Fonts: **Cinzel** (headings, admin labels) and **Lato** (body) loaded from Googl
 
 - **`index.html` is ~1 MB.** Uploading large flyer images grows it further. The Git Data API is used specifically because GitHub's Contents API rejects files over 1 MB.
 - **The Quran reflections build step is manual.** After dropping `.md` files into `quran-reflections/notes/`, run both `python3 build_notes.py` and `python3 build_quran.py` before pushing. The first script builds session pages + session index; the second builds Quran verse/surah pages + backlinks.
+- **Cards are restricted to the homepage.** Inner pages (session notes, verse pages, surah pages, program overview) use a plain article layout with text directly on the warm background. Do not add glassmorphism card wrappers to inner pages.
+- **All Quran verse references in session notes show the full Arabic + English card** — both `[[Quran S-V]]` (link style) and `![[Quran S-V]]` (embed style) render the same inline card. Exception: references inside heading lines or table rows remain as plain links.
 - **Filenames and display titles are intentionally decoupled.** The filename controls URL slug, while the first markdown H1 controls what users see in session lists and prev/next navigation. You can change titles without changing URLs.
 - **The GitHub token (`GH_TOKEN`) and admin password (`ADMIN_PASSWORD`) are hardcoded** in `admin/index.html`. The token is split into string segments to avoid GitHub's secret scanning triggering on push. The admin panel is `noindex, nofollow` but is not truly private — do not store sensitive data in cards.
 - **Flyer images in published HTML are permanent until overwritten.** If a card is edited without uploading a new flyer, the existing base64 image is extracted from the live HTML and re-embedded. This is handled by `extractFlyerAt()` and `extractFlyerForPinned()`.
