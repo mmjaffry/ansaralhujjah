@@ -41,7 +41,7 @@ Obsidian `[[wikilinks]]` are converted as follows:
 [[Session 1 - Introduction]]          → /quran-reflections/session-1-introduction/
 [[Session 2 - Ayat 3|see session 2]]  → /quran-reflections/session-2-ayat-3/
 [[Quran 29-2]]                        → /quran/verses/29-2/
-![[Quran 29-2]]                       → /quran/verses/29-2/
+![[Quran 29-2]]                       → inline Arabic + translation verse card (linked to /quran/verses/29-2/)
 [[29 - Surah al-'Ankabut]]            → /quran/surahs/29/
 ![[29 - Surah al-'Ankabut]]           → /quran/surahs/29/
 ```

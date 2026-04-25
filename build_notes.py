@@ -14,7 +14,8 @@ Workflow:
     3. git push
 
 Wikilink behavior:
-- [[Quran S-V]] / ![[Quran S-V]]     -> /quran/verses/S-V/
+- [[Quran S-V]]                       -> /quran/verses/S-V/
+- ![[Quran S-V]]                      -> inline Arabic + translation card (linked to /quran/verses/S-V/)
 - [[N - Surah ...]] / ![[N - Surah ...]] -> /quran/surahs/N/
 - [[Note Name]] / [[Note|Display]]   -> /quran-reflections/{slug}/ (if known note)
 - Unresolved non-Quran wikilinks are rendered as plain text.
@@ -34,6 +35,9 @@ SESSIONS_END   = "<!-- SESSIONS-END -->"
 PROGRAM_TITLE  = "Quran Reflections"
 PROGRAM_URL    = "/quran-reflections"
 OVERVIEW_NOTE_NAME = "Quran Reflections - Overview"
+VAULT_PATH     = os.path.expanduser(
+    "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/الدفتر"
+)
 
 # ── Dependency check ──────────────────────────────────────────────────────────
 
@@ -104,6 +108,104 @@ def extract_overview_session_index_html(content_html):
 
 _VERSE_PATTERN = re.compile(r'^Quran (\d+)-(\d+)$')
 _SURAH_PATTERN = re.compile(r'^(\d+) - Surah .+$')
+_VERSE_EMBED_PATTERN = re.compile(r'!\[\[Quran (\d+)-(\d+)(?:\|[^\]]+)?\]\]')
+
+_NAS_ARABIC_FALLBACK = {
+    1: "قُلْ أَعُوذُ بِرَبِّ النَّاسِ",
+    2: "مَلِكِ النَّاسِ",
+    3: "إِلَٰهِ النَّاسِ",
+    4: "مِنْ شَرِّ الْوَسْوَاسِ الْخَنَّاسِ",
+    5: "الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ",
+    6: "مِنَ الْجِنَّةِ وَالنَّاسِ",
+}
+
+_VERSE_CACHE = {}
+
+def load_verse_data(surah_num, verse_num):
+    """
+    Read verse Arabic + translation from the local Obsidian vault.
+    Returns dict or None if file is missing/unreadable.
+    """
+    key = (int(surah_num), int(verse_num))
+    if key in _VERSE_CACHE:
+        return _VERSE_CACHE[key]
+
+    verse_path = os.path.join(
+        VAULT_PATH, "Quran", "Verses", f"Surah {surah_num}", f"Quran {surah_num}-{verse_num}.md"
+    )
+    if not os.path.exists(verse_path):
+        _VERSE_CACHE[key] = None
+        return None
+
+    with open(verse_path, 'r', encoding='utf-8') as f:
+        raw = f.read()
+
+    body = strip_yaml_frontmatter(raw)
+
+    arabic = ''
+    arabic_m = re.search(r'<big><big><big>(.*?)</big></big></big>', body, re.DOTALL)
+    if arabic_m:
+        arabic = arabic_m.group(1).strip()
+    if not arabic and int(surah_num) == 114:
+        arabic = _NAS_ARABIC_FALLBACK.get(int(verse_num), '')
+
+    translator = ''
+    translation = ''
+    trans_m = re.search(r'#{5}\s+(.+?)\n([\s\S]*?)(?=\n#|\n```|\Z)', body)
+    if trans_m:
+        translator = trans_m.group(1).strip()
+        lines = trans_m.group(2).strip().splitlines()
+        for line in lines:
+            line = line.strip().strip('"').strip('\u201c\u201d')
+            if line:
+                translation = line
+                break
+
+    data = {
+        'surah': int(surah_num),
+        'verse': int(verse_num),
+        'arabic': arabic,
+        'translation': translation,
+        'translator': translator,
+    }
+    _VERSE_CACHE[key] = data
+    return data
+
+def render_verse_embed_card(surah_num, verse_num):
+    """
+    Render ![[Quran S-V]] as an inline verse card in session notes.
+    """
+    data = load_verse_data(surah_num, verse_num)
+    verse_url = f"/quran/verses/{surah_num}-{verse_num}/"
+
+    if not data:
+        return f'<a href="{verse_url}">Quran {surah_num}-{verse_num}</a>'
+
+    arabic_html = (
+        f'<div class="verse-embed-arabic">{data["arabic"]}</div>'
+        if data['arabic'] else ''
+    )
+    translation_html = ''
+    if data['translation']:
+        cite = f'<cite>— {data["translator"]}</cite>' if data['translator'] else ''
+        translation_html = (
+            f'<blockquote class="verse-embed-translation">'
+            f'<p>{data["translation"]}</p>{cite}</blockquote>'
+        )
+
+    return (
+        f'<div class="verse-embed-card">'
+        f'<a class="verse-embed-ref" href="{verse_url}">Quran {surah_num}:{verse_num}</a>'
+        f'{arabic_html}'
+        f'{translation_html}'
+        f'</div>'
+    )
+
+def replace_verse_embeds(text):
+    """Convert ![[Quran S-V]] embeds to inline verse cards."""
+    def repl(m):
+        return render_verse_embed_card(m.group(1), m.group(2))
+    return _VERSE_EMBED_PATTERN.sub(repl, text)
 
 def resolve_wikilinks(text, slug_map):
     """
@@ -140,6 +242,7 @@ def resolve_wikilinks(text, slug_map):
 
         return display
 
+    text = replace_verse_embeds(text)
     text = re.sub(r'!\[\[([^\]]+)\]\]', replace, text)
     text = re.sub(r'\[\[([^\]]+)\]\]', replace, text)
     return text
@@ -274,6 +377,46 @@ def render_page(title, content_html, prev_session, next_session):
       border-bottom: 1px solid rgba(148,62,12,0.15);
     }}
     .article-card th {{ font-weight: 600; color: var(--accent-mid); }}
+
+    /* ── Inline Quran verse embeds from ![[Quran S-V]] ── */
+    .verse-embed-card {{
+      border: 1px solid rgba(180,90,45,0.18);
+      background: rgba(255,255,255,0.40);
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin: 14px 0;
+    }}
+    .verse-embed-ref {{
+      display: inline-block;
+      font-family: "Cinzel", serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      text-decoration: none;
+      margin-bottom: 10px;
+    }}
+    .verse-embed-ref:hover {{ color: var(--accent-mid); }}
+    .verse-embed-arabic {{
+      font-family: "Amiri", serif;
+      direction: rtl; text-align: right;
+      font-size: 1.65rem; line-height: 2.0;
+      color: var(--text);
+      margin-bottom: 10px;
+      border-bottom: 1px solid rgba(148,62,12,0.12);
+      padding-bottom: 10px;
+    }}
+    .verse-embed-translation {{
+      border-left: 3px solid var(--accent-mid);
+      margin: 0; padding: 8px 14px;
+      background: rgba(148,62,12,0.04); border-radius: 0 8px 8px 0;
+    }}
+    .verse-embed-translation p {{
+      margin: 0 0 6px; font-size: 0.92rem; color: var(--text); line-height: 1.7;
+    }}
+    .verse-embed-translation cite {{
+      font-size: 0.75rem; color: var(--text-muted); font-style: normal;
+    }}
 
     /* ── Session nav ── */
     .session-nav {{

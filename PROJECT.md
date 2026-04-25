@@ -141,7 +141,8 @@ Program sub-pages (e.g., Quran Reflections) are static HTML managed via a Python
 
 - Reads all `.md` files from `quran-reflections/notes/` (ignores `README.md`)
 - Strips YAML frontmatter before markdown rendering (metadata fields like `tags`, `speaker`, `series`, `session_num` are not shown on public pages)
-- Converts `[[Quran S-V]]` and `![[Quran S-V]]` to `/quran/verses/S-V/`
+- Converts `[[Quran S-V]]` to `/quran/verses/S-V/`
+- Converts `![[Quran S-V]]` to an inline Arabic + translation verse card in the note body (with a reference link to `/quran/verses/S-V/`)
 - Converts `[[N - Surah ...]]` and `![[N - Surah ...]]` to `/quran/surahs/N/`
 - Converts `[[Note Name]]` and `[[Note Name|Display Text]]` to session URLs only when that note exists in `slug_map`
 - Unresolved wikilinks are rendered as plain text (not slugified links)

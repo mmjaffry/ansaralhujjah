@@ -113,6 +113,46 @@
     }
     .article-card th { font-weight: 600; color: var(--accent-mid); }
 
+    /* ── Inline Quran verse embeds from ![[Quran S-V]] ── */
+    .verse-embed-card {
+      border: 1px solid rgba(180,90,45,0.18);
+      background: rgba(255,255,255,0.40);
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin: 14px 0;
+    }
+    .verse-embed-ref {
+      display: inline-block;
+      font-family: "Cinzel", serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      text-decoration: none;
+      margin-bottom: 10px;
+    }
+    .verse-embed-ref:hover { color: var(--accent-mid); }
+    .verse-embed-arabic {
+      font-family: "Amiri", serif;
+      direction: rtl; text-align: right;
+      font-size: 1.65rem; line-height: 2.0;
+      color: var(--text);
+      margin-bottom: 10px;
+      border-bottom: 1px solid rgba(148,62,12,0.12);
+      padding-bottom: 10px;
+    }
+    .verse-embed-translation {
+      border-left: 3px solid var(--accent-mid);
+      margin: 0; padding: 8px 14px;
+      background: rgba(148,62,12,0.04); border-radius: 0 8px 8px 0;
+    }
+    .verse-embed-translation p {
+      margin: 0 0 6px; font-size: 0.92rem; color: var(--text); line-height: 1.7;
+    }
+    .verse-embed-translation cite {
+      font-size: 0.75rem; color: var(--text-muted); font-style: normal;
+    }
+
     /* ── Session nav ── */
     .session-nav {
       display: flex; justify-content: space-between; gap: 12px;

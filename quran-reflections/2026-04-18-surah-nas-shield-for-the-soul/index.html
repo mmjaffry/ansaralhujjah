@@ -113,6 +113,46 @@
     }
     .article-card th { font-weight: 600; color: var(--accent-mid); }
 
+    /* ── Inline Quran verse embeds from ![[Quran S-V]] ── */
+    .verse-embed-card {
+      border: 1px solid rgba(180,90,45,0.18);
+      background: rgba(255,255,255,0.40);
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin: 14px 0;
+    }
+    .verse-embed-ref {
+      display: inline-block;
+      font-family: "Cinzel", serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      text-decoration: none;
+      margin-bottom: 10px;
+    }
+    .verse-embed-ref:hover { color: var(--accent-mid); }
+    .verse-embed-arabic {
+      font-family: "Amiri", serif;
+      direction: rtl; text-align: right;
+      font-size: 1.65rem; line-height: 2.0;
+      color: var(--text);
+      margin-bottom: 10px;
+      border-bottom: 1px solid rgba(148,62,12,0.12);
+      padding-bottom: 10px;
+    }
+    .verse-embed-translation {
+      border-left: 3px solid var(--accent-mid);
+      margin: 0; padding: 8px 14px;
+      background: rgba(148,62,12,0.04); border-radius: 0 8px 8px 0;
+    }
+    .verse-embed-translation p {
+      margin: 0 0 6px; font-size: 0.92rem; color: var(--text); line-height: 1.7;
+    }
+    .verse-embed-translation cite {
+      font-size: 0.75rem; color: var(--text-muted); font-style: normal;
+    }
+
     /* ── Session nav ── */
     .session-nav {
       display: flex; justify-content: space-between; gap: 12px;
@@ -204,7 +244,8 @@
 <blockquote>
 <p><em>"We know what his own self whispers to him."</em> — <a href="/quran/verses/50-16/">Quran 50-16</a></p>
 </blockquote>
-<p><a href="/quran/verses/50-16/">Quran 50-16</a></p>
+<div class="verse-embed-card"><a class="verse-embed-ref" href="/quran/verses/50-16/">Quran 50:16</a><div class="verse-embed-arabic">وَلَقَدۡ خَلَقۡنَا ٱلۡإِنسَـٰنَ وَنَعۡلَمُ مَا تُوَسۡوِسُ بِهِۦ نَفۡسُهُۥۖ وَنَحۡنُ أَقۡرَبُ إِلَیۡهِ مِنۡ حَبۡلِ ٱلۡوَرِیدِ</div><blockquote class="verse-embed-translation"><p>Certainly We have created man and We know to what his soul tempts him, and We are nearer to him than his jugular vein</p><cite>— Ali Quli Qara'i</cite></blockquote></div>
+
 <ul>
 <li>Ego, fears, delusions</li>
 <li>When untrained by divine discipline, the self becomes <strong>its own shaytaan</strong> <em>(Mizan)</em></li>
@@ -217,7 +258,7 @@
 <li>Protects <strong>existence &amp; growth</strong></li>
 <li>Trust in Allah's sustaining care</li>
 <li>Shields against: fears, anxieties, despair, ingratitude</li>
-<li><a href="/quran/verses/29-60/">Quran 29-60</a> — Allah provides rizq; Shaytaan's first attack was based on <strong>deprivation</strong> (promising Prophet Adam eternity)</li>
+<li><div class="verse-embed-card"><a class="verse-embed-ref" href="/quran/verses/29-60/">Quran 29:60</a><div class="verse-embed-arabic">وَكَأَیِّن مِّن دَاۤبَّةࣲ لَّا تَحۡمِلُ رِزۡقَهَا ٱللَّهُ یَرۡزُقُهَا وَإِیَّاكُمۡۚ وَهُوَ ٱلسَّمِیعُ ٱلۡعَلِیمُ</div><blockquote class="verse-embed-translation"><p>How many an animal there is that does not carry its own provision. Allah provides for it, and for you, and He is the All-hearing, the All-knowing</p><cite>— Ali Quli Qara'i</cite></blockquote></div> — Allah provides rizq; Shaytaan's first attack was based on <strong>deprivation</strong> (promising Prophet Adam eternity)</li>
 <li><em>"Nas"</em> used as opposed to <em>"Falaq"</em>, as whispers target <strong>human consciousness</strong> <em>(Tabatabai)</em></li>
 </ul>
 <h3 id="malik-un-nas-sovereign-of-mankind">Malik un Nas — Sovereign of Mankind</h3>
@@ -238,7 +279,7 @@
 <p><em>"Worship is not prostration; it lies in whatever is the core of one's heart."</em></p>
 </blockquote>
 <ul>
-<li><a href="/quran/verses/41-30/">Quran 41-30</a> — Allah's help (angels) descend after belief and steadfastness <em>(40 days according to some scholars)</em></li>
+<li><div class="verse-embed-card"><a class="verse-embed-ref" href="/quran/verses/41-30/">Quran 41:30</a><div class="verse-embed-arabic">إِنَّ ٱلَّذِینَ قَالُوا۟ رَبُّنَا ٱللَّهُ ثُمَّ ٱسۡتَقَـٰمُوا۟ تَتَنَزَّلُ عَلَیۡهِمُ ٱلۡمَلَـٰۤىِٕكَةُ أَلَّا تَخَافُوا۟ وَلَا تَحۡزَنُوا۟ وَأَبۡشِرُوا۟ بِٱلۡجَنَّةِ ٱلَّتِی كُنتُمۡ تُوعَدُونَ</div><blockquote class="verse-embed-translation"><p>Indeed those who say, ‘Our Lord is Allah!’ and then remain steadfast, the angels descend upon them, [saying,] ‘Do not fear, nor be grieved! Receive the good news of the paradise which you have been promised</p><cite>— Ali Quli Qara'i</cite></blockquote></div> — Allah's help (angels) descend after belief and steadfastness <em>(40 days according to some scholars)</em></li>
 </ul>
 <hr />
 <h2 id="imam-hussain-as-the-living-example">Imam Hussain as the Living Example</h2>

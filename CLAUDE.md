@@ -123,7 +123,8 @@ When re-publishing without a new flyer, the existing base64 image is extracted f
 2. Builds `{note_title: slug}` map; slug = lowercase + collapse special chars/spaces to hyphens
 3. Strips leading YAML frontmatter block (if present) before markdown rendering
 4. Pre-processes each note:
-   - `[[Quran S-V]]` and `![[Quran S-V]]` → `/quran/verses/S-V/`
+   - `[[Quran S-V]]` → `/quran/verses/S-V/`
+   - `![[Quran S-V]]` → inline Arabic + translation card linked to `/quran/verses/S-V/`
    - `[[N - Surah ...]]` and `![[N - Surah ...]]` → `/quran/surahs/N/`
    - `[[Note]]` and `[[Note|Display]]` → `/quran-reflections/{slug}/` only if `Note` exists in `slug_map`
    - unresolved wikilinks → plain text
