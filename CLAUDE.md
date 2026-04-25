@@ -32,8 +32,8 @@ GitHub Pages auto-deploys. No CI/CD pipeline.
 ## Architecture
 
 **`index.html`** — Homepage (~1 MB due to embedded base64 flyers). All CSS and JS inline. Structure:
-1. Hardcoded static cards (WhatsApp link-btn, Instagram social-card) — NOT admin-managed
-2. Admin-managed program cards between `<!-- AAH-ALL-CARDS-START -->` / `<!-- AAH-ALL-CARDS-END -->` markers
+1. Admin-managed program cards between `<!-- AAH-ALL-CARDS-START -->` / `<!-- AAH-ALL-CARDS-END -->` markers
+2. Floating social icons (`.social-float`) in the bottom-right corner — hardcoded, NOT admin-managed. WhatsApp (`#25D366`) and Instagram (gradient) circular buttons.
 
 **`admin/index.html`** — Admin panel SPA. SHA-256 password auth in-browser. GitHub token hardcoded as split string (`GH_TOKEN`).
 
@@ -55,6 +55,7 @@ These markers are contracts — do not remove or reformat them:
 | `<!-- pinned:sisters -->` / `<!-- pinned:quran -->` | `index.html` (inside cards) | Admin sync parser |
 | `<!-- admin:{cardId} -->` | `index.html` (inside cards) | Admin sync parser |
 | `<!-- SESSIONS-START -->` / `<!-- SESSIONS-END -->` | `quran-reflections/index.html` | `build_notes.py` |
+| `<!-- QURAN-FLYER-START -->` / `<!-- QURAN-FLYER-END -->` | `quran-reflections/index.html` | Admin publish (quran flyer sync) |
 
 ### Publishing Flow
 
@@ -62,10 +63,11 @@ These markers are contracts — do not remove or reformat them:
 
 1. Get latest commit SHA on `main`
 2. Get tree SHA from that commit
-3. Find `index.html` blob SHA in tree
-4. Fetch blob via Git Data API (handles files >1 MB — Contents API would 422)
+3. Fetch full recursive tree (`?recursive=1`) to find both `index.html` and `quran-reflections/index.html` blob SHAs
+4. Fetch `index.html` blob via Git Data API (handles files >1 MB — Contents API would 422)
 5. Inject updated card HTML between the `AAH-ALL-CARDS-START/END` markers
-6. POST new blob → POST new tree → POST new commit → PATCH branch ref (`force: true`)
+6. If quran card has a flyer, also fetch `quran-reflections/index.html` and update content between `QURAN-FLYER-START/END` markers
+7. POST new blob(s) → POST new tree (with all updated files) → POST new commit → PATCH branch ref (`force: true`)
 
 ### Card System
 

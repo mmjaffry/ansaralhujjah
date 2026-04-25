@@ -18,9 +18,9 @@ All CSS, JS, and content in a single file (~1 MB due to embedded base64 flyer im
 
 Page layout (top to bottom):
 1. Logo, title, divider
-2. **Hardcoded static cards** — WhatsApp community link and Instagram expandable card. Written directly in `index.html` and NOT managed by the admin panel.
-3. **Admin-managed program cards** — injected between `<!-- AAH-ALL-CARDS-START -->` and `<!-- AAH-ALL-CARDS-END -->` markers. All cards created, edited, reordered, or deleted via the admin panel live here.
-4. Footer
+2. **Admin-managed program cards** — injected between `<!-- AAH-ALL-CARDS-START -->` and `<!-- AAH-ALL-CARDS-END -->` markers. All cards created, edited, reordered, or deleted via the admin panel live here.
+3. Footer
+4. **Floating social icons** — fixed-position bottom-right corner. WhatsApp (green) and Instagram (gradient) circular buttons linking to the community chat and Instagram profile. Defined as `.social-float` / `.social-float-btn` CSS in the `<head>` style block and rendered just before `</body>`. These are hardcoded in `index.html`, not admin-managed.
 
 ### Program Pages
 
@@ -73,8 +73,8 @@ Created freely via the admin panel. Identified by base-36 timestamp IDs (e.g., `
 ### Card Rendering
 
 All admin-managed cards (pinned and event) use the same horizontal `.program-card` format:
-- **With flyer** → flyer image displayed as a banner at the top of the card (`object-fit: cover`, 200px height), with icon + title + subtitle + arrow in a footer row below.
-- **Without flyer** → same layout, but the flyer area shows the card's icon centered on an accent-tinted background.
+- **With flyer** → flyer image displayed as a full-height banner at the top of the card (`height: auto`, no crop), with icon + title + subtitle + arrow in a footer row below.
+- **Without flyer** → same layout, but the flyer area shows the card's icon centered on an accent-tinted background (minimum 100px height).
 
 The entire card is a link (`<a class="program-card">`). There is no expand/collapse interaction for admin-managed cards.
 
@@ -87,10 +87,12 @@ The admin panel publishes by writing directly to GitHub using the Git Data API (
 Steps on every publish:
 1. Get the current branch tip commit SHA
 2. Get the tree SHA from that commit
-3. Find `index.html` in the tree and fetch its blob (full content, no size limit)
-4. Replace the content between `<!-- AAH-ALL-CARDS-START -->` and `<!-- AAH-ALL-CARDS-END -->` with freshly-generated HTML for all cards in the current order
-5. Create a new blob, tree, and commit via the API
-6. Force-update the branch ref to the new commit (`force: true` required because GitHub Pages sometimes causes ref divergence)
+3. Fetch the full recursive tree (`?recursive=1`) to find both `index.html` and `quran-reflections/index.html` blob SHAs
+4. Fetch `index.html` blob (full content, no size limit)
+5. Replace the content between `<!-- AAH-ALL-CARDS-START -->` and `<!-- AAH-ALL-CARDS-END -->` with freshly-generated HTML for all cards in the current order
+6. If the quran card has a flyer, also fetch `quran-reflections/index.html`, replace the content between `<!-- QURAN-FLYER-START -->` and `<!-- QURAN-FLYER-END -->` with the updated flyer image, and include it in the commit
+7. Create new blob(s), a new tree, and a new commit via the API
+8. Force-update the branch ref to the new commit (`force: true` required because GitHub Pages sometimes causes ref divergence)
 
 Changes are live within ~30 seconds of publish.
 
@@ -183,8 +185,9 @@ Fonts: **Cinzel** (headings, admin labels) and **Lato** (body) loaded from Googl
 - **The session notes build step is manual.** After dropping `.md` files into `quran-reflections/notes/`, run `python3 build_notes.py` before pushing. The script handles wikilinks, slugs, prev/next nav, and the session list injection automatically.
 - **The GitHub token (`GH_TOKEN`) and admin password (`ADMIN_PASSWORD`) are hardcoded** in `admin/index.html`. The token is split into string segments to avoid GitHub's secret scanning triggering on push. The admin panel is `noindex, nofollow` but is not truly private — do not store sensitive data in cards.
 - **Flyer images in published HTML are permanent until overwritten.** If a card is edited without uploading a new flyer, the existing base64 image is extracted from the live HTML and re-embedded. This is handled by `extractFlyerAt()` and `extractFlyerForPinned()`.
-- **The two static cards (WhatsApp, Instagram) at the top of the page are not admin-managed.** Changes to them require editing `index.html` directly.
-- **Quran Reflections card links to `/quran-reflections`, not the Google Form.** The sign-in form link lives on the program page itself. This is a one-time change that must be made via the admin panel after deployment (edit the Quran card and set Link to `/quran-reflections`).
+- **WhatsApp and Instagram are floating icons in the bottom-right corner**, not cards. They are hardcoded in `index.html` as `.social-float` and are not admin-managed. Edit directly in `index.html` to change links.
+- **Quran Reflections card links to `/quran-reflections`.** The program page hosts the flyer, description, and session list. There is no separate sign-in link on the card.
+- **Quran program page flyer syncs automatically on admin publish** — when the quran card has a flyer, `publishToGitHub()` also updates the `<!-- QURAN-FLYER-START/END -->` section in `quran-reflections/index.html` in the same commit.
 
 ---
 
