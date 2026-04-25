@@ -684,8 +684,7 @@ async function syncFromLiveSite() {
 
     // Sync pinned card flyers and removed state from live HTML
     for (const key of ['sisters', 'quran']) {
-      const bodyId = key === 'sisters' ? 'socialBody' : 'quranBody';
-      const flyer  = extractFlyerForPinned(html, bodyId);
+      const flyer  = extractFlyerForPinned(html, key);
       if (flyer) {
         pinnedCards[key].flyerB64  = flyer.b64;
         pinnedCards[key].flyerMime = flyer.mime;
@@ -977,8 +976,8 @@ function extractFlyerAt(html, anchorPos) {
   return { mime, b64: afterSrc.slice(b64Start, b64End) };
 }
 
-function extractFlyerForPinned(html, bodyId) {
-  return extractFlyerAt(html, html.indexOf(`id="${bodyId}"`));
+function extractFlyerForPinned(html, key) {
+  return extractFlyerAt(html, html.indexOf(`<!-- pinned:${key} -->`));
 }
 
 /* ── Build pinned card HTML ───────────── */
@@ -1081,8 +1080,7 @@ async function publishToGitHub() {
       if (id === 'sisters' || id === 'quran') {
         const pc = pinnedCards[id];
         if (pc.removed) return '';
-        const bodyId = id === 'sisters' ? 'socialBody' : 'quranBody';
-        const existingFlyer = extractFlyerForPinned(currentHtml, bodyId);
+        const existingFlyer = extractFlyerForPinned(currentHtml, id);
         return buildPinnedCardHtml(id, pc, existingFlyer);
       }
       const ev = events.find(e => e.id === id);
@@ -1105,8 +1103,8 @@ async function publishToGitHub() {
     // 6b. If quran card has a flyer, also update quran-reflections/index.html flyer section
     const treeEntries = [{ path: 'index.html', mode: '100644', type: 'blob', sha: newBlobSha }];
     const quranCard = pinnedCards['quran'];
-    const quranB64  = quranCard && (quranCard.flyerB64 || (() => { const ef = extractFlyerForPinned(currentHtml, 'quranBody'); return ef && ef.b64; })());
-    const quranMime = quranCard && (quranCard.flyerMime || (() => { const ef = extractFlyerForPinned(currentHtml, 'quranBody'); return ef && ef.mime; })());
+    const quranB64  = quranCard && (quranCard.flyerB64 || (() => { const ef = extractFlyerForPinned(currentHtml, 'quran'); return ef && ef.b64; })());
+    const quranMime = quranCard && (quranCard.flyerMime || (() => { const ef = extractFlyerForPinned(currentHtml, 'quran'); return ef && ef.mime; })());
     if (qrEntry && quranB64 && quranMime) {
       const qrBlobResp = await fetch(`${base}/git/blobs/${qrEntry.sha}`, { headers });
       if (qrBlobResp.ok) {
