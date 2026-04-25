@@ -13,8 +13,11 @@ Workflow:
     2. Run this script
     3. git push
 
-[[Wikilinks]] to other note files are resolved to /quran-reflections/{slug}/ URLs.
-[[Note Name|Display Text]] aliased links are also supported.
+Wikilink behavior:
+- [[Quran S-V]] / ![[Quran S-V]]     -> /quran/verses/S-V/
+- [[N - Surah ...]] / ![[N - Surah ...]] -> /quran/surahs/N/
+- [[Note Name]] / [[Note|Display]]   -> /quran-reflections/{slug}/ (if known note)
+- Unresolved non-Quran wikilinks are rendered as plain text.
 """
 
 import os
@@ -59,6 +62,19 @@ def build_slug_map(notes_dir):
             title = fname[:-3]
             slug_map[title] = slugify(title)
     return slug_map
+
+def strip_yaml_frontmatter(text):
+    """Remove leading YAML frontmatter block if present."""
+    if text.startswith('---\n'):
+        end = text.find('\n---\n', 4)
+        if end != -1:
+            return text[end + 5:]
+    return text
+
+def extract_markdown_h1(text, fallback):
+    """Return first markdown H1 text (without leading #), else fallback."""
+    m = re.search(r'(?m)^\s*#\s+(.+?)\s*$', text)
+    return m.group(1).strip() if m else fallback
 
 # ── Wikilink resolution ───────────────────────────────────────────────────────
 
@@ -334,17 +350,28 @@ def main():
 
     slug_map = build_slug_map(NOTES_DIR)
 
-    # Build ordered session list: (title, slug)
-    sessions = []
+    # Build ordered session list with display titles from markdown H1.
+    session_entries = []
     for fname in md_files:
         note_name = fname[:-3]
-        sessions.append((note_name, slug_map[note_name]))
-
-    # Generate each session page
-    for i, (title, slug) in enumerate(sessions):
-        fpath = os.path.join(NOTES_DIR, title + '.md')
+        slug = slug_map[note_name]
+        fpath = os.path.join(NOTES_DIR, fname)
         with open(fpath, 'r', encoding='utf-8') as f:
             raw = f.read()
+        body = strip_yaml_frontmatter(raw)
+        display_title = extract_markdown_h1(body, note_name)
+        session_entries.append({
+            'note_name': note_name,
+            'slug': slug,
+            'body': body,
+            'display_title': display_title,
+        })
+
+    # Generate each session page
+    for i, entry in enumerate(session_entries):
+        title = entry['note_name']
+        slug = entry['slug']
+        raw = entry['body']
 
         # Pre-process: resolve [[wikilinks]] to standard markdown links
         processed = resolve_wikilinks(raw, slug_map)
@@ -352,12 +379,16 @@ def main():
         # Parse markdown → HTML (extra adds tables, footnotes; toc adds heading ids)
         content_html = md_lib.markdown(processed, extensions=['extra', 'toc'])
 
-        # Extract title from first H1, falling back to filename
-        h1_match = re.search(r'<h1[^>]*>(.*?)</h1>', content_html, re.IGNORECASE | re.DOTALL)
-        display_title = re.sub(r'<[^>]+>', '', h1_match.group(1)).strip() if h1_match else title
+        display_title = entry['display_title']
 
-        prev_session = sessions[i - 1] if i > 0 else None
-        next_session = sessions[i + 1] if i < len(sessions) - 1 else None
+        prev_session = (
+            (session_entries[i - 1]['display_title'], session_entries[i - 1]['slug'])
+            if i > 0 else None
+        )
+        next_session = (
+            (session_entries[i + 1]['display_title'], session_entries[i + 1]['slug'])
+            if i < len(session_entries) - 1 else None
+        )
 
         page_html = render_page(display_title, content_html, prev_session, next_session)
 
@@ -370,9 +401,9 @@ def main():
         print(f"  Built: {out_path}")
 
     # Update session list in quran-reflections/index.html
-    inject_sessions(sessions)
+    inject_sessions([(e['display_title'], e['slug']) for e in session_entries])
 
-    print(f"\nDone. {len(sessions)} session page(s) generated.")
+    print(f"\nDone. {len(session_entries)} session page(s) generated.")
     print("Run 'git push origin main' to publish.")
 
 if __name__ == '__main__':
