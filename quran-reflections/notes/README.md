@@ -9,6 +9,7 @@ Drop your Obsidian `.md` files here, then run the build script to generate the H
 3. From the repo root, run:
    ```
    python3 build_notes.py
+   python3 build_quran.py
    ```
 4. Commit and push:
    ```
@@ -26,16 +27,30 @@ The filename (without `.md`) becomes the URL slug.
 
 Keep filenames consistent so wikilinks resolve correctly.
 
+## Titles vs URLs
+
+- URL slug comes from filename
+- Display title comes from the first markdown H1 (`# ...`)
+- You can update note titles without renaming files/URLs
+
 ## Wikilinks
 
-Obsidian `[[wikilinks]]` to other notes in this folder are automatically converted to hyperlinks:
+Obsidian `[[wikilinks]]` are converted as follows:
 
 ```
-[[Session 1 - Introduction]]          → links to /quran-reflections/session-1-introduction/
-[[Session 2 - Ayat 3|see session 2]]  → links to /quran-reflections/session-2-ayat-3/
+[[Session 1 - Introduction]]          → /quran-reflections/session-1-introduction/
+[[Session 2 - Ayat 3|see session 2]]  → /quran-reflections/session-2-ayat-3/
+[[Quran 29-2]]                        → /quran/verses/29-2/
+![[Quran 29-2]]                       → /quran/verses/29-2/
+[[29 - Surah al-'Ankabut]]            → /quran/surahs/29/
+![[29 - Surah al-'Ankabut]]           → /quran/surahs/29/
 ```
 
-Links to notes that do not exist in this folder will still be generated (pointing to the expected slug URL), so you can create notes in any order.
+If a non-Quran wikilink does not match a note in this folder, it is rendered as plain text (no broken link).
+
+## Frontmatter
+
+YAML frontmatter is allowed for authoring (e.g. `speaker`, `date`, `series`, `surahs`), but it is stripped before page rendering, so metadata fields are not shown on the published page body.
 
 ## First-time setup
 
@@ -43,4 +58,5 @@ Install the markdown dependency once:
 
 ```
 pip3 install markdown
+pip3 install pyyaml
 ```
