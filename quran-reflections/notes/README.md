@@ -46,6 +46,8 @@ Obsidian `[[wikilinks]]` are converted as follows:
 ![[29 - Surah al-'Ankabut]]           → /quran/surahs/29/
 ```
 
+For verse cards to render clearly, place `![[Quran S-V]]` embeds directly in the body (paragraphs/bullets), not inside markdown table cells or heading text.
+
 If a non-Quran wikilink does not match a note in this folder, it is rendered as plain text (no broken link).
 
 ## Frontmatter

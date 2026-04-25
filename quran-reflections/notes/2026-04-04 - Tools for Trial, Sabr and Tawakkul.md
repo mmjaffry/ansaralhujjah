@@ -29,9 +29,11 @@ Every level carries benefit, but we should aim higher:
 
 ---
 
-## Tools for the Trial — [[Quran 2-155]]
+## Tools for the Trial
 
 Categories of testing: **fear, hunger, loss of wealth, loss of life, loss of fruits** *(of labor/life — e.g., children, job, respect)*
+
+![[Quran 2-155]]
 
 - Glad tidings given to the patient
 
@@ -43,6 +45,9 @@ Categories of testing: **fear, hunger, loss of wealth, loss of life, loss of fru
 - [[Quran 2-155]] confirms that trial is a Divine law; [[Quran 29-2]] explains *why*
 - Trial is an **unchanging sunnah** — [[Quran 29-3]]
 
+![[Quran 29-2]]
+![[Quran 29-3]]
+
 ---
 
 ## Trial Builds Character and Erases Shortcomings
@@ -51,29 +56,60 @@ Categories of testing: **fear, hunger, loss of wealth, loss of life, loss of fru
 - Shortcomings we are unaware of are exposed and corrected through hardship — this is **Divine mercy** *(a formula, though all formulas have exceptions)*
 - We cannot outrun accountability — [[Quran 29-4]]
 
+![[Quran 29-4]]
+
 ### How to Handle Trials — Full Map
 
-| Ayah | Lesson |
-|------|--------|
-| [[Quran 2-155]] | Trial as Divine Law |
-| [[Quran 29-2]], [[Quran 29-3]] | Trial is verification of sincerity; unchanging sunnah. *"This world is a gym — successive increase of trials to gradually grow us."* |
-| [[Quran 29-4]], [[Quran 29-7]] | Trial purifies and corrects; hardship elevates and erases shortcoming |
-| [[Quran 29-14]] | Ummah's collective trial — trials can span generations (e.g., Palestine; Nuh — 950 years) |
-| [[Quran 29-17]] | Trial of deception — false idols (wealth, power, alliances) promise what only Allah can give |
-| [[Quran 29-39]] | Civilizations face trials too — Qarun (wealth arrogance), Pharaoh (tyranny), Haman (corrupt administration): three pillars of collapse |
-| [[Quran 29-41]] | Rely only on Allah |
-| [[Quran 29-43]] | Reflect with intellect |
-| [[Quran 29-45]] | Establish real prayer — don't underestimate salaah |
-| [[Quran 29-25]] | Trust Allah's timeline |
-| [[Quran 29-57]] | Remember death — *"Key message from Karbala: we have no fear of death"* |
-| [[Quran 29-59]] | Sabr + Tawakkul |
-| [[Quran 29-60]] | Trust Allah for rizq |
-| [[Quran 29-64]] | Remember the aakhirah — *"The aakhirah is REAL LIFE; this perspective transforms every trial from tragedy → journey"* |
-| [[Quran 29-69]] | Strive — guidance follows |
+- Trial as Divine Law:
+  ![[Quran 2-155]]
+
+- Trial is verification of sincerity; unchanging sunnah. *"This world is a gym — successive increase of trials to gradually grow us."*
+  ![[Quran 29-2]]
+  ![[Quran 29-3]]
+
+- Trial purifies and corrects; hardship elevates and erases shortcoming:
+  ![[Quran 29-4]]
+  ![[Quran 29-7]]
+
+- Ummah's collective trial — trials can span generations (e.g., Palestine; Nuh — 950 years):
+  ![[Quran 29-14]]
+
+- Trial of deception — false idols (wealth, power, alliances) promise what only Allah can give:
+  ![[Quran 29-17]]
+
+- Civilizations face trials too — Qarun (wealth arrogance), Pharaoh (tyranny), Haman (corrupt administration): three pillars of collapse:
+  ![[Quran 29-39]]
+
+- Rely only on Allah:
+  ![[Quran 29-41]]
+
+- Reflect with intellect:
+  ![[Quran 29-43]]
+
+- Establish real prayer — don't underestimate salaah:
+  ![[Quran 29-45]]
+
+- Trust Allah's timeline:
+  ![[Quran 29-25]]
+
+- Remember death — *"Key message from Karbala: we have no fear of death"*:
+  ![[Quran 29-57]]
+
+- Sabr + Tawakkul:
+  ![[Quran 29-59]]
+
+- Trust Allah for rizq:
+  ![[Quran 29-60]]
+
+- Remember the aakhirah — *"The aakhirah is REAL LIFE; this perspective transforms every trial from tragedy → journey"*:
+  ![[Quran 29-64]]
+
+- Strive — guidance follows:
+  ![[Quran 29-69]]
 
 ---
 
-## Sabr + Tawakkul — [[Quran 29-59]]
+## Sabr + Tawakkul
 
 - **Sabr**: active, not passive
 - **Example**: Story of Nabi Khidhr and Nabi Musa *(Surah Kahf, 18:65–)*
@@ -82,6 +118,9 @@ Categories of testing: **fear, hunger, loss of wealth, loss of life, loss of fru
   - *Question*: There are so many unknowns in life — is it not possible to practise sabr through the unknown?
     - This is where **tawakkul** comes in — Allah is Rabb. Strive for knowledge, but have peace in knowing He is Rabb.
     - Even if Musa didn't have knowledge, he was to practice tawakkul. He eventually did gain knowledge.
+
+![[Quran 29-59]]
+![[Quran 18-68]]
 
 > **For next session**: Everyone choose an ayah they connect with — learn and memorize it, bring it to discuss.
 
