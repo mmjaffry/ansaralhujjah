@@ -84,31 +84,28 @@ Categories of testing: **fear, hunger, loss of wealth, loss of life, loss of fru
 <li><p>Civilizations face trials too — Qarun (wealth arrogance), Pharaoh (tyranny), Haman (corrupt administration): three pillars of collapse</p>
 ![[Quran 29-39]]
 </li>
-<li><p>Rely only on Allah</p>
+<li><p>Rely only on Allah. Relying on others for protection is like seeking protection in a spider's web; what seems intricate and meticulously designed is in reality frail and weak.</p>
 ![[Quran 29-41]]
 </li>
-<li><p>Reflect with intellect</p>
+<li><p>Reflect with intellect. There are many examples in the Quran that provide clarity and help us overcome life's trials, but we must seek knowledge and reflect.</p>
 ![[Quran 29-43]]
 </li>
 <li><p>Establish real prayer — don't underestimate salaah</p>
 ![[Quran 29-45]]
 </li>
-<li><p>Trust Allah's timeline</p>
-![[Quran 29-25]]
-</li>
-<li><p>Remember death — <em>"Key message from Karbala: we have no fear of death"</em></p>
+<li><p>Remember death. Death is not the end, it is just a transfer. Remembering death reminds us how our life in this world is temporary.</p>
 ![[Quran 29-57]]
 </li>
-<li><p>Sabr + Tawakkul</p>
+<li><p>A divine formula for overcoming tests: Sabr + Tawakkul</p>
 ![[Quran 29-59]]
 </li>
-<li><p>Trust Allah for rizq</p>
+<li><p>Trust Allah for rizq. Recognize it is He who is sustaining everything in this universe and we just need to trust in Him!</p>
 ![[Quran 29-60]]
 </li>
 <li><p>Remember the aakhirah — <em>"The aakhirah is REAL LIFE; this perspective transforms every trial from tragedy → journey"</em></p>
 ![[Quran 29-64]]
 </li>
-<li><p>Strive — guidance follows</p>
+<li><p>Strive in the way of Allah and Allah will guide us. Allah is with the <em>muhsineen</em>.</p>
 ![[Quran 29-69]]
 </li>
 </ol>
@@ -126,7 +123,6 @@ Categories of testing: **fear, hunger, loss of wealth, loss of life, loss of fru
     - Even if Musa didn't have knowledge, he was to practice tawakkul. He eventually did gain knowledge.
 
 ![[Quran 29-59]]
-![[Quran 18-68]]
 
 > **For next session**: Everyone choose an ayah they connect with — learn and memorize it, bring it to discuss.
 

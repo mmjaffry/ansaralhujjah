@@ -460,8 +460,11 @@ def render_page(title, content_html, prev_session, next_session):
 
     /* ── Trials reference list (numbered, compact verses) ── */
     .article .trials-list {{ padding-left: 24px; margin: 0 0 16px; }}
-    .article .trials-list li {{ font-size: 1.05rem; line-height: 1.8; color: var(--text); margin-bottom: 4px; }}
-    .article .trials-list li p {{ margin-bottom: 0; }}
+    .article .trials-list li {{ margin-bottom: 8px; }}
+    .article .trials-list li p {{
+      margin-bottom: 4px; font-family: "Playfair Display", serif;
+      font-size: 1.05rem; font-weight: 600; color: var(--text); line-height: 1.55;
+    }}
     .article .trials-list .verse-embed-card {{
       margin-left: -24px; width: calc(100% + 24px);
       margin-top: 6px; margin-bottom: 8px;
