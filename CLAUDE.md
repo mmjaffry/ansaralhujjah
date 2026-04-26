@@ -48,7 +48,7 @@ GitHub Pages auto-deploys. No CI/CD pipeline.
 
 **`build_quran.py`** — Python 3 script (requires `pip3 install pyyaml`). Scans notes for Quran references and generates `/quran/verses/*` + `/quran/surahs/*` pages with backlinks.
 
-**`_head.html`** — Reference-only snippet (not served). Single source of truth for shared `<head>` elements. Copy into any new page's `<head>`.
+**`_head.html`** — Reference-only snippet (not served). Contains shared meta/favicon/font tags for the **homepage font stack (Cinzel/Lato)**. Copy into any new homepage-style page's `<head>`. Do not use for inner pages — session, verse, and surah pages use the EB Garamond/Amiri font stack, which is defined inline inside the Python build script templates and not derived from this file.
 
 ### Comment Markers
 
@@ -134,7 +134,7 @@ This constant is **hardcoded in both files** — if the vault moves, update it i
 
 ### `build_notes.py` Architecture
 
-1. Scans `quran-reflections/notes/*.md` (skips `README.md`)
+1. Scans `quran-reflections/notes/*.md` (skips `README.md`), sorted **alphabetically by filename** — date-prefixed filenames (`YYYY-MM-DD`) are what keeps prev/next in chronological order. Renaming a file changes both its URL slug and its position in the sequence.
 2. Builds `{note_title: slug}` map; slug = lowercase + collapse special chars/spaces to hyphens
 3. Strips leading YAML frontmatter block (if present) before markdown rendering
 4. Pre-processes each note:
@@ -166,6 +166,8 @@ Filename governs URL; first markdown H1 governs displayed title (session list + 
 Wikilink → URL: `[[Session 2 - Ayat 3]]` → `/quran-reflections/session-2-ayat-3/`
 
 ### `build_quran.py` Architecture
+
+**Cross-import:** `scan_notes()` does `from build_notes import slugify`. Both scripts must be run from the repo root — running from a subdirectory will cause an import error.
 
 1. Scans `quran-reflections/notes/*.md` (skips `README.md`)
 2. Builds backlinks map from note titles/slugs to:

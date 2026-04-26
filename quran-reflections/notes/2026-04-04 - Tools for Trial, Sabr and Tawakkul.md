@@ -39,12 +39,15 @@ Categories of testing: **fear, hunger, loss of wealth, loss of life, loss of fru
 
 ## Trial is NOT Punishment — It is Divine Verification
 
-- If you believe He is *Razzaq*, perhaps you will be tested with *rizq*; if you believe He provides protection and *izzah*, maybe you will be tested in those things
-- [[Quran 2-155]] confirms that trial is a Divine law; [[Quran 29-2]] explains *why*
-- Trial is an **unchanging sunnah** — [[Quran 29-3]]
+- If you believe He is *Razzaq*, perhaps you will be tested with *rizq*; if you believe He provides protection and *izzah*, maybe you will be tested in those things. Verse 155 of Surah Baqara confirms that trial is a Divine Law:
+
+![[Quran 2-155]]
+
+- This trial is Divine Verification. The people who claim belief will be tested to verify their claims:
 
 ![[Quran 29-2]]
-![[Quran 29-3]]
+
+- Trial is an **unchanging sunnah** — [[Quran 29-3]]
 
 ---
 
@@ -52,7 +55,7 @@ Categories of testing: **fear, hunger, loss of wealth, loss of life, loss of fru
 
 - Like a successful student who uses quiz results to work on weaknesses
 - Shortcomings we are unaware of are exposed and corrected through hardship — this is **Divine mercy** *(a formula, though all formulas have exceptions)*
-- We cannot outrun accountability — [[Quran 29-4]]
+- We cannot outrun accountability
 
 ![[Quran 29-4]]
 
