@@ -471,11 +471,19 @@ def render_page(title, content_html, prev_session, next_session):
       white-space: nowrap; padding-right: 12px;
     }}
     .article .trials-map .tm-desc {{
-      width: 38%; font-size: 1.0rem; line-height: 1.75;
+      width: 28%; font-size: 1.0rem; line-height: 1.75;
       color: var(--text); padding-right: 24px;
     }}
     .article .trials-map .verse-embed-card {{ margin: 0; }}
-    .article .trials-map .verse-embed-card + .verse-embed-card {{ margin-top: 16px; }}
+    .article .trials-map .verse-embed-card + .verse-embed-card {{ margin-top: 14px; }}
+    .article .trials-map .verse-embed-ref {{ margin-bottom: 8px; }}
+    .article .trials-map .verse-embed-arabic {{
+      font-size: 1.25rem; line-height: 1.75; margin-bottom: 8px; padding-bottom: 8px;
+    }}
+    .article .trials-map .verse-embed-translation p {{
+      font-size: 0.85rem; line-height: 1.6;
+    }}
+    .article .trials-map .verse-embed-translation cite {{ font-size: 0.72rem; }}
 
     /* ── Session nav ── */
     .session-nav {{
