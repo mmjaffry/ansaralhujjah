@@ -164,6 +164,30 @@
     .verse-embed-translation cite {
       font-family: "Alegreya SC", serif; font-size: 0.78rem; color: var(--text-muted); font-style: normal;
     }
+    /* Snap verse cards to article left edge when inside list items */
+    .article li .verse-embed-card {
+      margin-left: -24px;
+      width: calc(100% + 24px);
+    }
+
+    /* ── How to Handle Trials table ── */
+    .article .trials-map {
+      width: 100%; border-collapse: collapse; margin: 12px 0 32px;
+    }
+    .article .trials-map td {
+      vertical-align: top; padding: 18px 0; border: none;
+    }
+    .article .trials-map .tm-num {
+      width: 2em; font-family: "Alegreya SC", serif; font-size: 0.82rem;
+      color: var(--text-muted); letter-spacing: 0.05em;
+      white-space: nowrap; padding-right: 12px;
+    }
+    .article .trials-map .tm-desc {
+      width: 38%; font-size: 1.0rem; line-height: 1.75;
+      color: var(--text); padding-right: 24px;
+    }
+    .article .trials-map .verse-embed-card { margin: 0; }
+    .article .trials-map .verse-embed-card + .verse-embed-card { margin-top: 16px; }
 
     /* ── Session nav ── */
     .session-nav {
@@ -252,103 +276,88 @@
 </ul>
 <div class="verse-embed-card"><a class="verse-embed-ref" href="/quran/verses/29-4/">Quran 29:4</a><div class="verse-embed-arabic">أَمۡ حَسِبَ ٱلَّذِینَ یَعۡمَلُونَ ٱلسَّیِّءَاتِ أَن یَسۡبِقُونَاۚ سَاۤءَ مَا یَحۡكُمُونَ</div><blockquote class="verse-embed-translation"><p>Do those who commit misdeeds suppose that they can outmaneuver Us? Evil is the judgement that they make</p><cite>— Ali Quli Qara'i</cite></blockquote></div>
 
-<h3 id="how-to-handle-trials-full-map">How to Handle Trials — Full Map</h3>
-<ul>
-<li>
-<p>Trial as Divine Law:
-<br />
-<div class="verse-embed-card"><a class="verse-embed-ref" href="/quran/verses/2-155/">Quran 2:155</a><div class="verse-embed-arabic">وَلَنَبۡلُوَنَّكُم بِشَیۡءࣲ مِّنَ ٱلۡخَوۡفِ وَٱلۡجُوعِ وَنَقۡصࣲ مِّنَ ٱلۡأَمۡوَ ٰلِ وَٱلۡأَنفُسِ وَٱلثَّمَرَ ٰتِۗ وَبَشِّرِ ٱلصَّـٰبِرِینَ</div><blockquote class="verse-embed-translation"><p>We will surely test you with a measure of fear and hunger and a loss of wealth, lives, and fruits; and give good news to the patien</p><cite>— Ali Quli Qara'i</cite></blockquote></div>
-</p>
-</li>
-<li>
-<p>Trial is verification of sincerity; unchanging sunnah. <em>"This world is a gym — successive increase of trials to gradually grow us."</em>
-<br />
-<div class="verse-embed-card"><a class="verse-embed-ref" href="/quran/verses/29-2/">Quran 29:2</a><div class="verse-embed-arabic">أَحَسِبَ ٱلنَّاسُ أَن یُتۡرَكُوۤا۟ أَن یَقُولُوۤا۟ ءَامَنَّا وَهُمۡ لَا یُفۡتَنُونَ</div><blockquote class="verse-embed-translation"><p>Do the people suppose that they will be let off because they say, ‘We have faith,’ and they will not be tested</p><cite>— Ali Quli Qara'i</cite></blockquote></div></p>
-</li>
-</ul>
-<div class="verse-embed-card"><a class="verse-embed-ref" href="/quran/verses/29-3/">Quran 29:3</a><div class="verse-embed-arabic">وَلَقَدۡ فَتَنَّا ٱلَّذِینَ مِن قَبۡلِهِمۡۖ فَلَیَعۡلَمَنَّ ٱللَّهُ ٱلَّذِینَ صَدَقُوا۟ وَلَیَعۡلَمَنَّ ٱلۡكَـٰذِبِینَ</div><blockquote class="verse-embed-translation"><p>Certainly We tested those who were before them. So Allah shall surely ascertain those who are truthful, and He shall surely ascertain the liars</p><cite>— Ali Quli Qara'i</cite></blockquote></div>
+<hr />
+<h2 id="how-to-handle-trials-full-map">How to Handle Trials — Full Map</h2>
+<table class="trials-map">
+<tr>
+<td class="tm-num">1</td>
+<td class="tm-desc">Trial as Divine Law</td>
+<td class="tm-verse"><div class="verse-embed-card"><a class="verse-embed-ref" href="/quran/verses/2-155/">Quran 2:155</a><div class="verse-embed-arabic">وَلَنَبۡلُوَنَّكُم بِشَیۡءࣲ مِّنَ ٱلۡخَوۡفِ وَٱلۡجُوعِ وَنَقۡصࣲ مِّنَ ٱلۡأَمۡوَ ٰلِ وَٱلۡأَنفُسِ وَٱلثَّمَرَ ٰتِۗ وَبَشِّرِ ٱلصَّـٰبِرِینَ</div><blockquote class="verse-embed-translation"><p>We will surely test you with a measure of fear and hunger and a loss of wealth, lives, and fruits; and give good news to the patien</p><cite>— Ali Quli Qara'i</cite></blockquote></div></td>
+</tr>
+<tr>
+<td class="tm-num">2</td>
+<td class="tm-desc">Trial is Divine Verification; unchanging sunnah — <em>"This world is a gym — successive increase of trials to gradually grow us."</em></td>
+<td class="tm-verse"><div class="verse-embed-card"><a class="verse-embed-ref" href="/quran/verses/29-2/">Quran 29:2</a><div class="verse-embed-arabic">أَحَسِبَ ٱلنَّاسُ أَن یُتۡرَكُوۤا۟ أَن یَقُولُوۤا۟ ءَامَنَّا وَهُمۡ لَا یُفۡتَنُونَ</div><blockquote class="verse-embed-translation"><p>Do the people suppose that they will be let off because they say, ‘We have faith,’ and they will not be tested</p><cite>— Ali Quli Qara'i</cite></blockquote></div>
+<div class="verse-embed-card"><a class="verse-embed-ref" href="/quran/verses/29-3/">Quran 29:3</a><div class="verse-embed-arabic">وَلَقَدۡ فَتَنَّا ٱلَّذِینَ مِن قَبۡلِهِمۡۖ فَلَیَعۡلَمَنَّ ٱللَّهُ ٱلَّذِینَ صَدَقُوا۟ وَلَیَعۡلَمَنَّ ٱلۡكَـٰذِبِینَ</div><blockquote class="verse-embed-translation"><p>Certainly We tested those who were before them. So Allah shall surely ascertain those who are truthful, and He shall surely ascertain the liars</p><cite>— Ali Quli Qara'i</cite></blockquote></div></td>
+</tr>
+<tr>
+<td class="tm-num">3</td>
+<td class="tm-desc">Trial purifies and corrects; hardship elevates and erases shortcomings</td>
+<td class="tm-verse"><div class="verse-embed-card"><a class="verse-embed-ref" href="/quran/verses/29-4/">Quran 29:4</a><div class="verse-embed-arabic">أَمۡ حَسِبَ ٱلَّذِینَ یَعۡمَلُونَ ٱلسَّیِّءَاتِ أَن یَسۡبِقُونَاۚ سَاۤءَ مَا یَحۡكُمُونَ</div><blockquote class="verse-embed-translation"><p>Do those who commit misdeeds suppose that they can outmaneuver Us? Evil is the judgement that they make</p><cite>— Ali Quli Qara'i</cite></blockquote></div>
+<div class="verse-embed-card"><a class="verse-embed-ref" href="/quran/verses/29-7/">Quran 29:7</a><div class="verse-embed-arabic">وَٱلَّذِینَ ءَامَنُوا۟ وَعَمِلُوا۟ ٱلصَّـٰلِحَـٰتِ لَنُكَفِّرَنَّ عَنۡهُمۡ سَیِّءَاتِهِمۡ وَلَنَجۡزِیَنَّهُمۡ أَحۡسَنَ ٱلَّذِی كَانُوا۟ یَعۡمَلُونَ</div><blockquote class="verse-embed-translation"><p>As for those who have faith and do righteous deeds, We will absolve them of their misdeeds and We will surely reward them by the best of what they used to do</p><cite>— Ali Quli Qara'i</cite></blockquote></div></td>
+</tr>
+<tr>
+<td class="tm-num">4</td>
+<td class="tm-desc">Ummah's collective trial — can span generations (e.g., Palestine; Nuh — 950 years)</td>
+<td class="tm-verse"><div class="verse-embed-card"><a class="verse-embed-ref" href="/quran/verses/29-14/">Quran 29:14</a><div class="verse-embed-arabic">وَلَقَدۡ أَرۡسَلۡنَا نُوحًا إِلَىٰ قَوۡمِهِۦ فَلَبِثَ فِیهِمۡ أَلۡفَ سَنَةٍ إِلَّا خَمۡسِینَ عَامࣰا فَأَخَذَهُمُ ٱلطُّوفَانُ وَهُمۡ ظَـٰلِمُونَ</div><blockquote class="verse-embed-translation"><p>Certainly We sent Noah to his people, and he remained with them for a thousand-less-fifty years. Then the flood overtook them while they were wrongdoers</p><cite>— Ali Quli Qara'i</cite></blockquote></div></td>
+</tr>
+<tr>
+<td class="tm-num">5</td>
+<td class="tm-desc">Trial of deception — false idols (wealth, power, alliances) promise what only Allah can give</td>
+<td class="tm-verse"><div class="verse-embed-card"><a class="verse-embed-ref" href="/quran/verses/29-17/">Quran 29:17</a><div class="verse-embed-arabic">إِنَّمَا تَعۡبُدُونَ مِن دُونِ ٱللَّهِ أَوۡثَـٰنࣰا وَتَخۡلُقُونَ إِفۡكًاۚ إِنَّ ٱلَّذِینَ تَعۡبُدُونَ مِن دُونِ ٱللَّهِ لَا یَمۡلِكُونَ لَكُمۡ رِزۡقࣰا فَٱبۡتَغُوا۟ عِندَ ٱللَّهِ ٱلرِّزۡقَ وَٱعۡبُدُوهُ وَٱشۡكُرُوا۟ لَهُۥۤۖ إِلَیۡهِ تُرۡجَعُونَ</div><blockquote class="verse-embed-translation"><p>In fact, instead of Allah you worship idols, and you invent a lie. Indeed those whom you worship besides Allah have no control over your provision. So seek all [your] provision from Allah, and worship Him and thank Him, and to Him you shall be brought back.’</p><cite>— Ali Quli Qara'i</cite></blockquote></div></td>
+</tr>
+<tr>
+<td class="tm-num">6</td>
+<td class="tm-desc">Civilizations face trials too — Qarun (wealth arrogance), Pharaoh (tyranny), Haman (corrupt administration): three pillars of collapse</td>
+<td class="tm-verse"><div class="verse-embed-card"><a class="verse-embed-ref" href="/quran/verses/29-39/">Quran 29:39</a><div class="verse-embed-arabic">وَقَـٰرُونَ وَفِرۡعَوۡنَ وَهَـٰمَـٰنَۖ وَلَقَدۡ جَاۤءَهُم مُّوسَىٰ بِٱلۡبَیِّنَـٰتِ فَٱسۡتَكۡبَرُوا۟ فِی ٱلۡأَرۡضِ وَمَا كَانُوا۟ سَـٰبِقِینَ</div><blockquote class="verse-embed-translation"><p>And Korah, Pharaoh, and Haman. Certainly Moses brought them manifest proofs, but they acted arrogantly in the land; though they could not outmaneuver [Allah]</p><cite>— Ali Quli Qara'i</cite></blockquote></div></td>
+</tr>
+<tr>
+<td class="tm-num">7</td>
+<td class="tm-desc">Rely only on Allah</td>
+<td class="tm-verse"><div class="verse-embed-card"><a class="verse-embed-ref" href="/quran/verses/29-41/">Quran 29:41</a><div class="verse-embed-arabic">مَثَلُ ٱلَّذِینَ ٱتَّخَذُوا۟ مِن دُونِ ٱللَّهِ أَوۡلِیَاۤءَ كَمَثَلِ ٱلۡعَنكَبُوتِ ٱتَّخَذَتۡ بَیۡتࣰاۖ وَإِنَّ أَوۡهَنَ ٱلۡبُیُوتِ لَبَیۡتُ ٱلۡعَنكَبُوتِۚ لَوۡ كَانُوا۟ یَعۡلَمُونَ</div><blockquote class="verse-embed-translation"><p>The parable of those who take guardians instead of Allah is that of the spider that takes a home, and indeed the frailest of homes is the home of a spider, had they known</p><cite>— Ali Quli Qara'i</cite></blockquote></div></td>
+</tr>
+<tr>
+<td class="tm-num">8</td>
+<td class="tm-desc">Reflect with intellect</td>
+<td class="tm-verse"><div class="verse-embed-card"><a class="verse-embed-ref" href="/quran/verses/29-43/">Quran 29:43</a><div class="verse-embed-arabic">وَتِلۡكَ ٱلۡأَمۡثَـٰلُ نَضۡرِبُهَا لِلنَّاسِۖ وَمَا یَعۡقِلُهَاۤ إِلَّا ٱلۡعَـٰلِمُونَ</div><blockquote class="verse-embed-translation"><p>And We draw these parables for mankind; but no one grasps them except those who have knowledge</p><cite>— Ali Quli Qara'i</cite></blockquote></div></td>
+</tr>
+<tr>
+<td class="tm-num">9</td>
+<td class="tm-desc">Establish real prayer — don't underestimate salaah</td>
+<td class="tm-verse"><div class="verse-embed-card"><a class="verse-embed-ref" href="/quran/verses/29-45/">Quran 29:45</a><div class="verse-embed-arabic">ٱتۡلُ مَاۤ أُوحِیَ إِلَیۡكَ مِنَ ٱلۡكِتَـٰبِ وَأَقِمِ ٱلصَّلَوٰةَۖ إِنَّ ٱلصَّلَوٰةَ تَنۡهَىٰ عَنِ ٱلۡفَحۡشَاۤءِ وَٱلۡمُنكَرِۗ وَلَذِكۡرُ ٱللَّهِ أَكۡبَرُۗ وَٱللَّهُ یَعۡلَمُ مَا تَصۡنَعُونَ</div><blockquote class="verse-embed-translation"><p>Recite what has been revealed to you of the Book, and maintain the prayer. Indeed the prayer prevents indecencies and wrongs, and the remembrance of Allah is surely greater. And Allah knows whatever [deeds] you do</p><cite>— Ali Quli Qara'i</cite></blockquote></div></td>
+</tr>
+<tr>
+<td class="tm-num">10</td>
+<td class="tm-desc">Trust Allah's timeline</td>
+<td class="tm-verse"><div class="verse-embed-card"><a class="verse-embed-ref" href="/quran/verses/29-25/">Quran 29:25</a><div class="verse-embed-arabic">وَقَالَ إِنَّمَا ٱتَّخَذۡتُم مِّن دُونِ ٱللَّهِ أَوۡثَـٰنࣰا مَّوَدَّةَ بَیۡنِكُمۡ فِی ٱلۡحَیَوٰةِ ٱلدُّنۡیَاۖ ثُمَّ یَوۡمَ ٱلۡقِیَـٰمَةِ یَكۡفُرُ بَعۡضُكُم بِبَعۡضࣲ وَیَلۡعَنُ بَعۡضُكُم بَعۡضࣰا وَمَأۡوَىٰكُمُ ٱلنَّارُ وَمَا لَكُم مِّن نَّـٰصِرِینَ</div><blockquote class="verse-embed-translation"><p>He said, ‘You have taken idols [for worship] besides Allah for the sake of [mutual] affection amongst yourselves in the life of the world. Then on the Day of Resurrection you will disown one another and curse one another, and the Fire will be your abode, and you will not have any helpers.’</p><cite>— Ali Quli Qara'i</cite></blockquote></div></td>
+</tr>
+<tr>
+<td class="tm-num">11</td>
+<td class="tm-desc">Remember death — <em>"Key message from Karbala: we have no fear of death"</em></td>
+<td class="tm-verse"><div class="verse-embed-card"><a class="verse-embed-ref" href="/quran/verses/29-57/">Quran 29:57</a><div class="verse-embed-arabic">كُلُّ نَفۡسࣲ ذَاۤىِٕقَةُ ٱلۡمَوۡتِۖ ثُمَّ إِلَیۡنَا تُرۡجَعُونَ</div><blockquote class="verse-embed-translation"><p>Every soul shall taste death. Then you shall be brought back to Us</p><cite>— Ali Quli Qara'i</cite></blockquote></div></td>
+</tr>
+<tr>
+<td class="tm-num">12</td>
+<td class="tm-desc">Sabr + Tawakkul</td>
+<td class="tm-verse"><div class="verse-embed-card"><a class="verse-embed-ref" href="/quran/verses/29-59/">Quran 29:59</a><div class="verse-embed-arabic">ٱلَّذِینَ صَبَرُوا۟ وَعَلَىٰ رَبِّهِمۡ یَتَوَكَّلُونَ</div><blockquote class="verse-embed-translation"><p>—Those who are patient and who put their trust in their Lord</p><cite>— Ali Quli Qara'i</cite></blockquote></div></td>
+</tr>
+<tr>
+<td class="tm-num">13</td>
+<td class="tm-desc">Trust Allah for rizq</td>
+<td class="tm-verse"><div class="verse-embed-card"><a class="verse-embed-ref" href="/quran/verses/29-60/">Quran 29:60</a><div class="verse-embed-arabic">وَكَأَیِّن مِّن دَاۤبَّةࣲ لَّا تَحۡمِلُ رِزۡقَهَا ٱللَّهُ یَرۡزُقُهَا وَإِیَّاكُمۡۚ وَهُوَ ٱلسَّمِیعُ ٱلۡعَلِیمُ</div><blockquote class="verse-embed-translation"><p>How many an animal there is that does not carry its own provision. Allah provides for it, and for you, and He is the All-hearing, the All-knowing</p><cite>— Ali Quli Qara'i</cite></blockquote></div></td>
+</tr>
+<tr>
+<td class="tm-num">14</td>
+<td class="tm-desc">Remember the aakhirah — <em>"The aakhirah is REAL LIFE; this perspective transforms every trial from tragedy → journey"</em></td>
+<td class="tm-verse"><div class="verse-embed-card"><a class="verse-embed-ref" href="/quran/verses/29-64/">Quran 29:64</a><div class="verse-embed-arabic">وَمَا هَـٰذِهِ ٱلۡحَیَوٰةُ ٱلدُّنۡیَاۤ إِلَّا لَهۡوࣱ وَلَعِبࣱۚ وَإِنَّ ٱلدَّارَ ٱلۡءَاخِرَةَ لَهِیَ ٱلۡحَیَوَانُۘ لَوۡ كَانُوا۟ یَعۡلَمُونَ</div><blockquote class="verse-embed-translation"><p>The life of this world is nothing but diversion and play, but the abode of the Hereafter is indeed Life, had they known</p><cite>— Ali Quli Qara'i</cite></blockquote></div></td>
+</tr>
+<tr>
+<td class="tm-num">15</td>
+<td class="tm-desc">Strive — guidance follows</td>
+<td class="tm-verse"><div class="verse-embed-card"><a class="verse-embed-ref" href="/quran/verses/29-69/">Quran 29:69</a><div class="verse-embed-arabic">وَٱلَّذِینَ جَـٰهَدُوا۟ فِینَا لَنَهۡدِیَنَّهُمۡ سُبُلَنَاۚ وَإِنَّ ٱللَّهَ لَمَعَ ٱلۡمُحۡسِنِینَ</div><blockquote class="verse-embed-translation"><p>As for those who strive in Us, We shall surely guide them in Our ways, and Allah is indeed with the virtuous</p><cite>— Ali Quli Qara'i</cite></blockquote></div></td>
+</tr>
+</table>
 
-<ul>
-<li>Trial purifies and corrects; hardship elevates and erases shortcoming:
-<br />
-<div class="verse-embed-card"><a class="verse-embed-ref" href="/quran/verses/29-4/">Quran 29:4</a><div class="verse-embed-arabic">أَمۡ حَسِبَ ٱلَّذِینَ یَعۡمَلُونَ ٱلسَّیِّءَاتِ أَن یَسۡبِقُونَاۚ سَاۤءَ مَا یَحۡكُمُونَ</div><blockquote class="verse-embed-translation"><p>Do those who commit misdeeds suppose that they can outmaneuver Us? Evil is the judgement that they make</p><cite>— Ali Quli Qara'i</cite></blockquote></div></li>
-</ul>
-<div class="verse-embed-card"><a class="verse-embed-ref" href="/quran/verses/29-7/">Quran 29:7</a><div class="verse-embed-arabic">وَٱلَّذِینَ ءَامَنُوا۟ وَعَمِلُوا۟ ٱلصَّـٰلِحَـٰتِ لَنُكَفِّرَنَّ عَنۡهُمۡ سَیِّءَاتِهِمۡ وَلَنَجۡزِیَنَّهُمۡ أَحۡسَنَ ٱلَّذِی كَانُوا۟ یَعۡمَلُونَ</div><blockquote class="verse-embed-translation"><p>As for those who have faith and do righteous deeds, We will absolve them of their misdeeds and We will surely reward them by the best of what they used to do</p><cite>— Ali Quli Qara'i</cite></blockquote></div>
-
-<ul>
-<li>
-<p>Ummah's collective trial — trials can span generations (e.g., Palestine; Nuh — 950 years):
-<br />
-<div class="verse-embed-card"><a class="verse-embed-ref" href="/quran/verses/29-14/">Quran 29:14</a><div class="verse-embed-arabic">وَلَقَدۡ أَرۡسَلۡنَا نُوحًا إِلَىٰ قَوۡمِهِۦ فَلَبِثَ فِیهِمۡ أَلۡفَ سَنَةٍ إِلَّا خَمۡسِینَ عَامࣰا فَأَخَذَهُمُ ٱلطُّوفَانُ وَهُمۡ ظَـٰلِمُونَ</div><blockquote class="verse-embed-translation"><p>Certainly We sent Noah to his people, and he remained with them for a thousand-less-fifty years. Then the flood overtook them while they were wrongdoers</p><cite>— Ali Quli Qara'i</cite></blockquote></div>
-</p>
-</li>
-<li>
-<p>Trial of deception — false idols (wealth, power, alliances) promise what only Allah can give:
-<br />
-<div class="verse-embed-card"><a class="verse-embed-ref" href="/quran/verses/29-17/">Quran 29:17</a><div class="verse-embed-arabic">إِنَّمَا تَعۡبُدُونَ مِن دُونِ ٱللَّهِ أَوۡثَـٰنࣰا وَتَخۡلُقُونَ إِفۡكًاۚ إِنَّ ٱلَّذِینَ تَعۡبُدُونَ مِن دُونِ ٱللَّهِ لَا یَمۡلِكُونَ لَكُمۡ رِزۡقࣰا فَٱبۡتَغُوا۟ عِندَ ٱللَّهِ ٱلرِّزۡقَ وَٱعۡبُدُوهُ وَٱشۡكُرُوا۟ لَهُۥۤۖ إِلَیۡهِ تُرۡجَعُونَ</div><blockquote class="verse-embed-translation"><p>In fact, instead of Allah you worship idols, and you invent a lie. Indeed those whom you worship besides Allah have no control over your provision. So seek all [your] provision from Allah, and worship Him and thank Him, and to Him you shall be brought back.’</p><cite>— Ali Quli Qara'i</cite></blockquote></div>
-</p>
-</li>
-<li>
-<p>Civilizations face trials too — Qarun (wealth arrogance), Pharaoh (tyranny), Haman (corrupt administration): three pillars of collapse:
-<br />
-<div class="verse-embed-card"><a class="verse-embed-ref" href="/quran/verses/29-39/">Quran 29:39</a><div class="verse-embed-arabic">وَقَـٰرُونَ وَفِرۡعَوۡنَ وَهَـٰمَـٰنَۖ وَلَقَدۡ جَاۤءَهُم مُّوسَىٰ بِٱلۡبَیِّنَـٰتِ فَٱسۡتَكۡبَرُوا۟ فِی ٱلۡأَرۡضِ وَمَا كَانُوا۟ سَـٰبِقِینَ</div><blockquote class="verse-embed-translation"><p>And Korah, Pharaoh, and Haman. Certainly Moses brought them manifest proofs, but they acted arrogantly in the land; though they could not outmaneuver [Allah]</p><cite>— Ali Quli Qara'i</cite></blockquote></div>
-</p>
-</li>
-<li>
-<p>Rely only on Allah:
-<br />
-<div class="verse-embed-card"><a class="verse-embed-ref" href="/quran/verses/29-41/">Quran 29:41</a><div class="verse-embed-arabic">مَثَلُ ٱلَّذِینَ ٱتَّخَذُوا۟ مِن دُونِ ٱللَّهِ أَوۡلِیَاۤءَ كَمَثَلِ ٱلۡعَنكَبُوتِ ٱتَّخَذَتۡ بَیۡتࣰاۖ وَإِنَّ أَوۡهَنَ ٱلۡبُیُوتِ لَبَیۡتُ ٱلۡعَنكَبُوتِۚ لَوۡ كَانُوا۟ یَعۡلَمُونَ</div><blockquote class="verse-embed-translation"><p>The parable of those who take guardians instead of Allah is that of the spider that takes a home, and indeed the frailest of homes is the home of a spider, had they known</p><cite>— Ali Quli Qara'i</cite></blockquote></div>
-</p>
-</li>
-<li>
-<p>Reflect with intellect:
-<br />
-<div class="verse-embed-card"><a class="verse-embed-ref" href="/quran/verses/29-43/">Quran 29:43</a><div class="verse-embed-arabic">وَتِلۡكَ ٱلۡأَمۡثَـٰلُ نَضۡرِبُهَا لِلنَّاسِۖ وَمَا یَعۡقِلُهَاۤ إِلَّا ٱلۡعَـٰلِمُونَ</div><blockquote class="verse-embed-translation"><p>And We draw these parables for mankind; but no one grasps them except those who have knowledge</p><cite>— Ali Quli Qara'i</cite></blockquote></div>
-</p>
-</li>
-<li>
-<p>Establish real prayer — don't underestimate salaah:
-<br />
-<div class="verse-embed-card"><a class="verse-embed-ref" href="/quran/verses/29-45/">Quran 29:45</a><div class="verse-embed-arabic">ٱتۡلُ مَاۤ أُوحِیَ إِلَیۡكَ مِنَ ٱلۡكِتَـٰبِ وَأَقِمِ ٱلصَّلَوٰةَۖ إِنَّ ٱلصَّلَوٰةَ تَنۡهَىٰ عَنِ ٱلۡفَحۡشَاۤءِ وَٱلۡمُنكَرِۗ وَلَذِكۡرُ ٱللَّهِ أَكۡبَرُۗ وَٱللَّهُ یَعۡلَمُ مَا تَصۡنَعُونَ</div><blockquote class="verse-embed-translation"><p>Recite what has been revealed to you of the Book, and maintain the prayer. Indeed the prayer prevents indecencies and wrongs, and the remembrance of Allah is surely greater. And Allah knows whatever [deeds] you do</p><cite>— Ali Quli Qara'i</cite></blockquote></div>
-</p>
-</li>
-<li>
-<p>Trust Allah's timeline:
-<br />
-<div class="verse-embed-card"><a class="verse-embed-ref" href="/quran/verses/29-25/">Quran 29:25</a><div class="verse-embed-arabic">وَقَالَ إِنَّمَا ٱتَّخَذۡتُم مِّن دُونِ ٱللَّهِ أَوۡثَـٰنࣰا مَّوَدَّةَ بَیۡنِكُمۡ فِی ٱلۡحَیَوٰةِ ٱلدُّنۡیَاۖ ثُمَّ یَوۡمَ ٱلۡقِیَـٰمَةِ یَكۡفُرُ بَعۡضُكُم بِبَعۡضࣲ وَیَلۡعَنُ بَعۡضُكُم بَعۡضࣰا وَمَأۡوَىٰكُمُ ٱلنَّارُ وَمَا لَكُم مِّن نَّـٰصِرِینَ</div><blockquote class="verse-embed-translation"><p>He said, ‘You have taken idols [for worship] besides Allah for the sake of [mutual] affection amongst yourselves in the life of the world. Then on the Day of Resurrection you will disown one another and curse one another, and the Fire will be your abode, and you will not have any helpers.’</p><cite>— Ali Quli Qara'i</cite></blockquote></div>
-</p>
-</li>
-<li>
-<p>Remember death — <em>"Key message from Karbala: we have no fear of death"</em>:
-<br />
-<div class="verse-embed-card"><a class="verse-embed-ref" href="/quran/verses/29-57/">Quran 29:57</a><div class="verse-embed-arabic">كُلُّ نَفۡسࣲ ذَاۤىِٕقَةُ ٱلۡمَوۡتِۖ ثُمَّ إِلَیۡنَا تُرۡجَعُونَ</div><blockquote class="verse-embed-translation"><p>Every soul shall taste death. Then you shall be brought back to Us</p><cite>— Ali Quli Qara'i</cite></blockquote></div>
-</p>
-</li>
-<li>
-<p>Sabr + Tawakkul:
-<br />
-<div class="verse-embed-card"><a class="verse-embed-ref" href="/quran/verses/29-59/">Quran 29:59</a><div class="verse-embed-arabic">ٱلَّذِینَ صَبَرُوا۟ وَعَلَىٰ رَبِّهِمۡ یَتَوَكَّلُونَ</div><blockquote class="verse-embed-translation"><p>—Those who are patient and who put their trust in their Lord</p><cite>— Ali Quli Qara'i</cite></blockquote></div>
-</p>
-</li>
-<li>
-<p>Trust Allah for rizq:
-<br />
-<div class="verse-embed-card"><a class="verse-embed-ref" href="/quran/verses/29-60/">Quran 29:60</a><div class="verse-embed-arabic">وَكَأَیِّن مِّن دَاۤبَّةࣲ لَّا تَحۡمِلُ رِزۡقَهَا ٱللَّهُ یَرۡزُقُهَا وَإِیَّاكُمۡۚ وَهُوَ ٱلسَّمِیعُ ٱلۡعَلِیمُ</div><blockquote class="verse-embed-translation"><p>How many an animal there is that does not carry its own provision. Allah provides for it, and for you, and He is the All-hearing, the All-knowing</p><cite>— Ali Quli Qara'i</cite></blockquote></div>
-</p>
-</li>
-<li>
-<p>Remember the aakhirah — <em>"The aakhirah is REAL LIFE; this perspective transforms every trial from tragedy → journey"</em>:
-<br />
-<div class="verse-embed-card"><a class="verse-embed-ref" href="/quran/verses/29-64/">Quran 29:64</a><div class="verse-embed-arabic">وَمَا هَـٰذِهِ ٱلۡحَیَوٰةُ ٱلدُّنۡیَاۤ إِلَّا لَهۡوࣱ وَلَعِبࣱۚ وَإِنَّ ٱلدَّارَ ٱلۡءَاخِرَةَ لَهِیَ ٱلۡحَیَوَانُۘ لَوۡ كَانُوا۟ یَعۡلَمُونَ</div><blockquote class="verse-embed-translation"><p>The life of this world is nothing but diversion and play, but the abode of the Hereafter is indeed Life, had they known</p><cite>— Ali Quli Qara'i</cite></blockquote></div>
-</p>
-</li>
-<li>
-<p>Strive — guidance follows:
-<br />
-<div class="verse-embed-card"><a class="verse-embed-ref" href="/quran/verses/29-69/">Quran 29:69</a><div class="verse-embed-arabic">وَٱلَّذِینَ جَـٰهَدُوا۟ فِینَا لَنَهۡدِیَنَّهُمۡ سُبُلَنَاۚ وَإِنَّ ٱللَّهَ لَمَعَ ٱلۡمُحۡسِنِینَ</div><blockquote class="verse-embed-translation"><p>As for those who strive in Us, We shall surely guide them in Our ways, and Allah is indeed with the virtuous</p><cite>— Ali Quli Qara'i</cite></blockquote></div>
-</p>
-</li>
-</ul>
 <hr />
 <h2 id="sabr-tawakkul">Sabr + Tawakkul</h2>
 <ul>

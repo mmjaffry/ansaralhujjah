@@ -164,6 +164,30 @@
     .verse-embed-translation cite {
       font-family: "Alegreya SC", serif; font-size: 0.78rem; color: var(--text-muted); font-style: normal;
     }
+    /* Snap verse cards to article left edge when inside list items */
+    .article li .verse-embed-card {
+      margin-left: -24px;
+      width: calc(100% + 24px);
+    }
+
+    /* ── How to Handle Trials table ── */
+    .article .trials-map {
+      width: 100%; border-collapse: collapse; margin: 12px 0 32px;
+    }
+    .article .trials-map td {
+      vertical-align: top; padding: 18px 0; border: none;
+    }
+    .article .trials-map .tm-num {
+      width: 2em; font-family: "Alegreya SC", serif; font-size: 0.82rem;
+      color: var(--text-muted); letter-spacing: 0.05em;
+      white-space: nowrap; padding-right: 12px;
+    }
+    .article .trials-map .tm-desc {
+      width: 38%; font-size: 1.0rem; line-height: 1.75;
+      color: var(--text); padding-right: 24px;
+    }
+    .article .trials-map .verse-embed-card { margin: 0; }
+    .article .trials-map .verse-embed-card + .verse-embed-card { margin-top: 16px; }
 
     /* ── Session nav ── */
     .session-nav {

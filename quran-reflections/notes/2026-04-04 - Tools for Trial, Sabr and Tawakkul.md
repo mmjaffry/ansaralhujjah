@@ -59,54 +59,89 @@ Categories of testing: **fear, hunger, loss of wealth, loss of life, loss of fru
 
 ![[Quran 29-4]]
 
-### How to Handle Trials — Full Map
+---
 
-- Trial as Divine Law:
-  ![[Quran 2-155]]
+## How to Handle Trials — Full Map
 
-- Trial is verification of sincerity; unchanging sunnah. *"This world is a gym — successive increase of trials to gradually grow us."*
-  ![[Quran 29-2]]
-  ![[Quran 29-3]]
-
-- Trial purifies and corrects; hardship elevates and erases shortcoming:
-  ![[Quran 29-4]]
-  ![[Quran 29-7]]
-
-- Ummah's collective trial — trials can span generations (e.g., Palestine; Nuh — 950 years):
-  ![[Quran 29-14]]
-
-- Trial of deception — false idols (wealth, power, alliances) promise what only Allah can give:
-  ![[Quran 29-17]]
-
-- Civilizations face trials too — Qarun (wealth arrogance), Pharaoh (tyranny), Haman (corrupt administration): three pillars of collapse:
-  ![[Quran 29-39]]
-
-- Rely only on Allah:
-  ![[Quran 29-41]]
-
-- Reflect with intellect:
-  ![[Quran 29-43]]
-
-- Establish real prayer — don't underestimate salaah:
-  ![[Quran 29-45]]
-
-- Trust Allah's timeline:
-  ![[Quran 29-25]]
-
-- Remember death — *"Key message from Karbala: we have no fear of death"*:
-  ![[Quran 29-57]]
-
-- Sabr + Tawakkul:
-  ![[Quran 29-59]]
-
-- Trust Allah for rizq:
-  ![[Quran 29-60]]
-
-- Remember the aakhirah — *"The aakhirah is REAL LIFE; this perspective transforms every trial from tragedy → journey"*:
-  ![[Quran 29-64]]
-
-- Strive — guidance follows:
-  ![[Quran 29-69]]
+<table class="trials-map">
+<tr>
+<td class="tm-num">1</td>
+<td class="tm-desc">Trial as Divine Law</td>
+<td class="tm-verse">![[Quran 2-155]]</td>
+</tr>
+<tr>
+<td class="tm-num">2</td>
+<td class="tm-desc">Trial is Divine Verification; unchanging sunnah — <em>"This world is a gym — successive increase of trials to gradually grow us."</em></td>
+<td class="tm-verse">![[Quran 29-2]]
+![[Quran 29-3]]</td>
+</tr>
+<tr>
+<td class="tm-num">3</td>
+<td class="tm-desc">Trial purifies and corrects; hardship elevates and erases shortcomings</td>
+<td class="tm-verse">![[Quran 29-4]]
+![[Quran 29-7]]</td>
+</tr>
+<tr>
+<td class="tm-num">4</td>
+<td class="tm-desc">Ummah's collective trial — can span generations (e.g., Palestine; Nuh — 950 years)</td>
+<td class="tm-verse">![[Quran 29-14]]</td>
+</tr>
+<tr>
+<td class="tm-num">5</td>
+<td class="tm-desc">Trial of deception — false idols (wealth, power, alliances) promise what only Allah can give</td>
+<td class="tm-verse">![[Quran 29-17]]</td>
+</tr>
+<tr>
+<td class="tm-num">6</td>
+<td class="tm-desc">Civilizations face trials too — Qarun (wealth arrogance), Pharaoh (tyranny), Haman (corrupt administration): three pillars of collapse</td>
+<td class="tm-verse">![[Quran 29-39]]</td>
+</tr>
+<tr>
+<td class="tm-num">7</td>
+<td class="tm-desc">Rely only on Allah</td>
+<td class="tm-verse">![[Quran 29-41]]</td>
+</tr>
+<tr>
+<td class="tm-num">8</td>
+<td class="tm-desc">Reflect with intellect</td>
+<td class="tm-verse">![[Quran 29-43]]</td>
+</tr>
+<tr>
+<td class="tm-num">9</td>
+<td class="tm-desc">Establish real prayer — don't underestimate salaah</td>
+<td class="tm-verse">![[Quran 29-45]]</td>
+</tr>
+<tr>
+<td class="tm-num">10</td>
+<td class="tm-desc">Trust Allah's timeline</td>
+<td class="tm-verse">![[Quran 29-25]]</td>
+</tr>
+<tr>
+<td class="tm-num">11</td>
+<td class="tm-desc">Remember death — <em>"Key message from Karbala: we have no fear of death"</em></td>
+<td class="tm-verse">![[Quran 29-57]]</td>
+</tr>
+<tr>
+<td class="tm-num">12</td>
+<td class="tm-desc">Sabr + Tawakkul</td>
+<td class="tm-verse">![[Quran 29-59]]</td>
+</tr>
+<tr>
+<td class="tm-num">13</td>
+<td class="tm-desc">Trust Allah for rizq</td>
+<td class="tm-verse">![[Quran 29-60]]</td>
+</tr>
+<tr>
+<td class="tm-num">14</td>
+<td class="tm-desc">Remember the aakhirah — <em>"The aakhirah is REAL LIFE; this perspective transforms every trial from tragedy → journey"</em></td>
+<td class="tm-verse">![[Quran 29-64]]</td>
+</tr>
+<tr>
+<td class="tm-num">15</td>
+<td class="tm-desc">Strive — guidance follows</td>
+<td class="tm-verse">![[Quran 29-69]]</td>
+</tr>
+</table>
 
 ---
 

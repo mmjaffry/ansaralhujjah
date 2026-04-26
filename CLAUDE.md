@@ -194,6 +194,17 @@ CSS custom properties — see `PROJECT.md` for the full token table. Key values:
 - Fonts (inner pages): EB Garamond (body), Playfair Display (headings), Alegreya SC (nav/metadata/small caps), Amiri (Arabic) via Google Fonts
 - Fonts (homepage `index.html`): Cinzel/Lato — unchanged
 
+### Verse Card Alignment
+
+`.verse-embed-card` elements inside `<li>` items are pulled back to the article left edge via `.article li .verse-embed-card { margin-left: -24px; width: calc(100% + 24px); }` — compensates for `ul/ol { padding-left: 24px }`. This is a site-wide rule in `build_notes.py`.
+
+For borderless 3-column reference tables in session notes, use raw HTML with class `trials-map`:
+- Col 1 `tm-num`: row number (Alegreya SC, muted)
+- Col 2 `tm-desc`: description text
+- Col 3 `tm-verse`: `![[Quran S-V]]` wikilinks — processed by `replace_verse_embeds` since lines inside `<td>` don't start with `#`, `|`, or `>`
+
+`.article .trials-map` CSS is scoped under `.article` to win specificity over the general `.article td` border rule (0,2,1 beats 0,2,0).
+
 ### Inner Page Layout Rule
 
 Cards (glassmorphism boxes) are restricted to `index.html` (homepage). All inner pages use a plain article style — content flows directly on the warm beige gradient with a `border-top: 2px solid var(--accent-mid)` rule as visual anchoring. Do not introduce card wrappers on session, verse, or surah pages.
