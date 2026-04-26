@@ -8,7 +8,7 @@ surahs:
 ---
 
 # Surah Ankabut - Big Picture
-**Sat. March 7, 2026 · Molana Farhat Abbas · [[Quran Reflections - Overview|Overview]]** [[2026-03-14 - Life's Tests, Shaytaan's Traps, Fragility of False Power|→]]
+**Sat. March 7, 2026 · Molana Farhat Abbas**
 
 ---
 

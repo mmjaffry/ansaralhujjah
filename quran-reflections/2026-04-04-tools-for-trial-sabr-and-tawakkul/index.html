@@ -57,14 +57,20 @@
       margin-bottom: 10px; line-height: 1.25;
     }
     .article h1 + p {
-      font-family: "Alegreya SC", serif; font-size: 0.88rem;
-      color: var(--text-muted); line-height: 1.5; margin-bottom: 28px;
+      font-size: 1.05rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 14px;
     }
-    .article h1 + p a {
-      color: var(--text-muted); text-decoration: none; transition: color 0.2s;
+    .article-header-nav {
+      display: flex; gap: 8px; margin-bottom: 32px;
     }
-    .article h1 + p a:hover { color: var(--accent-mid); }
-    .article h1 + p strong { color: var(--text); font-weight: 600; }
+    .header-nav-btn {
+      flex: 1; text-align: center; padding: 7px 10px;
+      font-family: "Alegreya SC", serif; font-size: 0.8rem; letter-spacing: 0.04em;
+      border: 1px solid rgba(148,62,12,0.22); border-radius: 6px;
+      text-decoration: none; color: var(--text-muted); background: rgba(148,62,12,0.03);
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .header-nav-btn:hover { border-color: rgba(148,62,12,0.45); color: var(--accent-mid); }
+    .header-nav-btn.disabled { opacity: 0.35; cursor: default; }
     .article h2 {
       font-family: "Playfair Display", serif; font-size: 1.2rem; font-weight: 600;
       color: var(--accent-mid);
@@ -198,7 +204,8 @@
 
     <article class="article">
       <h1 id="surah-ankabut-tools-for-the-trial-levels-of-quran-sabr-tawakkul">Surah Ankabut - Tools for the Trial: Levels of Quran, Sabr &amp; Tawakkul</h1>
-<p><a href="/quran-reflections/2026-03-14-lifes-tests-shaytaans-traps-fragility-of-false-power/">←</a> <strong>Sat. April 4, 2026 · Molana Farhat Abbas · <a href="/quran-reflections/">Overview</a></strong> <a href="/quran-reflections/2026-04-11-sabr-tawakkul-and-dunya-is-a-play/">→</a></p>
+<p><strong>Sat. April 4, 2026 · Molana Farhat Abbas</strong></p>
+<div class="article-header-nav"><a class="header-nav-btn" href="/quran-reflections/2026-03-14-lifes-tests-shaytaans-traps-fragility-of-false-power/">← Previous</a><a class="header-nav-btn" href="/quran-reflections/">Overview</a><a class="header-nav-btn" href="/quran-reflections/2026-04-11-sabr-tawakkul-and-dunya-is-a-play/">Next →</a></div>
 <hr />
 <h2 id="six-levels-of-benefitting-from-the-quran">Six Levels of Benefitting from the Quran</h2>
 <p>Every level carries benefit, but we should aim higher:</p>

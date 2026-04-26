@@ -8,7 +8,7 @@ surahs:
 ---
 
 # Surah Ankabut - Life's Tests, Shaytaan's Psychological Traps, and the Fragility of False Power
-[[2026-03-07 - Surah Ankabut Big Picture|←]] **Sat. March 14, 2026 · Molana Farhat Abbas · [[Quran Reflections - Overview|Overview]]** [[2026-04-04 - Tools for Trial, Sabr and Tawakkul|→]]
+**Sat. March 14, 2026 · Molana Farhat Abbas**
 
 ---
 

@@ -270,6 +270,22 @@ def render_page(title, content_html, prev_session, next_session):
         if next_session else '<span></span>'
     )
 
+    prev_box = (
+        f'<a class="header-nav-btn" href="{PROGRAM_URL}/{prev_session[1]}/">← Previous</a>'
+        if prev_session else
+        '<span class="header-nav-btn disabled">← Previous</span>'
+    )
+    overview_box = f'<a class="header-nav-btn" href="{PROGRAM_URL}/">Overview</a>'
+    next_box = (
+        f'<a class="header-nav-btn" href="{PROGRAM_URL}/{next_session[1]}/">Next →</a>'
+        if next_session else
+        '<span class="header-nav-btn disabled">Next →</span>'
+    )
+    header_nav = f'<div class="article-header-nav">{prev_box}{overview_box}{next_box}</div>'
+    content_for_page = content_html.replace('<hr />', header_nav + '\n<hr />', 1)
+    if content_for_page == content_html:
+        content_for_page = header_nav + '\n' + content_html
+
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -329,14 +345,20 @@ def render_page(title, content_html, prev_session, next_session):
       margin-bottom: 10px; line-height: 1.25;
     }}
     .article h1 + p {{
-      font-family: "Alegreya SC", serif; font-size: 0.88rem;
-      color: var(--text-muted); line-height: 1.5; margin-bottom: 28px;
+      font-size: 1.05rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 14px;
     }}
-    .article h1 + p a {{
-      color: var(--text-muted); text-decoration: none; transition: color 0.2s;
+    .article-header-nav {{
+      display: flex; gap: 8px; margin-bottom: 32px;
     }}
-    .article h1 + p a:hover {{ color: var(--accent-mid); }}
-    .article h1 + p strong {{ color: var(--text); font-weight: 600; }}
+    .header-nav-btn {{
+      flex: 1; text-align: center; padding: 7px 10px;
+      font-family: "Alegreya SC", serif; font-size: 0.8rem; letter-spacing: 0.04em;
+      border: 1px solid rgba(148,62,12,0.22); border-radius: 6px;
+      text-decoration: none; color: var(--text-muted); background: rgba(148,62,12,0.03);
+      transition: border-color 0.2s, color 0.2s;
+    }}
+    .header-nav-btn:hover {{ border-color: rgba(148,62,12,0.45); color: var(--accent-mid); }}
+    .header-nav-btn.disabled {{ opacity: 0.35; cursor: default; }}
     .article h2 {{
       font-family: "Playfair Display", serif; font-size: 1.2rem; font-weight: 600;
       color: var(--accent-mid);
@@ -469,7 +491,7 @@ def render_page(title, content_html, prev_session, next_session):
     </nav>
 
     <article class="article">
-      {content_html}
+      {content_for_page}
     </article>
 
     <nav class="session-nav">
