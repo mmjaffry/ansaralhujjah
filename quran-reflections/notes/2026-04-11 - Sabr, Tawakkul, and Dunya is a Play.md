@@ -83,7 +83,7 @@ Multiple dimensions of success → health problems, spouse problems, school, car
 
 > *Dunya is a play — have sabr. Therefore, build trust with Allah. This is not where the story ends.*
 
-Key verses: [[Quran 29-64]] · [[Quran 29-59]]
+Key verses: [[Quran 29-64]] [[Quran 29-59]]
 
 ---
 
