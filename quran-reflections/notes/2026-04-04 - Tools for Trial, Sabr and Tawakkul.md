@@ -63,85 +63,55 @@ Categories of testing: **fear, hunger, loss of wealth, loss of life, loss of fru
 
 ## How to Handle Trials — Full Map
 
-<table class="trials-map">
-<tr>
-<td class="tm-num">1</td>
-<td class="tm-desc">Trial as Divine Law</td>
-<td class="tm-verse">![[Quran 2-155]]</td>
-</tr>
-<tr>
-<td class="tm-num">2</td>
-<td class="tm-desc">Trial is Divine Verification; unchanging sunnah — <em>"This world is a gym — successive increase of trials to gradually grow us."</em></td>
-<td class="tm-verse">![[Quran 29-2]]
-![[Quran 29-3]]</td>
-</tr>
-<tr>
-<td class="tm-num">3</td>
-<td class="tm-desc">Trial purifies and corrects; hardship elevates and erases shortcomings</td>
-<td class="tm-verse">![[Quran 29-4]]
-![[Quran 29-7]]</td>
-</tr>
-<tr>
-<td class="tm-num">4</td>
-<td class="tm-desc">Ummah's collective trial — can span generations (e.g., Palestine; Nuh — 950 years)</td>
-<td class="tm-verse">![[Quran 29-14]]</td>
-</tr>
-<tr>
-<td class="tm-num">5</td>
-<td class="tm-desc">Trial of deception — false idols (wealth, power, alliances) promise what only Allah can give</td>
-<td class="tm-verse">![[Quran 29-17]]</td>
-</tr>
-<tr>
-<td class="tm-num">6</td>
-<td class="tm-desc">Civilizations face trials too — Qarun (wealth arrogance), Pharaoh (tyranny), Haman (corrupt administration): three pillars of collapse</td>
-<td class="tm-verse">![[Quran 29-39]]</td>
-</tr>
-<tr>
-<td class="tm-num">7</td>
-<td class="tm-desc">Rely only on Allah</td>
-<td class="tm-verse">![[Quran 29-41]]</td>
-</tr>
-<tr>
-<td class="tm-num">8</td>
-<td class="tm-desc">Reflect with intellect</td>
-<td class="tm-verse">![[Quran 29-43]]</td>
-</tr>
-<tr>
-<td class="tm-num">9</td>
-<td class="tm-desc">Establish real prayer — don't underestimate salaah</td>
-<td class="tm-verse">![[Quran 29-45]]</td>
-</tr>
-<tr>
-<td class="tm-num">10</td>
-<td class="tm-desc">Trust Allah's timeline</td>
-<td class="tm-verse">![[Quran 29-25]]</td>
-</tr>
-<tr>
-<td class="tm-num">11</td>
-<td class="tm-desc">Remember death — <em>"Key message from Karbala: we have no fear of death"</em></td>
-<td class="tm-verse">![[Quran 29-57]]</td>
-</tr>
-<tr>
-<td class="tm-num">12</td>
-<td class="tm-desc">Sabr + Tawakkul</td>
-<td class="tm-verse">![[Quran 29-59]]</td>
-</tr>
-<tr>
-<td class="tm-num">13</td>
-<td class="tm-desc">Trust Allah for rizq</td>
-<td class="tm-verse">![[Quran 29-60]]</td>
-</tr>
-<tr>
-<td class="tm-num">14</td>
-<td class="tm-desc">Remember the aakhirah — <em>"The aakhirah is REAL LIFE; this perspective transforms every trial from tragedy → journey"</em></td>
-<td class="tm-verse">![[Quran 29-64]]</td>
-</tr>
-<tr>
-<td class="tm-num">15</td>
-<td class="tm-desc">Strive — guidance follows</td>
-<td class="tm-verse">![[Quran 29-69]]</td>
-</tr>
-</table>
+<ol class="trials-list">
+<li><p>Trial as Divine Law</p>
+![[Quran 2-155]]
+</li>
+<li><p>Trial is Divine Verification; unchanging sunnah — <em>"This world is a gym — successive increase of trials to gradually grow us."</em></p>
+![[Quran 29-2]]
+![[Quran 29-3]]
+</li>
+<li><p>Trial purifies and corrects; hardship elevates and erases shortcomings</p>
+![[Quran 29-4]]
+![[Quran 29-7]]
+</li>
+<li><p>Ummah's collective trial — can span generations (e.g., Palestine; Nuh — 950 years)</p>
+![[Quran 29-14]]
+</li>
+<li><p>Trial of deception — false idols (wealth, power, alliances) promise what only Allah can give</p>
+![[Quran 29-17]]
+</li>
+<li><p>Civilizations face trials too — Qarun (wealth arrogance), Pharaoh (tyranny), Haman (corrupt administration): three pillars of collapse</p>
+![[Quran 29-39]]
+</li>
+<li><p>Rely only on Allah</p>
+![[Quran 29-41]]
+</li>
+<li><p>Reflect with intellect</p>
+![[Quran 29-43]]
+</li>
+<li><p>Establish real prayer — don't underestimate salaah</p>
+![[Quran 29-45]]
+</li>
+<li><p>Trust Allah's timeline</p>
+![[Quran 29-25]]
+</li>
+<li><p>Remember death — <em>"Key message from Karbala: we have no fear of death"</em></p>
+![[Quran 29-57]]
+</li>
+<li><p>Sabr + Tawakkul</p>
+![[Quran 29-59]]
+</li>
+<li><p>Trust Allah for rizq</p>
+![[Quran 29-60]]
+</li>
+<li><p>Remember the aakhirah — <em>"The aakhirah is REAL LIFE; this perspective transforms every trial from tragedy → journey"</em></p>
+![[Quran 29-64]]
+</li>
+<li><p>Strive — guidance follows</p>
+![[Quran 29-69]]
+</li>
+</ol>
 
 ---
 

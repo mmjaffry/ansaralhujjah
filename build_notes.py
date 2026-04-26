@@ -458,32 +458,21 @@ def render_page(title, content_html, prev_session, next_session):
       width: calc(100% + 24px);
     }}
 
-    /* ── How to Handle Trials table ── */
-    .article .trials-map {{
-      width: 100%; border-collapse: collapse; margin: 12px 0 32px;
+    /* ── Trials reference list (numbered, compact verses) ── */
+    .article .trials-list {{ padding-left: 24px; margin: 0 0 16px; }}
+    .article .trials-list li {{ font-size: 1.05rem; line-height: 1.8; color: var(--text); margin-bottom: 4px; }}
+    .article .trials-list li p {{ margin-bottom: 0; }}
+    .article .trials-list .verse-embed-card {{
+      margin-left: -24px; width: calc(100% + 24px);
+      margin-top: 6px; margin-bottom: 8px;
+      padding: 8px 0 8px 14px;
     }}
-    .article .trials-map td {{
-      vertical-align: top; padding: 18px 0; border: none;
+    .article .trials-list .verse-embed-ref {{ font-size: 0.75rem; margin-bottom: 6px; }}
+    .article .trials-list .verse-embed-arabic {{
+      font-size: 1.2rem; line-height: 1.7; margin-bottom: 6px; padding-bottom: 6px;
     }}
-    .article .trials-map .tm-num {{
-      width: 2em; font-family: "Alegreya SC", serif; font-size: 0.82rem;
-      color: var(--text-muted); letter-spacing: 0.05em;
-      white-space: nowrap; padding-right: 12px;
-    }}
-    .article .trials-map .tm-desc {{
-      width: 28%; font-size: 1.0rem; line-height: 1.75;
-      color: var(--text); padding-right: 24px;
-    }}
-    .article .trials-map .verse-embed-card {{ margin: 0; }}
-    .article .trials-map .verse-embed-card + .verse-embed-card {{ margin-top: 14px; }}
-    .article .trials-map .verse-embed-ref {{ margin-bottom: 8px; }}
-    .article .trials-map .verse-embed-arabic {{
-      font-size: 1.25rem; line-height: 1.75; margin-bottom: 8px; padding-bottom: 8px;
-    }}
-    .article .trials-map .verse-embed-translation p {{
-      font-size: 0.85rem; line-height: 1.6;
-    }}
-    .article .trials-map .verse-embed-translation cite {{ font-size: 0.72rem; }}
+    .article .trials-list .verse-embed-translation p {{ font-size: 0.82rem; line-height: 1.55; }}
+    .article .trials-list .verse-embed-translation cite {{ font-size: 0.7rem; }}
 
     /* ── Session nav ── */
     .session-nav {{
