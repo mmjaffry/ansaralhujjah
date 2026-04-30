@@ -16,6 +16,11 @@ See `PROJECT.md` for full human-readable documentation. Summary: static site for
 
 ## Deployment
 
+**Dependencies (one-time):**
+```bash
+pip3 install markdown pyyaml
+```
+
 **Homepage changes** — no build step, push directly:
 ```bash
 git push origin main
@@ -198,12 +203,18 @@ CSS custom properties — see `PROJECT.md` for the full token table. Key values:
 
 `.verse-embed-card` elements inside `<li>` items are pulled back to the article left edge via `.article li .verse-embed-card { margin-left: -24px; width: calc(100% + 24px); }` — compensates for `ul/ol { padding-left: 24px }`. This is a site-wide rule in `build_notes.py`.
 
-For borderless 3-column reference tables in session notes, use raw HTML with class `trials-map`:
-- Col 1 `tm-num`: row number (Alegreya SC, muted)
-- Col 2 `tm-desc`: description text
-- Col 3 `tm-verse`: `![[Quran S-V]]` wikilinks — processed by `replace_verse_embeds` since lines inside `<td>` don't start with `#`, `|`, or `>`
-
-`.article .trials-map` CSS is scoped under `.article` to win specificity over the general `.article td` border rule (0,2,1 beats 0,2,0).
+For numbered lists of trials with inline verse embeds, use raw HTML with class `trials-list`:
+```html
+<ol class="trials-list">
+<li><p>Trial description or subheading</p>
+![[Quran S-V]]
+</li>
+</ol>
+```
+- `<p>` inside `<li>` renders as a Playfair Display bold subheading (1.05rem, weight 600) — the CSS uses `li > p` (direct child, not descendant) so that `<p>` elements nested inside verse cards within the same `<li>` are not styled as headings
+- `![[Quran S-V]]` wikilinks inside `<li>` are processed into verse cards (lines in `<td>`/`<li>` don't start with `#`, `|`, or `>`, so `replace_verse_embeds` handles them)
+- Verse cards within `.trials-list` get compact styling: 1.2rem Arabic, 0.82rem translation, reduced padding
+- The general `.article li .verse-embed-card` rule already pulls cards to the article left edge
 
 ### Inner Page Layout Rule
 
