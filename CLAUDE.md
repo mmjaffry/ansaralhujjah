@@ -91,7 +91,7 @@ These markers are contracts — do not remove or reformat them:
 ### Card System
 
 **Two card types:**
-- **Pinned cards** (`PINNED_DEFAULTS`): fixed keys `sisters` / `quran` — stored under `aah_pinned` in localStorage. Can be hidden (`removed: true`) but not deleted.
+- **Pinned cards** (`PINNED_DEFAULTS`, keys listed in `PINNED_KEYS`): fixed keys `sisters` / `quran` / `whatsapp` / `instagram` — stored under `aah_pinned` in localStorage. Can be hidden (`removed: true`) but not deleted. `whatsapp`/`instagram` are permanent program cards (distinct from the floating `.social-float` corner icons, which still exist separately and are not admin-managed). To add another fixed card, add it to `PINNED_KEYS` and `PINNED_DEFAULTS` — every other reference to pinned cards in `admin/index.html` reads from `PINNED_KEYS`, not a hardcoded key list.
 - **Event cards**: created via admin — stored under `aah_events` in localStorage with IDs like `Date.now().toString(36)` (base-36 timestamp).
 
 Card ordering: `aah_card_order` (localStorage). Auth session: `aah_authed` (sessionStorage).

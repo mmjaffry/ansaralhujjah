@@ -58,7 +58,7 @@ Located at `admin/index.html`. Accessed at ansaralhujjah.org/admin. It is a sing
 
 **Card management:**
 - Create, edit, delete, and reorder event cards
-- Edit the two permanent pinned cards (Sisters Social, Quran Reflections) or temporarily remove them from the site
+- Edit the four permanent pinned cards (Sisters Social, Quran Reflections, WhatsApp, Instagram) or temporarily remove them from the site
 - Upload a flyer image per card (PNG/JPG) — gets base64-encoded and embedded in the HTML
 - Each card shows a live preview while editing
 
@@ -69,11 +69,13 @@ Located at `admin/index.html`. Accessed at ansaralhujjah.org/admin. It is a sing
 ## Card Types
 
 ### Pinned Cards
-Two permanent cards that always appear in the admin-managed section unless explicitly removed:
+Four permanent cards (`PINNED_KEYS` in `admin/index.html`) that always appear in the admin-managed section unless explicitly removed:
 - **Sisters Social** (key: `sisters`) — links to registration form
 - **Quran Reflections** (key: `quran`) — links to `/quran-reflections`
+- **WhatsApp** (key: `whatsapp`) — links to the community WhatsApp chat
+- **Instagram** (key: `instagram`) — links to the Instagram profile
 
-These can be edited (title, subtitle, link, icon, flyer) or removed from the site (`removed: true`). They cannot be permanently deleted — only hidden. Their state is stored in localStorage under `aah_pinned`.
+These can be edited (title, subtitle, link, icon, flyer) or removed from the site (`removed: true`). They cannot be permanently deleted — only hidden. Their state is stored in localStorage under `aah_pinned`. WhatsApp and Instagram as pinned *cards* are separate from the floating `.social-float` corner icons (see [Site Structure](#site-structure)) — both exist on the homepage independently; the corner icons are not admin-managed.
 
 ### Event Cards
 Created freely via the admin panel. Identified by base-36 timestamp IDs (e.g., `mo24g5z6`). Stored in localStorage under `aah_events`. Deleted event cards are gone permanently.
@@ -258,7 +260,7 @@ Cards (glassmorphism boxes) are restricted to `index.html` (homepage). All inner
 - **`SESSIONS-START/END` and `QURAN-DESC-START/END` must stay sibling regions, never nested.** They were nested for a period and every admin publish that touched the Quran description silently wiped the whole session index as a result — this broke production twice before being fixed. If you're ever editing `quran-reflections/index.html`'s marker structure, keep them as independent, non-overlapping regions.
 - **Every publish is validated before it goes live** — the constructed HTML is checked for correct marker structure and card count before any GitHub write happens, and the publish is blocked (not partially applied) if validation fails.
 - **A bad publish can be undone from the admin panel itself** ("Undo Last Publish" button) — no `git` or developer needed. See [Undo](#undo).
-- **WhatsApp and Instagram are floating icons in the bottom-right corner**, not cards. They are hardcoded in `index.html` as `.social-float` and are not admin-managed. Edit directly in `index.html` to change links.
+- **WhatsApp and Instagram exist in two places on the homepage**: as permanent, admin-editable pinned cards (`whatsapp`/`instagram` in `PINNED_KEYS`) in the main card grid, and separately as floating icons in the bottom-right corner (`.social-float`, hardcoded in `index.html`, not admin-managed — edit directly in `index.html` to change those links).
 - **Quran Reflections card links to `/quran-reflections`.** The program page hosts the flyer, description, and session list. There is no separate sign-in link on the card.
 - **Quran program page flyer/description sync automatically on admin publish** — when the quran card has a flyer and/or description set, `publishToGitHub()` also updates the corresponding sections in `quran-reflections/index.html` in the same commit.
 
