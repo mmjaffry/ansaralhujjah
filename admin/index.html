@@ -184,6 +184,7 @@
     }
     .btn-move:hover:not(:disabled) { background: var(--accent-dim); color: var(--accent-light); }
     .btn-move:disabled { opacity: 0.2; cursor: default; }
+    .btn-del:disabled, .btn-restore:disabled { opacity: 0.25; cursor: default; }
 
     .btn-add {
       width: 100%; background: transparent; border: 1px dashed rgba(148,62,12,0.35);
@@ -192,6 +193,7 @@
       font-family: 'Lato', sans-serif;
     }
     .btn-add:hover { background: var(--accent-dim); border-color: var(--accent); }
+    .btn-add:disabled { opacity: 0.4; cursor: default; }
 
 
     /* ── MAIN EDITOR ── */
@@ -349,6 +351,7 @@
     </div>
     <div class="topbar-right">
       <div class="status-pill" id="statusPill"></div>
+      <button class="btn-ghost" id="undoBtn" style="display:none;">Undo Last Publish</button>
       <button class="btn-ghost" id="logoutBtn">Sign Out</button>
     </div>
   </div>
@@ -581,6 +584,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     location.reload();
   });
 
+  document.getElementById('undoBtn').addEventListener('click', undoLastPublish);
   document.getElementById('addBtn').addEventListener('click', () => openEditor(null));
   document.getElementById('fTitle').addEventListener('input', updatePreview);
   document.getElementById('fSub').addEventListener('input',   updatePreview);
@@ -622,109 +626,202 @@ function setStatus(state, msg) {
 }
 
 /* ── Dashboard ───────────────────────── */
-function showDashboard() {
+let syncing = true; // locked until the first sync resolves — see showDashboard()
+
+async function showDashboard() {
   document.getElementById('loginScreen').style.display = 'none';
   document.getElementById('dashboard').style.display   = 'flex';
+  renderSidebar();      // instant feedback from (possibly stale) localStorage
+  refreshUndoButton();
+  setSyncing(true);
+  try {
+    await syncFromLiveSite();
+    setSyncing(false);
+  } catch (e) {
+    console.warn('Live site sync failed:', e);
+    showSyncError();
+  }
   renderSidebar();
-  syncFromLiveSite();
+}
+
+function setSyncing(v) {
+  syncing = v;
+  applySyncingUI();
+  const pill = document.getElementById('statusPill');
+  if (v) {
+    pill.className = 'status-pill publishing';
+    pill.innerHTML = '<span class="spin">↻</span> Syncing with live site…';
+  } else if (pill.textContent.includes('Syncing')) {
+    pill.className = 'status-pill';
+  }
+}
+
+function applySyncingUI() {
+  document.getElementById('addBtn').disabled = syncing;
+  document.querySelectorAll('.btn-move, .btn-del, .btn-restore').forEach(b => b.disabled = syncing);
+}
+
+function showSyncError() {
+  // Keep editing locked — do not fall through to trusting stale local state.
+  syncing = true;
+  applySyncingUI();
+  const pill = document.getElementById('statusPill');
+  pill.className = 'status-pill error';
+  pill.innerHTML = '✕ Could not verify live site — <a href="#" onclick="retrySync();return false;" style="color:inherit;text-decoration:underline;">Retry</a>';
+}
+
+async function retrySync() {
+  setSyncing(true);
+  try {
+    await syncFromLiveSite();
+    setSyncing(false);
+  } catch (e) {
+    console.warn('Live site sync failed:', e);
+    showSyncError();
+  }
+  renderSidebar();
+}
+
+/* ── DOM-based HTML parsing helpers ──────────────
+   Replaces fixed-width regex windows (the root cause of cards silently
+   corrupting to "Unknown Card" once a flyer's base64 pushed real content
+   out of the window) with real element boundaries, which are exact
+   regardless of how long an embedded base64 string is. ── */
+function parseHtmlDoc(htmlString) {
+  return new DOMParser().parseFromString(htmlString, 'text/html');
+}
+
+function findCommentNodes(root, exactText) {
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_COMMENT);
+  const out = [];
+  let n;
+  while ((n = walker.nextNode())) if (n.data.trim() === exactText) out.push(n);
+  return out;
+}
+
+function findCommentNodesMatching(root, regex) {
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_COMMENT);
+  const out = [];
+  let n;
+  while ((n = walker.nextNode())) {
+    const m = regex.exec(n.data.trim());
+    if (m) out.push({ node: n, match: m });
+  }
+  return out;
+}
+
+function parseDataUri(src) {
+  const m = /^data:([^;]+);base64,([\s\S]*)$/.exec(src || '');
+  return m ? { mime: m[1], b64: m[2] } : null;
+}
+
+// Reads one card's data straight off its <a class="program-card"> element.
+function readCardFromAnchor(a) {
+  const label = a.querySelector('.btn-label');
+  const sub   = a.querySelector('.btn-sub');
+  const path  = a.querySelector('.program-card-info .icon path');
+  const img   = a.querySelector('.program-card-flyer img');
+  const iconMatch = path ? ICONS.find(ic => ic.path === path.getAttribute('d')) : null;
+  return {
+    title: label ? label.textContent : null,   // textContent auto-decodes entities — no double-escape on re-publish
+    sub:   sub ? sub.textContent : '',
+    link:  a.getAttribute('href') || '',
+    iconId: iconMatch ? iconMatch.id : 'calendar',
+    flyer: img ? parseDataUri(img.getAttribute('src')) : null,
+    qdesc: a.hasAttribute('data-qdesc') ? a.getAttribute('data-qdesc') : undefined,
+  };
+}
+
+// Finds the existing flyer for a card already published on the live site
+// (used by publishToGitHub() to preserve a flyer when re-publishing
+// without a new upload). Replaces the old extractFlyerAt/extractFlyerForPinned.
+function findExistingFlyer(html, markerText) {
+  const doc = parseHtmlDoc(html);
+  const nodes = findCommentNodes(doc.body, markerText);
+  if (nodes.length === 0) return null;
+  const a = nodes[0].nextElementSibling;
+  return a ? readCardFromAnchor(a).flyer : null;
+}
+
+// Full replacement for the regex-window parsing that used to run in
+// syncFromLiveSite(). Returns null if the cards region can't be located.
+function parseLiveSite(html) {
+  const doc = parseHtmlDoc(html);
+  const startNodes = findCommentNodes(doc.body, 'AAH-ALL-CARDS-START');
+  const endNodes   = findCommentNodes(doc.body, 'AAH-ALL-CARDS-END');
+  if (startNodes.length !== 1 || endNodes.length !== 1) return null;
+
+  const markers = findCommentNodesMatching(doc.body, /^(pinned|admin):([a-z0-9]+)$/);
+  const liveOrder = markers.map(({ match }) => match[2]);
+
+  const liveEvents = [];
+  const pinnedSync = {};
+  for (const { node, match } of markers) {
+    const [, kind, id] = match;
+    const a = node.nextElementSibling;
+    const card = a ? readCardFromAnchor(a) : null;
+    if (kind === 'admin') {
+      liveEvents.push({
+        id, iconId: card ? card.iconId : 'calendar',
+        title: card && card.title ? card.title : 'Unknown Card',
+        sub:   card ? card.sub  : '',
+        link:  card ? card.link : '',
+        flyerMime: card && card.flyer ? card.flyer.mime : null,
+        flyerB64:  card && card.flyer ? card.flyer.b64  : null,
+      });
+    } else {
+      pinnedSync[id] = {
+        flyer: card ? card.flyer : null,
+        desc:  id === 'quran' && card ? card.qdesc : undefined,
+      };
+    }
+  }
+
+  return { liveOrder, liveEvents, pinnedSync };
 }
 
 /* ── Full state sync from live site on login ─ */
 async function syncFromLiveSite() {
-  try {
-    const resp = await fetch('../index.html', { cache: 'no-store' });
-    if (!resp.ok) return;
-    const html = await resp.text();
+  const resp = await fetch('../index.html', { cache: 'no-store' });
+  if (!resp.ok) throw new Error(`Failed to fetch live site: ${resp.status}`);
+  const html = await resp.text();
 
-    const allStart = '<!-- AAH-ALL-CARDS-START -->';
-    const allEnd   = '<!-- AAH-ALL-CARDS-END -->';
-    const allSi = html.indexOf(allStart);
-    const allEi = html.indexOf(allEnd);
-    if (allSi === -1 || allEi === -1) return;
-    const section = html.slice(allSi + allStart.length, allEi);
+  const parsed = parseLiveSite(html);
+  if (!parsed) throw new Error('Could not find the card markers on the live site — its structure may have changed.');
+  const { liveOrder, liveEvents, pinnedSync } = parsed;
 
-    // Build live card order from markers (<!-- pinned:key --> and <!-- admin:id -->)
-    const liveOrder = [];
-    const markerRe = /<!-- (pinned|admin):([a-z0-9]+) -->/g;
-    let m;
-    while ((m = markerRe.exec(section)) !== null) liveOrder.push(m[2]);
-
-    // Legacy fallback: detect pinned cards published before marker system was added
-    for (const key of ['sisters', 'quran']) {
-      if (liveOrder.includes(key)) continue;
-      const fnName = key === 'sisters' ? 'toggleSocial' : 'toggleQuran';
-      const bodyId = key === 'sisters' ? 'socialBody'   : 'quranBody';
-      const linkUrl = pinnedCards[key]?.link || PINNED_DEFAULTS[key].link;
-      if (section.includes(fnName) || section.includes(`id="${bodyId}"`) || section.includes(linkUrl)) {
-        liveOrder.unshift(key);
-      }
+  // Legacy fallback: detect pinned cards published before marker system was added
+  for (const key of ['sisters', 'quran']) {
+    if (liveOrder.includes(key)) continue;
+    const fnName = key === 'sisters' ? 'toggleSocial' : 'toggleQuran';
+    const bodyId = key === 'sisters' ? 'socialBody'   : 'quranBody';
+    const linkUrl = pinnedCards[key]?.link || PINNED_DEFAULTS[key].link;
+    if (html.includes(fnName) || html.includes(`id="${bodyId}"`) || html.includes(linkUrl)) {
+      liveOrder.unshift(key);
     }
-
-    if (liveOrder.length === 0) return;
-
-    // Rebuild events array from live HTML (full re-sync, not just orphans)
-    const liveEvents = [];
-    for (const id of liveOrder) {
-      if (id === 'sisters' || id === 'quran') continue;
-      const anchor = `<!-- admin:${id} -->`;
-      const ai = html.indexOf(anchor);
-      if (ai === -1) continue;
-
-      const nearby = html.slice(ai, ai + 1500);
-      const titleM = nearby.match(/<span class="btn-label">([^<]+)<\/span>/);
-      const subM   = nearby.match(/<span class="btn-sub">([^<]+)<\/span>/);
-      const linkM  = nearby.match(/href="([^"]+)"/);
-      const svgM   = nearby.match(/<path d="([^"]+)"/);
-      const flyer  = extractFlyerAt(html, ai);
-
-      let iconId = 'calendar';
-      if (svgM) { const ic = ICONS.find(ic => ic.path === svgM[1]); if (ic) iconId = ic.id; }
-
-      liveEvents.push({
-        id, iconId,
-        title:     titleM ? titleM[1] : 'Unknown Card',
-        sub:       subM   ? subM[1]   : '',
-        link:      linkM  ? linkM[1]  : '',
-        flyerMime: flyer  ? flyer.mime : null,
-        flyerB64:  flyer  ? flyer.b64  : null,
-      });
-    }
-
-    // Sync pinned card flyers, desc, and removed state from live HTML
-    for (const key of ['sisters', 'quran']) {
-      const flyer  = extractFlyerForPinned(html, key);
-      if (flyer) {
-        pinnedCards[key].flyerB64  = flyer.b64;
-        pinnedCards[key].flyerMime = flyer.mime;
-      } else if (liveOrder.includes(key)) {
-        pinnedCards[key].flyerB64  = null;
-        pinnedCards[key].flyerMime = null;
-      }
-      pinnedCards[key].removed = !liveOrder.includes(key);
-      if (key === 'quran') {
-        const markerPos = html.indexOf('<!-- pinned:quran -->');
-        if (markerPos !== -1) {
-          const near = html.slice(markerPos, markerPos + 600);
-          const descM = near.match(/data-qdesc="([^"]*)"/);
-          if (descM) pinnedCards['quran'].desc = descM[1]
-            .replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'");
-        }
-      }
-    }
-
-    // Preserve any locally-created cards not yet published
-    const localOnlyIds = events.filter(e => !liveEvents.find(le => le.id === e.id)).map(e => e.id);
-
-    events    = liveEvents;
-    cardOrder = [...liveOrder, ...localOnlyIds];
-
-    persist();
-    persistOrder();
-    localStorage.setItem('aah_pinned', JSON.stringify(pinnedCards));
-    renderSidebar();
-  } catch (e) {
-    console.warn('Live site sync failed:', e);
   }
+
+  // Sync pinned card flyers, desc, and removed state from live HTML
+  for (const key of ['sisters', 'quran']) {
+    const sync = pinnedSync[key] || { flyer: null, desc: undefined };
+    if (sync.flyer) {
+      pinnedCards[key].flyerB64  = sync.flyer.b64;
+      pinnedCards[key].flyerMime = sync.flyer.mime;
+    } else if (liveOrder.includes(key)) {
+      pinnedCards[key].flyerB64  = null;
+      pinnedCards[key].flyerMime = null;
+    }
+    pinnedCards[key].removed = !liveOrder.includes(key);
+    if (key === 'quran' && sync.desc !== undefined) pinnedCards['quran'].desc = sync.desc;
+  }
+
+  // Preserve any locally-created cards not yet published
+  const localOnlyIds = events.filter(e => !liveEvents.find(le => le.id === e.id)).map(e => e.id);
+
+  events    = liveEvents;
+  cardOrder = [...liveOrder, ...localOnlyIds];
+
+  commitLocalState();
 }
 
 /* ── Sidebar ─────────────────────────── */
@@ -787,22 +884,30 @@ function renderSidebar() {
         <button class="btn-del" onclick="event.stopPropagation();deleteCard('${ev.id}')" title="Delete">✕</button>
       </div>`;
   }).join('');
+  applySyncingUI();
 }
 
 /* ── Move card ───────────────────────── */
-function moveCard(id, direction) {
+async function moveCard(id, direction) {
+  if (syncing) { showToast('Still syncing — please wait a moment.', 'error'); return; }
   const idx = cardOrder.indexOf(id);
+  const snapshot = [...cardOrder];
   if (direction === 'up' && idx > 0) {
     [cardOrder[idx - 1], cardOrder[idx]] = [cardOrder[idx], cardOrder[idx - 1]];
   } else if (direction === 'down' && idx < cardOrder.length - 1) {
     [cardOrder[idx], cardOrder[idx + 1]] = [cardOrder[idx + 1], cardOrder[idx]];
   } else { return; }
-  persistOrder();
   renderSidebar();
-  publishToGitHub();
+  const ok = await publishToGitHub();
+  if (ok) commitLocalState();
+  else { cardOrder = snapshot; renderSidebar(); }
 }
 
-function persistOrder() { localStorage.setItem('aah_card_order', JSON.stringify(cardOrder)); }
+function commitLocalState() {
+  localStorage.setItem('aah_events', JSON.stringify(events));
+  localStorage.setItem('aah_card_order', JSON.stringify(cardOrder));
+  localStorage.setItem('aah_pinned', JSON.stringify(pinnedCards));
+}
 
 /* ── Pinned card editor ───────────────── */
 function openPinnedEditor(key) {
@@ -837,20 +942,26 @@ function openPinnedEditor(key) {
   renderSidebar();
 }
 
-function removePinned(key) {
+async function removePinned(key) {
+  if (syncing) { showToast('Still syncing — please wait a moment.', 'error'); return; }
   if (!confirm(`Remove "${pinnedCards[key].title}" from the site?`)) return;
+  const snapshot = JSON.parse(JSON.stringify(pinnedCards));
   pinnedCards[key].removed = true;
-  localStorage.setItem('aah_pinned', JSON.stringify(pinnedCards));
   if (editingPinned === key) closeEditor();
   else renderSidebar();
-  publishToGitHub();
+  const ok = await publishToGitHub();
+  if (ok) commitLocalState();
+  else { pinnedCards = snapshot; renderSidebar(); }
 }
 
-function restorePinned(key) {
+async function restorePinned(key) {
+  if (syncing) { showToast('Still syncing — please wait a moment.', 'error'); return; }
+  const snapshot = JSON.parse(JSON.stringify(pinnedCards));
   pinnedCards[key].removed = false;
-  localStorage.setItem('aah_pinned', JSON.stringify(pinnedCards));
   renderSidebar();
-  publishToGitHub();
+  const ok = await publishToGitHub();
+  if (ok) commitLocalState();
+  else { pinnedCards = snapshot; renderSidebar(); }
 }
 
 /* ── Regular card editor ─────────────── */
@@ -888,11 +999,18 @@ function closeEditor() {
 }
 
 async function saveCard() {
+  if (syncing) { showToast('Still syncing — please wait a moment.', 'error'); return; }
   const title   = document.getElementById('fTitle').value.trim();
   const sub     = document.getElementById('fSub').value.trim();
   const rawLink = document.getElementById('fLink').value.trim();
   const link    = rawLink && !/^https?:\/\//i.test(rawLink) ? 'https://' + rawLink : rawLink;
   if (!title) { document.getElementById('fTitle').focus(); return; }
+
+  const snapshot = {
+    events: JSON.parse(JSON.stringify(events)),
+    cardOrder: [...cardOrder],
+    pinnedCards: JSON.parse(JSON.stringify(pinnedCards)),
+  };
 
   if (editingPinned) {
     const descVal = editingPinned === 'quran' ? document.getElementById('fDesc').value.trim() : undefined;
@@ -904,36 +1022,42 @@ async function saveCard() {
       removed: false,
       ...(descVal !== undefined && { desc: descVal }),
     };
-    localStorage.setItem('aah_pinned', JSON.stringify(pinnedCards));
   } else if (editingId) {
     const idx = events.findIndex(e => e.id === editingId);
     if (idx > -1) events[idx] = { ...events[idx], title, sub, link, flyerB64, flyerMime, iconId: selectedIconId };
-    persist();
   } else {
     const newId = Date.now().toString(36);
     events.push({ id: newId, title, sub, link, flyerB64, flyerMime, iconId: selectedIconId });
     cardOrder.push(newId);
-    persist();
-    persistOrder();
   }
 
   renderSidebar();
   closeEditor();
-  await publishToGitHub();
+  const ok = await publishToGitHub();
+  if (ok) {
+    commitLocalState();
+  } else {
+    events = snapshot.events; cardOrder = snapshot.cardOrder; pinnedCards = snapshot.pinnedCards;
+    renderSidebar();
+  }
 }
 
 async function deleteCard(id) {
+  if (syncing) { showToast('Still syncing — please wait a moment.', 'error'); return; }
   if (!confirm('Delete this card?')) return;
+  const snapshot = { events: JSON.parse(JSON.stringify(events)), cardOrder: [...cardOrder] };
   events = events.filter(e => e.id !== id);
   cardOrder = cardOrder.filter(i => i !== id);
-  persist();
-  persistOrder();
   if (editingId === id) closeEditor();
   else renderSidebar();
-  await publishToGitHub();
+  const ok = await publishToGitHub();
+  if (ok) {
+    commitLocalState();
+  } else {
+    events = snapshot.events; cardOrder = snapshot.cardOrder;
+    renderSidebar();
+  }
 }
-
-function persist() { localStorage.setItem('aah_events', JSON.stringify(events)); }
 
 /* ── Flyer upload ────────────────────── */
 function handleFlyerUpload(e) {
@@ -978,33 +1102,6 @@ function updatePreview() {
   } else {
     body.style.display = 'none';
   }
-}
-
-/* ── Extract flyer starting from a known position in HTML ─── */
-function extractFlyerAt(html, anchorPos) {
-  if (anchorPos === -1) return null;
-  // Bound search to this card only — stop at the next card marker
-  let nextMarker = html.length;
-  const a = html.indexOf('<!-- admin:',  anchorPos + 1);
-  const p = html.indexOf('<!-- pinned:', anchorPos + 1);
-  if (a !== -1) nextMarker = Math.min(nextMarker, a);
-  if (p !== -1) nextMarker = Math.min(nextMarker, p);
-
-  const nearSrc = html.indexOf('src="data:', anchorPos);
-  if (nearSrc === -1 || nearSrc > nextMarker) return null;
-  // Extract from full string — no truncation — so large base64 works
-  const afterSrc = html.slice(nearSrc + 10); // skip 'src="data:'
-  const semi = afterSrc.indexOf(';base64,');
-  if (semi === -1) return null;
-  const mime = afterSrc.slice(0, semi);
-  const b64Start = semi + 8;
-  const b64End = afterSrc.indexOf('"', b64Start);
-  if (b64End === -1) return null;
-  return { mime, b64: afterSrc.slice(b64Start, b64End) };
-}
-
-function extractFlyerForPinned(html, key) {
-  return extractFlyerAt(html, html.indexOf(`<!-- pinned:${key} -->`));
 }
 
 /* ── Build pinned card HTML ───────────── */
@@ -1058,8 +1155,83 @@ function buildCardHtml(ev, idx) {
       </a>`;
 }
 
-/* ── GitHub API publish (Git Data API — supports files > 1 MB) ── */
-async function publishToGitHub() {
+/* ── Marker-region splicing + validation ──────
+   spliceMarkerRegion fails loudly (instead of silently) if a marker is
+   missing or duplicated. validateCardsHtml/validateQuranPageHtml re-parse
+   the constructed HTML before it's ever uploaded and block the publish
+   if something looks wrong (wrong card count, truncated flyer, missing
+   marker) — the fail-closed check that would have caught every
+   corruption incident found in this repo's history. ── */
+function spliceMarkerRegion(html, startMarker, endMarker, innerHtml) {
+  const si = html.indexOf(startMarker);
+  if (si === -1) throw new Error(`Marker not found: ${startMarker}`);
+  if (html.indexOf(startMarker, si + startMarker.length) !== -1) throw new Error(`Duplicate marker: ${startMarker}`);
+  const ei = html.indexOf(endMarker, si);
+  if (ei === -1) throw new Error(`Marker not found after ${startMarker}: ${endMarker}`);
+  if (html.indexOf(endMarker, ei + endMarker.length) !== -1) throw new Error(`Duplicate marker: ${endMarker}`);
+  return html.slice(0, si + startMarker.length) + innerHtml + html.slice(ei);
+}
+
+function countOccurrences(str, sub) {
+  let n = 0, i = 0;
+  while ((i = str.indexOf(sub, i)) !== -1) { n++; i += sub.length; }
+  return n;
+}
+
+function assertMarkerPairOnce(html, startMarker, endMarker) {
+  const s = countOccurrences(html, startMarker), e = countOccurrences(html, endMarker);
+  if (s !== 1) throw new Error(`Validation failed: ${startMarker} appears ${s} times, expected 1 — publish blocked`);
+  if (e !== 1) throw new Error(`Validation failed: ${endMarker} appears ${e} times, expected 1 — publish blocked`);
+  if (html.indexOf(endMarker) < html.indexOf(startMarker)) throw new Error(`Validation failed: ${endMarker} appears before ${startMarker} — publish blocked`);
+}
+
+function validateCardsHtml(html, expectedCardCount) {
+  assertMarkerPairOnce(html, '<!-- AAH-ALL-CARDS-START -->', '<!-- AAH-ALL-CARDS-END -->');
+  const doc = parseHtmlDoc(html); // parsed only to validate — never serialized back
+  const cards = doc.querySelectorAll('a.program-card');
+  if (cards.length !== expectedCardCount) {
+    throw new Error(`Validation failed: expected ${expectedCardCount} card(s), found ${cards.length} — publish blocked`);
+  }
+  for (const el of cards) {
+    const img = el.querySelector('.program-card-flyer img');
+    if (img) {
+      const src = img.getAttribute('src') || '';
+      if (!/^data:[^;]+;base64,.{100,}/.test(src)) {
+        throw new Error('Validation failed: a card flyer image looks truncated or empty — publish blocked');
+      }
+    }
+  }
+}
+
+function validateQuranPageHtml(html) {
+  assertMarkerPairOnce(html, '<!-- QURAN-DESC-START -->', '<!-- QURAN-DESC-END -->');
+  assertMarkerPairOnce(html, '<!-- QURAN-FLYER-START -->', '<!-- QURAN-FLYER-END -->');
+  if (html.includes('<!-- SESSIONS-START -->')) {
+    assertMarkerPairOnce(html, '<!-- SESSIONS-START -->', '<!-- SESSIONS-END -->');
+  }
+}
+
+async function softValidateLivePublish() {
+  // Best-effort post-publish check (CDN/Pages propagation lag, etc.) —
+  // warns only, never blocks or rolls back.
+  try {
+    const resp = await fetch('../index.html', { cache: 'no-store' });
+    if (resp.ok) {
+      const html = await resp.text();
+      const s = countOccurrences(html, '<!-- AAH-ALL-CARDS-START -->');
+      const e = countOccurrences(html, '<!-- AAH-ALL-CARDS-END -->');
+      if (s !== 1 || e !== 1) console.warn('Post-publish check: unexpected AAH-ALL-CARDS marker count on live index.html');
+    }
+  } catch (e) {
+    console.warn('Post-publish check failed:', e);
+  }
+}
+
+/* ── Shared publish transaction shell ──────────
+   Used by both publishToGitHub() (writes freshly-built HTML) and
+   undoLastPublish() (points files back at prior blob SHAs) so both go
+   through the same validated, race-checked path. ── */
+async function runPublishTransaction({ buildTreeEntries, commitMessage }) {
   const gh = getGhSettings();
   const { token, owner, repo, branch } = gh;
   const base = `https://api.github.com/repos/${owner}/${repo}`;
@@ -1090,93 +1262,10 @@ async function publishToGitHub() {
     if (!fileEntry) throw new Error('index.html not found in repo root');
     const qrEntry = treeData.tree.find(item => item.path === 'quran-reflections/index.html');
 
-    // 4. Fetch blob content (handles files > 1 MB, unlike Contents API)
-    const blobResp = await fetch(`${base}/git/blobs/${fileEntry.sha}`, { headers });
-    if (!blobResp.ok) throw new Error(`Failed to get blob: ${blobResp.status}`);
-    const blobData = await blobResp.json();
-    const currentHtml = decodeURIComponent(escape(atob(blobData.content.replace(/\n/g, ''))));
+    // 4. Caller builds the tree entries (new content, or old blobs for undo)
+    const treeEntries = await buildTreeEntries({ base, headers, fileEntry, qrEntry });
 
-    // 5. Inject updated cards between markers
-    let newHtml = currentHtml;
-    const allStart = '<!-- AAH-ALL-CARDS-START -->';
-    const allEnd   = '<!-- AAH-ALL-CARDS-END -->';
-    const allSi = newHtml.indexOf(allStart), allEi = newHtml.indexOf(allEnd);
-    if (allSi === -1 || allEi === -1) throw new Error('All-cards markers not found in index.html.');
-
-    let liveEventIdx = 0;
-    const allCardsHtml = cardOrder.map(id => {
-      if (id === 'sisters' || id === 'quran') {
-        const pc = pinnedCards[id];
-        if (pc.removed) return '';
-        const existingFlyer = extractFlyerForPinned(currentHtml, id);
-        return buildPinnedCardHtml(id, pc, existingFlyer);
-      }
-      const ev = events.find(e => e.id === id);
-      if (!ev) return '';
-      return buildCardHtml(ev, liveEventIdx++);
-    }).filter(Boolean).join('\n');
-
-    const allContent = allCardsHtml ? '\n' + allCardsHtml + '\n      ' : '\n      ';
-    newHtml = newHtml.slice(0, allSi + allStart.length) + allContent + newHtml.slice(allEi);
-
-    // 6. Create new blob for index.html
-    const newBlobResp = await fetch(`${base}/git/blobs`, {
-      method: 'POST',
-      headers: { ...headers, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ content: btoa(unescape(encodeURIComponent(newHtml))), encoding: 'base64' }),
-    });
-    if (!newBlobResp.ok) throw new Error(`Failed to create blob: ${newBlobResp.status}`);
-    const { sha: newBlobSha } = await newBlobResp.json();
-
-    // 6b. Update quran-reflections/index.html with flyer and/or description if quran card is present
-    const treeEntries = [{ path: 'index.html', mode: '100644', type: 'blob', sha: newBlobSha }];
-    const quranCard = pinnedCards['quran'];
-    const quranB64  = quranCard && (quranCard.flyerB64 || (() => { const ef = extractFlyerForPinned(currentHtml, 'quran'); return ef && ef.b64; })());
-    const quranMime = quranCard && (quranCard.flyerMime || (() => { const ef = extractFlyerForPinned(currentHtml, 'quran'); return ef && ef.mime; })());
-    const quranDesc = quranCard && quranCard.desc;
-    if (qrEntry && (quranB64 || quranDesc != null)) {
-      const qrBlobResp = await fetch(`${base}/git/blobs/${qrEntry.sha}`, { headers });
-      if (qrBlobResp.ok) {
-        const qrBlobData = await qrBlobResp.json();
-        let qrHtml = decodeURIComponent(escape(atob(qrBlobData.content.replace(/\n/g, ''))));
-        let qrChanged = false;
-
-        if (quranB64 && quranMime) {
-          const flyerStart = '<!-- QURAN-FLYER-START -->';
-          const flyerEnd   = '<!-- QURAN-FLYER-END -->';
-          const fsi = qrHtml.indexOf(flyerStart), fei = qrHtml.indexOf(flyerEnd);
-          if (fsi !== -1 && fei !== -1) {
-            const newFlyerHtml = `    <div class="program-flyer">\n      <img src="data:${quranMime};base64,${quranB64}" alt="Quran Reflections Flyer">\n    </div>`;
-            qrHtml = qrHtml.slice(0, fsi + flyerStart.length) + '\n' + newFlyerHtml + '\n    ' + qrHtml.slice(fei);
-            qrChanged = true;
-          }
-        }
-
-        if (quranDesc != null) {
-          const descStart = '<!-- QURAN-DESC-START -->';
-          const descEnd   = '<!-- QURAN-DESC-END -->';
-          const dsi = qrHtml.indexOf(descStart), dei = qrHtml.indexOf(descEnd);
-          if (dsi !== -1 && dei !== -1) {
-            qrHtml = qrHtml.slice(0, dsi + descStart.length) + '\n      <p>' + quranDesc + '</p>\n    ' + qrHtml.slice(dei);
-            qrChanged = true;
-          }
-        }
-
-        if (qrChanged) {
-          const qrNewBlobResp = await fetch(`${base}/git/blobs`, {
-            method: 'POST',
-            headers: { ...headers, 'Content-Type': 'application/json' },
-            body: JSON.stringify({ content: btoa(unescape(encodeURIComponent(qrHtml))), encoding: 'base64' }),
-          });
-          if (qrNewBlobResp.ok) {
-            const { sha: qrNewBlobSha } = await qrNewBlobResp.json();
-            treeEntries.push({ path: 'quran-reflections/index.html', mode: '100644', type: 'blob', sha: qrNewBlobSha });
-          }
-        }
-      }
-    }
-
-    // 7. Create new tree pointing to updated blobs
+    // 5. Create new tree pointing to those blobs
     const newTreeResp = await fetch(`${base}/git/trees`, {
       method: 'POST',
       headers: { ...headers, 'Content-Type': 'application/json' },
@@ -1185,16 +1274,24 @@ async function publishToGitHub() {
     if (!newTreeResp.ok) throw new Error(`Failed to create tree: ${newTreeResp.status}`);
     const { sha: newTreeSha } = await newTreeResp.json();
 
-    // 8. Create commit
+    // 6. Create commit
     const newCommitResp = await fetch(`${base}/git/commits`, {
       method: 'POST',
       headers: { ...headers, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: `Update cards via admin panel (${new Date().toLocaleDateString()})`, tree: newTreeSha, parents: [commitSha] }),
+      body: JSON.stringify({ message: commitMessage, tree: newTreeSha, parents: [commitSha] }),
     });
     if (!newCommitResp.ok) throw new Error(`Failed to create commit: ${newCommitResp.status}`);
     const { sha: newCommitSha } = await newCommitResp.json();
 
-    // 9. Advance branch ref
+    // 7. Re-check the branch hasn't moved since step 1, before force-overwriting it
+    const recheckResp = await fetch(`${base}/git/ref/heads/${branch}`, { headers });
+    if (!recheckResp.ok) throw new Error(`Failed to re-check ref: ${recheckResp.status}`);
+    const { object: { sha: currentTipSha } } = await recheckResp.json();
+    if (currentTipSha !== commitSha) {
+      throw new Error('Someone else published changes while you were editing. Please retry — your change was not published.');
+    }
+
+    // 8. Advance branch ref
     const patchResp = await fetch(`${base}/git/refs/heads/${branch}`, {
       method: 'PATCH',
       headers: { ...headers, 'Content-Type': 'application/json' },
@@ -1203,11 +1300,177 @@ async function publishToGitHub() {
     if (!patchResp.ok) throw new Error(`Failed to update ref: ${patchResp.status}`);
 
     setStatus('published', '✓ Live in ~30s');
+    return { ok: true, fileEntry, qrEntry };
 
   } catch (err) {
     console.error(err);
     setStatus('error', '✕ Publish failed');
     showToast(err.message, 'error');
+    return { ok: false };
+  }
+}
+
+/* ── GitHub API publish (Git Data API — supports files > 1 MB) ── */
+let pendingUndoSnapshot = {};
+
+async function publishToGitHub() {
+  pendingUndoSnapshot = {};
+  const result = await runPublishTransaction({
+    commitMessage: `Update cards via admin panel (${new Date().toLocaleDateString()})`,
+    buildTreeEntries: async ({ base, headers, fileEntry, qrEntry }) => {
+      // Fetch current index.html blob content
+      const blobResp = await fetch(`${base}/git/blobs/${fileEntry.sha}`, { headers });
+      if (!blobResp.ok) throw new Error(`Failed to get blob: ${blobResp.status}`);
+      const blobData = await blobResp.json();
+      const currentHtml = decodeURIComponent(escape(atob(blobData.content.replace(/\n/g, ''))));
+
+      // Build updated cards HTML and splice it between the markers
+      let liveEventIdx = 0;
+      const allCardsHtml = cardOrder.map(id => {
+        if (id === 'sisters' || id === 'quran') {
+          const pc = pinnedCards[id];
+          if (pc.removed) return '';
+          const existingFlyer = findExistingFlyer(currentHtml, `pinned:${id}`);
+          return buildPinnedCardHtml(id, pc, existingFlyer);
+        }
+        const ev = events.find(e => e.id === id);
+        if (!ev) return '';
+        return buildCardHtml(ev, liveEventIdx++);
+      }).filter(Boolean).join('\n');
+
+      const allContent = allCardsHtml ? '\n' + allCardsHtml + '\n      ' : '\n      ';
+      const newHtml = spliceMarkerRegion(currentHtml, '<!-- AAH-ALL-CARDS-START -->', '<!-- AAH-ALL-CARDS-END -->', allContent);
+
+      const expectedCardCount = cardOrder.filter(id => {
+        if (id === 'sisters' || id === 'quran') return !pinnedCards[id].removed;
+        return !!events.find(e => e.id === id);
+      }).length;
+      validateCardsHtml(newHtml, expectedCardCount);
+
+      // Create new blob for index.html
+      const newBlobResp = await fetch(`${base}/git/blobs`, {
+        method: 'POST',
+        headers: { ...headers, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ content: btoa(unescape(encodeURIComponent(newHtml))), encoding: 'base64' }),
+      });
+      if (!newBlobResp.ok) throw new Error(`Failed to create blob: ${newBlobResp.status}`);
+      const { sha: newBlobSha } = await newBlobResp.json();
+
+      pendingUndoSnapshot.prevIndexBlobSha = fileEntry.sha;
+      const treeEntries = [{ path: 'index.html', mode: '100644', type: 'blob', sha: newBlobSha }];
+
+      // Update quran-reflections/index.html with flyer and/or description if the quran card is present
+      const quranCard = pinnedCards['quran'];
+      const quranB64  = quranCard && (quranCard.flyerB64 || (() => { const ef = findExistingFlyer(currentHtml, 'pinned:quran'); return ef && ef.b64; })());
+      const quranMime = quranCard && (quranCard.flyerMime || (() => { const ef = findExistingFlyer(currentHtml, 'pinned:quran'); return ef && ef.mime; })());
+      const quranDesc = quranCard && quranCard.desc;
+      if (qrEntry && (quranB64 || quranDesc != null)) {
+        const qrBlobResp = await fetch(`${base}/git/blobs/${qrEntry.sha}`, { headers });
+        if (qrBlobResp.ok) {
+          const qrBlobData = await qrBlobResp.json();
+          let qrHtml = decodeURIComponent(escape(atob(qrBlobData.content.replace(/\n/g, ''))));
+          let qrChanged = false;
+
+          if (quranB64 && quranMime) {
+            const newFlyerHtml = `    <div class="program-flyer">\n      <img src="data:${quranMime};base64,${quranB64}" alt="Quran Reflections Flyer">\n    </div>`;
+            qrHtml = spliceMarkerRegion(qrHtml, '<!-- QURAN-FLYER-START -->', '<!-- QURAN-FLYER-END -->', '\n' + newFlyerHtml + '\n    ');
+            qrChanged = true;
+          }
+
+          if (quranDesc != null) {
+            qrHtml = spliceMarkerRegion(qrHtml, '<!-- QURAN-DESC-START -->', '<!-- QURAN-DESC-END -->', '\n      <p>' + esc(quranDesc) + '</p>\n    ');
+            qrChanged = true;
+          }
+
+          if (qrChanged) {
+            validateQuranPageHtml(qrHtml);
+            const qrNewBlobResp = await fetch(`${base}/git/blobs`, {
+              method: 'POST',
+              headers: { ...headers, 'Content-Type': 'application/json' },
+              body: JSON.stringify({ content: btoa(unescape(encodeURIComponent(qrHtml))), encoding: 'base64' }),
+            });
+            if (!qrNewBlobResp.ok) throw new Error(`Failed to create quran-reflections blob: ${qrNewBlobResp.status}`);
+            const { sha: qrNewBlobSha } = await qrNewBlobResp.json();
+            pendingUndoSnapshot.prevQrBlobSha = qrEntry.sha;
+            treeEntries.push({ path: 'quran-reflections/index.html', mode: '100644', type: 'blob', sha: qrNewBlobSha });
+          }
+        }
+      }
+
+      return treeEntries;
+    },
+  });
+
+  if (result.ok) {
+    saveUndoSnapshot(pendingUndoSnapshot.prevIndexBlobSha, pendingUndoSnapshot.prevQrBlobSha);
+    pendingUndoSnapshot = {};
+    refreshUndoButton();
+    softValidateLivePublish();
+  }
+  return result.ok;
+}
+
+/* ── Undo last publish ────────────────────────
+   Reuses the previous blob SHAs (already fetched, immutable) — no
+   re-upload needed. Runs through the same validated transaction shell. ── */
+function saveUndoSnapshot(prevIndexSha, prevQrSha) {
+  if (!prevIndexSha) return;
+  localStorage.setItem('aah_undo_snapshot', JSON.stringify({
+    prevIndexBlobSha: prevIndexSha,
+    prevQrBlobSha: prevQrSha || null,
+    savedAt: Date.now(),
+  }));
+}
+
+function getUndoSnapshot() {
+  const raw = localStorage.getItem('aah_undo_snapshot');
+  if (!raw) return null;
+  try {
+    const snap = JSON.parse(raw);
+    // Blobs unreferenced by any commit aren't guaranteed to survive indefinitely —
+    // expire the snapshot rather than risk an undo pointing at a garbage-collected blob.
+    if (Date.now() - (snap.savedAt || 0) > 24 * 60 * 60 * 1000) {
+      localStorage.removeItem('aah_undo_snapshot');
+      return null;
+    }
+    return snap;
+  } catch (e) {
+    return null;
+  }
+}
+
+function refreshUndoButton() {
+  document.getElementById('undoBtn').style.display = getUndoSnapshot() ? 'inline-flex' : 'none';
+}
+
+async function undoLastPublish() {
+  if (syncing) { showToast('Still syncing — please wait a moment.', 'error'); return; }
+  const snap = getUndoSnapshot();
+  if (!snap) { showToast('Nothing to undo.', 'error'); return; }
+
+  const result = await runPublishTransaction({
+    commitMessage: `Undo last publish via admin panel (${new Date().toLocaleDateString()})`,
+    buildTreeEntries: async () => {
+      const entries = [{ path: 'index.html', mode: '100644', type: 'blob', sha: snap.prevIndexBlobSha }];
+      if (snap.prevQrBlobSha) entries.push({ path: 'quran-reflections/index.html', mode: '100644', type: 'blob', sha: snap.prevQrBlobSha });
+      return entries;
+    },
+  });
+
+  localStorage.removeItem('aah_undo_snapshot');
+  refreshUndoButton();
+
+  if (result.ok) {
+    showToast('Undo published. Re-syncing…', 'success');
+    setSyncing(true);
+    try {
+      await syncFromLiveSite();
+      setSyncing(false);
+    } catch (e) {
+      console.warn('Post-undo sync failed:', e);
+      showSyncError();
+    }
+    renderSidebar();
   }
 }
 

@@ -98,24 +98,31 @@ Steps on every publish:
 3. Fetch the full recursive tree (`?recursive=1`) to find both `index.html` and `quran-reflections/index.html` blob SHAs
 4. Fetch `index.html` blob (full content, no size limit)
 5. Replace the content between `<!-- AAH-ALL-CARDS-START -->` and `<!-- AAH-ALL-CARDS-END -->` with freshly-generated HTML for all cards in the current order
-6. If the quran card has a flyer, also fetch `quran-reflections/index.html`, replace the content between `<!-- QURAN-FLYER-START -->` and `<!-- QURAN-FLYER-END -->` with the updated flyer image, and include it in the commit
-7. Create new blob(s), a new tree, and a new commit via the API
-8. Force-update the branch ref to the new commit (`force: true` required because GitHub Pages sometimes causes ref divergence)
+6. **Validate the constructed HTML before writing anything**: re-parse it and check the marker pair appears exactly once, the card count matches what's expected, and no flyer image looks truncated. If anything looks wrong, the publish is aborted here — no blob, tree, or commit is created.
+7. If the quran card has a flyer and/or description, also fetch `quran-reflections/index.html`, replace the content between `<!-- QURAN-FLYER-START -->`/`<!-- QURAN-FLYER-END -->` and/or `<!-- QURAN-DESC-START -->`/`<!-- QURAN-DESC-END -->`, validate the same way, and include it in the commit
+8. Create new blob(s), a new tree, and a new commit via the API
+9. Re-fetch the branch ref and confirm it still matches the SHA from step 1 — if someone else published in the meantime, abort with a clear error instead of overwriting their change
+10. Force-update the branch ref to the new commit (`force: true` required because GitHub Pages sometimes causes ref divergence — now gated by the re-check in step 9)
+11. Save the previous blob SHA(s) so the "Undo Last Publish" button (in the admin topbar) can restore them later — see [Undo](#undo) below
 
 Changes are live within ~30 seconds of publish.
+
+### Undo
+
+Every publish keeps a record of the file(s)' previous blob SHA — an immutable pointer to their exact prior content — in the browser's local storage, expiring after 24 hours. Clicking "Undo Last Publish" republishes those old blobs directly (no re-upload needed) through the same validated publish path, then re-syncs the admin's local state. This gives whoever's editing the site a one-click way to recover from a bad edit without needing a developer or `git` — the 24-hour expiry exists because GitHub doesn't guarantee it retains a blob that no commit points to.
 
 ---
 
 ## Sync Behavior
 
-Because multiple browsers/devices share the same GitHub-hosted `index.html`, localStorage state can diverge. On every admin login, `syncFromLiveSite()` fetches `../index.html` (the live site) and rebuilds the local state from it:
+Because multiple browsers/devices share the same GitHub-hosted `index.html`, localStorage state can diverge. On every admin login, `syncFromLiveSite()` fetches `../index.html` (the live site) and rebuilds the local state from it. The dashboard is disabled (add/move/delete/restore buttons greyed out, "Syncing…" shown) until this completes — if the fetch fails, the dashboard stays disabled with a "Retry" link rather than silently falling back to whatever stale state happened to be in local storage.
 
 - Card order is derived from the sequence of `<!-- pinned:key -->` and `<!-- admin:id -->` markers in the HTML
-- Event card data (title, sub, link, icon, flyer) is parsed from the HTML around each `<!-- admin:id -->` marker
+- Event card data (title, sub, link, icon, flyer) is read directly off each card's HTML element (not parsed with regex — this matters because it means a card's title/subtitle can never be corrupted by a large flyer image pushing it past some fixed search window, which is what used to happen)
 - Pinned card flyers are parsed from the pinned card HTML
 - Any locally-created cards not yet visible in the live HTML are appended to the end of the order
 
-This means local unsaved drafts are lost on login if they were never published.
+This means local unsaved drafts are lost on login if they were never published. Local storage itself is only written after a publish succeeds (or after a sync) — never optimistically beforehand — so a failed publish can't leave the browser's local state out of sync with what's actually live.
 
 ---
 
@@ -246,11 +253,14 @@ Cards (glassmorphism boxes) are restricted to `index.html` (homepage). All inner
 - **All Quran verse references in session notes show the full Arabic + English card** — both `[[Quran S-V]]` and `![[Quran S-V]]` render identically as inline cards. Exception: references inside heading lines, table rows, or blockquote lines remain as plain links.
 - **Session page navigation is fully generated.** Do not write prev/next/overview links into the note body. The `---` separator in the note triggers injection of the 3-box nav bar (`← Previous | Overview | Next →`) by `build_notes.py`. The prev/next links at the bottom of the page (showing full session titles) are also generated.
 - **Filenames and display titles are intentionally decoupled.** The filename controls URL slug, while the first markdown H1 controls what users see in session lists and prev/next navigation. You can change titles without changing URLs.
-- **The GitHub token (`GH_TOKEN`) and admin password (`ADMIN_PASSWORD`) are hardcoded** in `admin/index.html`. The token is split into string segments to avoid GitHub's secret scanning triggering on push. The admin panel is `noindex, nofollow` but is not truly private — do not store sensitive data in cards.
-- **Flyer images in published HTML are permanent until overwritten.** If a card is edited without uploading a new flyer, the existing base64 image is extracted from the live HTML and re-embedded. This is handled by `extractFlyerAt()` and `extractFlyerForPinned()`.
+- **The GitHub token (`GH_TOKEN`) and admin password (`ADMIN_PASSWORD`) are hardcoded** in `admin/index.html`. The token is split into string segments to avoid GitHub's secret scanning triggering on push — this is not a real security boundary, just scanner evasion, and should be a fine-grained PAT scoped to only this repo (Contents read/write) so a leak's blast radius is limited. The admin panel is `noindex, nofollow` but is not truly private — do not store sensitive data in cards.
+- **Flyer images in published HTML are permanent until overwritten.** If a card is edited without uploading a new flyer, the existing base64 image is read directly off the live card's `<img>` element via `findExistingFlyer()` and re-embedded.
+- **`SESSIONS-START/END` and `QURAN-DESC-START/END` must stay sibling regions, never nested.** They were nested for a period and every admin publish that touched the Quran description silently wiped the whole session index as a result — this broke production twice before being fixed. If you're ever editing `quran-reflections/index.html`'s marker structure, keep them as independent, non-overlapping regions.
+- **Every publish is validated before it goes live** — the constructed HTML is checked for correct marker structure and card count before any GitHub write happens, and the publish is blocked (not partially applied) if validation fails.
+- **A bad publish can be undone from the admin panel itself** ("Undo Last Publish" button) — no `git` or developer needed. See [Undo](#undo).
 - **WhatsApp and Instagram are floating icons in the bottom-right corner**, not cards. They are hardcoded in `index.html` as `.social-float` and are not admin-managed. Edit directly in `index.html` to change links.
 - **Quran Reflections card links to `/quran-reflections`.** The program page hosts the flyer, description, and session list. There is no separate sign-in link on the card.
-- **Quran program page flyer syncs automatically on admin publish** — when the quran card has a flyer, `publishToGitHub()` also updates the `<!-- QURAN-FLYER-START/END -->` section in `quran-reflections/index.html` in the same commit.
+- **Quran program page flyer/description sync automatically on admin publish** — when the quran card has a flyer and/or description set, `publishToGitHub()` also updates the corresponding sections in `quran-reflections/index.html` in the same commit.
 
 ---
 
