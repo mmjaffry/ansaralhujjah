@@ -96,9 +96,13 @@ These markers are contracts — do not remove or reformat them:
 
 Card ordering: `aah_card_order` (localStorage). Auth session: `aah_authed` (sessionStorage).
 
-**Single rendering mode — `.program-card`:**
+**Single markup, two layouts — `.program-card`:**
 
-All admin-managed cards use the same horizontal format:
+All admin-managed cards emit the same markup. The homepage `<style>` block renders it as a vertical stack below 820px and as a horizontal row (flyer left, info right) at 820px and above, where `.container` also widens from 520px to 960px. Because the breakpoint lives entirely in CSS — outside the `AAH-ALL-CARDS` markers — layout changes never require touching `buildCardHtml()`, `buildPinnedCardHtml()`, or any part of the publish pipeline. Keep it that way: express card layout changes as CSS in `index.html`, not as markup changes in the admin panel.
+
+Flyers use `object-fit: contain` in the desktop rule. Never switch it to `cover` — flyers are text-heavy posters and cropping makes them unreadable.
+
+The markup both layouts share:
 ```html
 <!-- admin:{id} or pinned:{key} -->
 <a class="program-card" href="{link}" target="_blank" rel="noopener">

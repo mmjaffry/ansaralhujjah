@@ -82,9 +82,14 @@ Created freely via the admin panel. Identified by base-36 timestamp IDs (e.g., `
 
 ### Card Rendering
 
-All admin-managed cards (pinned and event) use the same horizontal `.program-card` format:
-- **With flyer** → flyer image displayed as a full-height banner at the top of the card (`height: auto`, no crop), with icon + title + subtitle + arrow in a footer row below.
-- **Without flyer** → same layout, but the flyer area shows the card's icon centered on an accent-tinted background (minimum 100px height).
+All admin-managed cards (pinned and event) use the same `.program-card` markup, which renders two ways depending on screen width:
+
+- **Below 820px (phones, small tablets)** — a vertical stack. The flyer sits as a banner across the top (no crop), with icon + title + subtitle + arrow in a footer row beneath it. Cards without a flyer show the card's icon centered on an accent-tinted panel, minimum 100px tall.
+- **820px and up (laptops, desktops)** — a horizontal row. The flyer becomes a left column (38% of the card, capped at 320px wide and 190px tall), and icon + title + subtitle + arrow sit vertically centered in a right column divided by a hairline border. Cards without a flyer show a 96px-tall icon panel in the left column. The page container widens from 520px to 960px at the same breakpoint.
+
+Flyers use `object-fit: contain` at every width — they are text-heavy posters and are never cropped to fill their column.
+
+**Both forms come from identical HTML.** The switch is pure CSS in the homepage `<style>` block, which lives outside the `AAH-ALL-CARDS` markers. The admin panel generates one markup shape and knows nothing about the breakpoint.
 
 The entire card is a link (`<a class="program-card">`). There is no expand/collapse interaction for admin-managed cards.
 
