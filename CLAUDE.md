@@ -41,7 +41,11 @@ GitHub Pages auto-deploys. No CI/CD pipeline.
 1. Admin-managed program cards between `<!-- AAH-ALL-CARDS-START -->` / `<!-- AAH-ALL-CARDS-END -->` markers
 2. Floating social icons (`.social-float`) in the bottom-right corner — hardcoded, NOT admin-managed. WhatsApp (`#25D366`) and Instagram (gradient) circular buttons.
 
-**`admin/index.html`** — Admin panel SPA. SHA-256 password auth in-browser. GitHub token hardcoded as split string (`GH_TOKEN`) purely to dodge secret-scanning — not a real security boundary; the token should be a fine-grained PAT scoped to only this repo with Contents read/write, to limit blast radius if it leaks.
+**`admin/index.html`** — Admin panel SPA. SHA-256 password auth in-browser.
+
+The panel's `<style>` block carries its own token set mirroring the public scales (`--sp-*`, `--fs-*`, `--shadow-*`, `--radius-*`, `--focus-ring`). Layout: a form column plus a sticky preview/actions column above 1100px, stacked below, and sidebar-above-editor below 760px.
+
+`updatePreview()` renders the `.program-card` composition deliberately — it is a mirror of `buildCardHtml()` / `buildPinnedCardHtml()`. **If you change the published card shape, change the preview in the same commit.** The two drifting apart is exactly what made the old `demo-card` markup (a header row plus a "Register" button) show editors something the site had long stopped publishing. GitHub token hardcoded as split string (`GH_TOKEN`) purely to dodge secret-scanning — not a real security boundary; the token should be a fine-grained PAT scoped to only this repo with Contents read/write, to limit blast radius if it leaks.
 
 **`quran-reflections/index.html`** — Program overview page. Session list between `<!-- SESSIONS-START -->` / `<!-- SESSIONS-END -->` markers, and admin-editable description between `<!-- QURAN-DESC-START -->` / `<!-- QURAN-DESC-END -->` — both are **sibling** regions inside the `program-desc` block (not nested), each independently owned so one writer's region can never blindly overwrite the other's. `SESSIONS-START/END` is injected by `build_notes.py`; `QURAN-DESC-START/END` is injected by the admin panel.
 

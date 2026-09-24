@@ -60,7 +60,10 @@ Located at `admin/index.html`. Accessed at ansaralhujjah.org/admin. It is a sing
 - Create, edit, delete, and reorder event cards
 - Edit the four permanent pinned cards (Sisters Social, Quran Reflections, WhatsApp, Instagram) or temporarily remove them from the site
 - Upload a flyer image per card (PNG/JPG) — gets base64-encoded and embedded in the HTML
-- Each card shows a live preview while editing
+- Each sidebar row shows a flyer thumbnail, the card title, a state badge (**Pinned** / **Event** / **Hidden**), and the subtitle
+- While editing, a live preview beside the form renders the card using the same composition that gets published — flyer area, icon, title, subtitle, arrow. It shows the phone (stacked) form and says so; on a laptop the published card puts the flyer to the left of the text.
+
+**Panel layout:** on screens wider than 1100px the editor splits into a form column and a sticky preview column holding the preview and the Save / Cancel buttons. Below that the two stack, and below 760px the sidebar moves above the editor and Save sits under Cancel for thumb reach. The panel carries its own copy of the design tokens, mirroring the public site's spacing, type, elevation, and radius scales, and every control has a visible focus ring.
 
 **Every save, delete, and reorder immediately triggers a publish to GitHub** — there is no separate Publish button.
 

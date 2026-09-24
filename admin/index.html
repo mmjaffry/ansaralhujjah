@@ -16,13 +16,28 @@
       --bg:            #d9ccbc;
       --bg-card:       rgba(255,255,255,0.55);
       --bg-panel:      rgba(255,255,255,0.38);
+      --bg-field:      rgba(255,255,255,0.72);
       --accent:        rgb(148,62,12);
       --accent-light:  rgb(195,95,38);
       --accent-dim:    rgba(148,62,12,0.10);
       --accent-border: rgba(148,62,12,0.22);
+      --accent-border-strong: rgba(148,62,12,0.45);
       --text:          #1a0d05;
-      --text-muted:    rgba(110,55,12,0.72);
+      --text-muted:    #6b3410;
+      --danger:        #8a1a1a;
+      --success:       #1a5a1a;
+      --shadow-sm: 0 1px 2px rgba(74,32,6,0.08), 0 1px 3px rgba(74,32,6,0.06);
+      --shadow-md: 0 4px 12px rgba(74,32,6,0.10), 0 2px 4px rgba(74,32,6,0.06);
+      --shadow-lg: 0 12px 32px rgba(74,32,6,0.16), 0 4px 8px rgba(74,32,6,0.08);
+      --focus-ring: 0 0 0 3px rgba(148,62,12,0.22);
+      --sp-1: 4px;  --sp-2: 8px;  --sp-3: 12px;
+      --sp-4: 16px; --sp-5: 24px; --sp-6: 40px;
+      --fs-xs: 0.75rem; --fs-sm: 0.85rem; --fs-md: 0.95rem;
+      --fs-lg: 1.1rem;  --fs-xl: 1.4rem;  --fs-2xl: 1.9rem;
+      --radius-sm: 8px; --radius-md: 12px; --radius-lg: 18px;
     }
+
+    :focus-visible { outline: none; box-shadow: var(--focus-ring); border-radius: var(--radius-sm); }
 
     body {
       background:
@@ -38,8 +53,9 @@
     }
     .login-card {
       width: 100%; max-width: 380px; background: var(--bg-card);
-      border: 1px solid var(--accent-border); border-radius: 20px; padding: 48px 40px; text-align: center;
-      box-shadow: 0 8px 40px rgba(148,62,12,0.10);
+      border: 1px solid var(--accent-border); border-radius: var(--radius-lg);
+      padding: var(--sp-6) var(--sp-6) var(--sp-5); text-align: center;
+      box-shadow: var(--shadow-lg);
     }
     .login-logo {
       width: 76px; height: 76px; object-fit: cover; margin: 0 auto 18px; display: block;
@@ -47,50 +63,52 @@
       border: 2px solid rgba(148,62,12,0.3);
       box-shadow: 0 0 24px rgba(148,62,12,0.18);
     }
-    .login-card h1 { font-family: 'Cinzel', serif; font-size: 1.2rem; font-weight: 400; color: var(--accent); margin-bottom: 4px; }
-    .login-sub { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 30px; }
-    .login-error { margin-top: 11px; font-size: 0.8rem; color: #c03030; display: none; }
+    .login-card h1 { font-family: 'Cinzel', serif; font-size: var(--fs-xl); font-weight: 400; color: var(--accent); margin-bottom: var(--sp-1); }
+    .login-sub { font-size: var(--fs-xs); color: var(--text-muted); margin-bottom: var(--sp-5); }
+    .login-error { margin-top: var(--sp-3); font-size: var(--fs-sm); color: var(--danger); display: none; }
 
     /* ── SHARED INPUTS / BUTTONS ── */
     .field {
-      width: 100%; background: rgba(255,255,255,0.55); border: 1px solid var(--accent-border);
-      border-radius: 10px; padding: 13px 16px; color: var(--text);
-      font-family: 'Lato', sans-serif; font-size: 0.95rem; outline: none;
-      transition: border-color 0.2s; margin-bottom: 13px;
+      width: 100%; background: var(--bg-field); border: 1px solid var(--accent-border);
+      border-radius: var(--radius-md); padding: var(--sp-3) var(--sp-4); color: var(--text);
+      font-family: 'Lato', sans-serif; font-size: var(--fs-md); outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s; margin-bottom: var(--sp-3);
     }
-    .field:focus { border-color: var(--accent); }
+    .field:focus { border-color: var(--accent); box-shadow: var(--focus-ring); }
 
     .btn-primary {
       width: 100%; background: var(--accent); color: #fff; border: none;
-      border-radius: 10px; padding: 14px; font-family: 'Cinzel', serif;
-      font-size: 0.85rem; letter-spacing: 0.05em; cursor: pointer;
-      transition: opacity 0.2s, transform 0.15s;
+      border-radius: var(--radius-md); padding: var(--sp-3) var(--sp-4);
+      font-family: 'Cinzel', serif; font-size: var(--fs-sm); letter-spacing: 0.05em;
+      cursor: pointer; box-shadow: var(--shadow-sm);
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
     }
-    .btn-primary:hover  { opacity: 0.88; transform: translateY(-1px); }
-    .btn-primary:active { transform: translateY(0); }
+    .btn-primary:hover  { background: var(--accent-light); transform: translateY(-1px); box-shadow: var(--shadow-md); }
+    .btn-primary:active { transform: translateY(0); box-shadow: var(--shadow-sm); }
+    .btn-primary:disabled { opacity: 0.5; cursor: default; transform: none; box-shadow: none; }
 
     .btn-ghost {
-      background: var(--accent-dim); border: 1px solid var(--accent-border); color: var(--accent-light);
-      border-radius: 8px; padding: 8px 16px; font-size: 0.8rem; cursor: pointer;
-      transition: background 0.2s; font-family: 'Lato', sans-serif;
+      background: var(--accent-dim); border: 1px solid var(--accent-border); color: var(--accent);
+      border-radius: var(--radius-sm); padding: var(--sp-2) var(--sp-4); font-size: var(--fs-sm);
+      cursor: pointer; transition: background 0.2s, border-color 0.2s; font-family: 'Lato', sans-serif;
     }
-    .btn-ghost:hover { background: rgba(180,90,45,0.22); }
+    .btn-ghost:hover { background: rgba(180,90,45,0.22); border-color: var(--accent-border-strong); }
 
     .btn-secondary {
       background: transparent; border: 1px solid var(--accent-border); color: var(--text-muted);
-      border-radius: 10px; padding: 13px 22px; font-family: 'Lato', sans-serif;
-      font-size: 0.88rem; cursor: pointer; transition: border-color 0.2s, color 0.2s;
+      border-radius: var(--radius-md); padding: var(--sp-3) var(--sp-5); font-family: 'Lato', sans-serif;
+      font-size: var(--fs-sm); cursor: pointer; transition: border-color 0.2s, color 0.2s, background 0.2s;
     }
-    .btn-secondary:hover { border-color: var(--accent-light); color: var(--text); }
+    .btn-secondary:hover { border-color: var(--accent-light); color: var(--text); background: rgba(255,255,255,0.35); }
 
     /* ── DASHBOARD ── */
     #dashboard { display: none; min-height: 100vh; flex-direction: column; }
 
     .topbar {
       position: sticky; top: 0; z-index: 200; background: var(--bg-card);
-      border-bottom: 1px solid var(--accent-border); padding: 0 24px; height: 56px;
-      display: flex; align-items: center; justify-content: space-between; gap: 12px;
-      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--accent-border); padding: 0 var(--sp-5); height: 60px;
+      display: flex; align-items: center; justify-content: space-between; gap: var(--sp-3);
+      backdrop-filter: blur(8px); box-shadow: var(--shadow-sm);
     }
     .topbar-brand {
       font-family: 'Cinzel', serif; font-size: 0.9rem; color: var(--accent);
@@ -101,9 +119,9 @@
       border-radius: 50%; overflow: hidden; border: 1px solid rgba(148,62,12,0.35);
     }
     .topbar-badge {
-      font-size: 0.62rem; color: var(--text-muted); background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.08); border-radius: 4px;
-      padding: 2px 7px; letter-spacing: 0.08em; text-transform: uppercase;
+      font-size: 0.66rem; color: var(--accent); background: var(--accent-dim);
+      border: 1px solid var(--accent-border); border-radius: var(--radius-sm);
+      padding: 2px var(--sp-2); letter-spacing: 0.08em; text-transform: uppercase;
     }
     .topbar-right { display: flex; align-items: center; gap: 10px; }
 
@@ -119,7 +137,7 @@
     @keyframes spin { to { transform: rotate(360deg); } }
 
     /* ── LAYOUT ── */
-    .admin-body { display: grid; grid-template-columns: 260px 1fr; flex: 1; min-height: calc(100vh - 56px); }
+    .admin-body { display: grid; grid-template-columns: 280px 1fr; flex: 1; min-height: calc(100vh - 60px); }
 
     /* ── SIDEBAR ── */
     .sidebar {
@@ -143,24 +161,35 @@
     .sidebar-label { font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-muted); margin-bottom: 10px; padding: 0 2px; }
 
     .event-item {
-      display: flex; align-items: center; gap: 9px; background: var(--bg-card);
-      border: 1px solid var(--accent-border); border-radius: 10px; padding: 10px 11px;
-      margin-bottom: 7px; cursor: pointer; transition: border-color 0.2s, background 0.2s;
+      display: flex; align-items: center; gap: var(--sp-3); background: var(--bg-card);
+      border: 1px solid var(--accent-border); border-radius: var(--radius-md);
+      padding: var(--sp-3); margin-bottom: var(--sp-2); cursor: pointer;
+      transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
     }
-    .event-item:hover  { border-color: var(--accent); }
-    .event-item.active { border-color: var(--accent); background: rgba(180,90,45,0.07); }
-    .event-item.pinned-removed { opacity: 0.45; }
+    .event-item:hover  { border-color: var(--accent-border-strong); box-shadow: var(--shadow-sm); }
+    .event-item.active { border-color: var(--accent); background: rgba(180,90,45,0.09); box-shadow: var(--shadow-sm); }
+    .event-item.pinned-removed { opacity: 0.55; }
 
     .event-thumb {
-      width: 32px; height: 32px; border-radius: 6px; flex-shrink: 0;
+      width: 40px; height: 40px; border-radius: var(--radius-sm); flex-shrink: 0;
       background: var(--accent-dim); display: flex; align-items: center; justify-content: center;
-      font-size: 0.9rem; overflow: hidden;
+      font-size: var(--fs-md); overflow: hidden; border: 1px solid var(--accent-border);
     }
     .event-thumb img { width: 100%; height: 100%; object-fit: cover; }
-    .event-thumb svg { width: 16px; height: 16px; fill: var(--accent-light); }
+    .event-thumb svg { width: 18px; height: 18px; fill: var(--accent-light); }
     .event-info { flex: 1; min-width: 0; }
-    .event-name { font-size: 0.82rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .event-sub  { font-size: 0.7rem; color: var(--text-muted); margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .event-name { font-size: var(--fs-sm); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .event-meta { display: flex; align-items: center; gap: var(--sp-2); margin-top: 3px; min-width: 0; }
+    .event-sub  { font-size: var(--fs-xs); color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+    .card-badge {
+      font-size: 0.62rem; letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 2px var(--sp-2); border-radius: 999px; flex-shrink: 0;
+      border: 1px solid transparent; white-space: nowrap;
+    }
+    .card-badge--pinned { background: var(--accent-dim); border-color: var(--accent-border); color: var(--accent); }
+    .card-badge--event  { background: rgba(255,255,255,0.5); border-color: var(--accent-border); color: var(--text-muted); }
+    .card-badge--hidden { background: rgba(138,26,26,0.10); border-color: rgba(138,26,26,0.30); color: var(--danger); }
 
     .btn-del {
       width: 24px; height: 24px; border-radius: 5px; border: none; background: transparent;
@@ -212,11 +241,21 @@
     .empty-state h3 { font-family: 'Cinzel', serif; font-size: 1rem; font-weight: 400; }
     .empty-state p { font-size: 0.82rem; color: var(--text-muted); max-width: 240px; }
 
-    .editor-wrap { display: none; padding: 30px 34px; max-width: 660px; }
-    .editor-heading { font-family: 'Cinzel', serif; font-size: 1.05rem; font-weight: 400; color: var(--accent); margin-bottom: 26px; }
+    .editor-wrap { display: none; padding: var(--sp-5) var(--sp-6); max-width: 1180px; }
+    .editor-heading {
+      font-family: 'Cinzel', serif; font-size: var(--fs-xl); font-weight: 400;
+      color: var(--accent); margin-bottom: var(--sp-5);
+      padding-bottom: var(--sp-3); border-bottom: 1px solid var(--accent-border);
+    }
+    /* form and preview sit side by side once there is room for both */
+    .editor-cols { display: grid; grid-template-columns: minmax(0,1fr); gap: var(--sp-6); align-items: start; }
+    @media (min-width: 1100px) {
+      .editor-cols { grid-template-columns: minmax(0,1fr) 380px; }
+      .editor-aside { position: sticky; top: calc(60px + var(--sp-5)); }
+    }
 
-    .form-row { margin-bottom: 20px; }
-    .form-row label { display: block; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 7px; }
+    .form-row { margin-bottom: var(--sp-5); }
+    .form-row label { display: block; font-size: var(--fs-xs); text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: var(--sp-2); }
     .form-row input[type="text"],
     .form-row input[type="url"],
     .form-row textarea {
@@ -225,7 +264,7 @@
       font-family: 'Lato', sans-serif; font-size: 0.92rem; outline: none; transition: border-color 0.2s;
     }
     .form-row textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
-    .form-row input:focus, .form-row textarea:focus { border-color: var(--accent); }
+    .form-row input:focus, .form-row textarea:focus { border-color: var(--accent); box-shadow: var(--focus-ring); }
 
     /* ── ICON PICKER ── */
     .icon-picker {
@@ -257,8 +296,13 @@
     .upload-zone p { font-size: 0.82rem; color: var(--text-muted); }
     .upload-zone strong { color: var(--accent-light); font-weight: 400; }
 
-    .flyer-preview-wrap { display: none; position: relative; margin-top: 12px; }
-    .flyer-preview-wrap img { width: 100%; border-radius: 10px; display: block; }
+    .flyer-preview-wrap {
+      display: none; position: relative; margin-top: var(--sp-3);
+      background: var(--accent-dim); border: 1px solid var(--accent-border);
+      border-radius: var(--radius-md); padding: var(--sp-3); text-align: center;
+    }
+    /* cap the height — flyers are tall posters and were pushing every control below the fold */
+    .flyer-preview-wrap img { max-width: 100%; max-height: 300px; width: auto; border-radius: var(--radius-sm); display: inline-block; }
     .btn-remove-flyer {
       position: absolute; top: 9px; right: 9px; background: rgba(0,0,0,0.72);
       border: 1px solid rgba(255,255,255,0.12); border-radius: 6px; color: #ccc;
@@ -273,22 +317,46 @@
     }
 
     /* preview */
-    .preview-section { margin-top: 32px; border-top: 1px solid var(--accent-border); padding-top: 22px; }
-    .preview-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 14px; }
-    .demo-card { background: var(--bg-card); border: 1px solid rgba(180,90,45,0.18); border-radius: 16px; overflow: hidden; max-width: 440px; }
-    .demo-card-header { display: flex; align-items: center; gap: 13px; padding: 15px 17px; }
-    .demo-icon { width: 38px; height: 38px; border-radius: 9px; background: var(--accent-dim); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .preview-section {
+      background: var(--bg-panel); border: 1px solid var(--accent-border);
+      border-radius: var(--radius-lg); padding: var(--sp-4);
+    }
+    .preview-label { font-size: var(--fs-xs); text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: var(--sp-3); }
+    /* Mirrors the published .program-card composition — keep in sync with
+       buildCardHtml()/buildPinnedCardHtml() and the homepage card CSS. */
+    .demo-card {
+      background: var(--bg-card); border: 1px solid var(--accent-border);
+      border-radius: var(--radius-lg); overflow: hidden; max-width: 560px;
+      box-shadow: var(--shadow-sm);
+    }
+    .demo-flyer {
+      background: rgba(148,62,12,0.06); min-height: 96px;
+      display: flex; align-items: center; justify-content: center; padding: var(--sp-3);
+    }
+    .demo-flyer img { display: block; width: 75%; height: auto; }
+    .demo-flyer svg { width: 40px; height: 40px; fill: var(--accent); opacity: 0.35; }
+    .demo-info {
+      display: flex; align-items: center; gap: var(--sp-4);
+      padding: var(--sp-4) var(--sp-5); border-top: 1px solid var(--accent-border);
+    }
+    .demo-icon {
+      width: 36px; height: 36px; border-radius: var(--radius-sm); background: var(--accent-dim);
+      border: 1px solid var(--accent-border);
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
     .demo-icon svg { fill: var(--accent-light); width: 18px; height: 18px; }
-    .demo-text { flex: 1; }
-    .demo-label { font-size: 0.9rem; color: var(--text); }
-    .demo-sub   { font-size: 0.72rem; color: var(--text-muted); margin-top: 2px; }
-    .demo-arrow { width: 32px; height: 32px; border-radius: 7px; background: rgba(180,90,45,0.15); display: flex; align-items: center; justify-content: center; color: var(--accent-light); font-size: 0.9rem; }
-    .demo-body  { border-top: 1px solid rgba(180,90,45,0.1); display: none; }
-    .demo-body img { width: 100%; display: block; }
-    .demo-register { display: block; margin: 11px; background: var(--accent); color: #fff; text-align: center; padding: 11px; border-radius: 9px; text-decoration: none; font-family: 'Cinzel', serif; font-size: 0.8rem; }
+    .demo-text { flex: 1; min-width: 0; }
+    .demo-label { font-size: var(--fs-md); color: var(--text); }
+    .demo-sub   { font-size: var(--fs-xs); color: var(--text-muted); margin-top: 2px; }
+    .demo-arrow { color: var(--accent); font-size: var(--fs-md); flex-shrink: 0; }
 
-    .form-actions { display: flex; gap: 10px; margin-top: 26px; padding-top: 22px; border-top: 1px solid var(--accent-border); }
+    /* The preview column is too narrow to fake the homepage's 820px row form,
+       so it renders the stacked (phone) composition and says so. */
+    .preview-note { font-size: var(--fs-xs); color: var(--text-muted); margin-top: var(--sp-3); line-height: 1.5; }
+
+    .form-actions { display: flex; gap: var(--sp-2); margin-top: var(--sp-4); }
     .form-actions .btn-primary { width: auto; flex: 1; }
+    .form-actions .btn-secondary { flex: 0 0 auto; }
 
     /* ── TOAST ── */
     .toast {
@@ -316,11 +384,15 @@
     .modal-actions { display: flex; gap: 10px; margin-top: 20px; }
     .modal-actions .btn-primary { flex: 1; width: auto; }
 
-    @media (max-width: 580px) {
+    @media (max-width: 760px) {
       .admin-body { grid-template-columns: 1fr; }
-      .sidebar { border-right: none; border-bottom: 1px solid var(--accent-border); max-height: 45vh; }
-      .editor-wrap { padding: 22px 18px; }
+      .sidebar { border-right: none; border-bottom: 1px solid var(--accent-border); max-height: 42vh; }
+      .editor-wrap { padding: var(--sp-5) var(--sp-4); }
       .icon-picker { grid-template-columns: repeat(6, 1fr); }
+      .topbar { padding: 0 var(--sp-4); }
+      .topbar-brand { font-size: var(--fs-sm); }
+      .form-actions { flex-direction: column-reverse; }
+      .form-actions .btn-secondary, .form-actions .btn-primary { width: 100%; flex: 1 1 auto; }
     }
   </style>
 </head>
@@ -390,6 +462,9 @@
       <div class="editor-wrap" id="editorWrap">
         <div class="editor-heading" id="editorHeading">New Event Card</div>
 
+        <div class="editor-cols">
+        <div class="editor-main">
+
         <div class="form-row">
           <label>Event Title</label>
           <input type="text" id="fTitle" placeholder="e.g. Quran Reflections">
@@ -432,11 +507,18 @@
           </p>
         </div>
 
+        </div><!-- /editor-main -->
+
         <!-- live preview -->
+        <aside class="editor-aside">
         <div class="preview-section">
           <div class="preview-label">Card Preview</div>
-          <div class="demo-card">
-            <div class="demo-card-header">
+          <div class="demo-card" id="previewCard">
+            <div class="demo-flyer" id="previewFlyer">
+              <img id="previewFlyerImg" src="" alt="" style="display:none">
+              <svg id="previewFlyerIcon" viewBox="0 0 24 24"><path id="previewFlyerIconPath" d=""/></svg>
+            </div>
+            <div class="demo-info">
               <div class="demo-icon" id="previewIconWrap">
                 <svg viewBox="0 0 24 24" id="previewIconSvg"><path id="previewIconPath" d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg>
               </div>
@@ -446,17 +528,17 @@
               </div>
               <div class="demo-arrow">→</div>
             </div>
-            <div class="demo-body" id="previewBody">
-              <img id="previewImg" src="" alt="">
-              <a class="demo-register" href="#">Register</a>
-            </div>
           </div>
+          <p class="preview-note">Shown as it appears on a phone. On a laptop the same card puts the flyer to the left of the text.</p>
         </div>
 
         <div class="form-actions">
           <button class="btn-secondary" id="cancelBtn">Cancel</button>
           <button class="btn-primary"   id="saveBtn">Save &amp; Publish</button>
         </div>
+        </aside>
+
+        </div><!-- /editor-cols -->
       </div>
 
     </div>
@@ -874,7 +956,10 @@ function renderSidebar() {
         <div class="event-thumb"><svg viewBox="0 0 24 24"><path d="${iconPath}"/></svg></div>
         <div class="event-info">
           <div class="event-name">${esc(pc.title)}</div>
-          <div class="event-sub" style="color:#e07070;">Removed from site</div>
+          <div class="event-meta">
+            <span class="card-badge card-badge--hidden">Hidden</span>
+            <span class="event-sub">Not on the site</span>
+          </div>
         </div>
         <button class="btn-restore" onclick="event.stopPropagation();restorePinned('${id}')" title="Restore">↺</button>
       </div>`;
@@ -888,7 +973,10 @@ function renderSidebar() {
         </div>
         <div class="event-info">
           <div class="event-name">${esc(pc.title)}</div>
-          <div class="event-sub">${esc(pc.sub || '')}</div>
+          <div class="event-meta">
+            <span class="card-badge card-badge--pinned">Pinned</span>
+            <span class="event-sub">${esc(pc.sub || '')}</span>
+          </div>
         </div>
         <button class="btn-del" onclick="event.stopPropagation();removePinned('${id}')" title="Remove from site">✕</button>
       </div>`;
@@ -906,7 +994,10 @@ function renderSidebar() {
         </div>
         <div class="event-info">
           <div class="event-name">${esc(ev.title || 'Untitled')}</div>
-          <div class="event-sub">${esc(ev.sub || '')}</div>
+          <div class="event-meta">
+            <span class="card-badge card-badge--event">Event</span>
+            <span class="event-sub">${esc(ev.sub || '')}</span>
+          </div>
         </div>
         <button class="btn-del" onclick="event.stopPropagation();deleteCard('${ev.id}')" title="Delete">✕</button>
       </div>`;
@@ -1120,14 +1211,22 @@ function clearFlyer() {
 /* ── Live preview ────────────────────── */
 function updatePreview() {
   document.getElementById('previewTitle').textContent = document.getElementById('fTitle').value || 'Event Title';
-  document.getElementById('previewSub').textContent   = document.getElementById('fSub').value   || 'Subtitle';
+  const subEl  = document.getElementById('previewSub');
+  const subVal = document.getElementById('fSub').value;
+  subEl.textContent = subVal;
+  subEl.style.display = subVal ? 'block' : 'none';
   document.getElementById('previewIconPath').setAttribute('d', getIconPath(selectedIconId));
-  const body = document.getElementById('previewBody');
+  document.getElementById('previewFlyerIconPath').setAttribute('d', getIconPath(selectedIconId));
+  const img  = document.getElementById('previewFlyerImg');
+  const icon = document.getElementById('previewFlyerIcon');
   if (flyerB64) {
-    document.getElementById('previewImg').src = `data:${flyerMime};base64,${flyerB64}`;
-    body.style.display = 'block';
+    img.src = `data:${flyerMime};base64,${flyerB64}`;
+    img.style.display = 'block';
+    icon.style.display = 'none';
   } else {
-    body.style.display = 'none';
+    img.removeAttribute('src');
+    img.style.display = 'none';
+    icon.style.display = 'block';
   }
 }
 
