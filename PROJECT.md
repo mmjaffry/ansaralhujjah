@@ -14,7 +14,7 @@ The homepage is managed through an admin panel at ansaralhujjah.org/admin, which
 
 ### Homepage (`index.html`)
 
-All CSS, JS, and content in a single file (~1 MB due to embedded base64 flyer images).
+All CSS, JS, and content in a single file. It is around 150 KB today, but each uploaded flyer is base64-encoded straight into it, so it grows with every flyer and has been past 1 MB before.
 
 Page layout (top to bottom):
 1. Logo, title, divider
@@ -58,7 +58,7 @@ Located at `admin/index.html`. Accessed at ansaralhujjah.org/admin. It is a sing
 
 **Card management:**
 - Create, edit, delete, and reorder event cards
-- Edit the four permanent pinned cards (Sisters Social, Quran Reflections, WhatsApp, Instagram) or temporarily remove them from the site
+- Edit the five permanent pinned cards (Sisters Social, Quran Reflections, Book a Scholar, WhatsApp, Instagram) or temporarily remove them from the site
 - Upload a flyer image per card (PNG/JPG) — gets base64-encoded and embedded in the HTML
 - Each sidebar row shows a flyer thumbnail, the card title, a state badge (**Pinned** / **Event** / **Hidden**), and the subtitle
 - While editing, a live preview beside the form renders the card using the same composition that gets published — flyer area, icon, title, subtitle, arrow. It shows the phone (stacked) form and says so; on a laptop the published card puts the flyer to the left of the text.
@@ -132,7 +132,7 @@ To add a scholar, append an entry to `SCHOLARS`. Scheduling, availability, remin
 
 ## Publishing Flow
 
-The admin panel publishes by writing directly to GitHub using the Git Data API (not the Contents API, which has a 1 MB file size limit that `index.html` exceeds).
+The admin panel publishes by writing directly to GitHub using the Git Data API rather than the Contents API, which rejects files over 1 MB. `index.html` sits below that today, but embedded flyers have pushed it past the limit before — the Git Data API has no such ceiling, so publishing does not become fragile as flyers accumulate.
 
 Steps on every publish:
 1. Get the current branch tip commit SHA
@@ -295,13 +295,13 @@ Cards (glassmorphism boxes) are restricted to `index.html` (homepage). All inner
 
 ## Icons
 
-26 SVG Material Design icons are available in the admin panel. They are defined inline as path data in the `ICONS` array in `admin/index.html` — no external icon library is used. Each icon has an `id`, display `label`, and SVG `path` string.
+33 SVG Material Design icons are available in the admin panel. They are defined inline as path data in the `ICONS` array in `admin/index.html` — no external icon library is used. Each icon has an `id`, display `label`, and SVG `path` string.
 
 ---
 
 ## Constraints and Gotchas
 
-- **`index.html` is ~1 MB.** Uploading large flyer images grows it further. The Git Data API is used specifically because GitHub's Contents API rejects files over 1 MB.
+- **`index.html` grows with every flyer.** Each uploaded image is base64-encoded into the file; it is around 150 KB now and has exceeded 1 MB in the past. The Git Data API is used for publishing specifically because GitHub's Contents API rejects files over 1 MB.
 - **The Quran reflections build step is manual.** After dropping `.md` files into `quran-reflections/notes/`, run both `python3 build_notes.py` and `python3 build_quran.py` before pushing. The first script builds session pages + session index; the second builds Quran verse/surah pages + backlinks.
 - **Cards are restricted to the homepage.** Inner pages use a plain article layout with text directly on the warm background. Do not add glassmorphism card wrappers to inner pages.
 - **All Quran verse references in session notes show the full Arabic + English card** — both `[[Quran S-V]]` and `![[Quran S-V]]` render identically as inline cards. Exception: references inside heading lines, table rows, or blockquote lines remain as plain links.
@@ -337,4 +337,4 @@ Cards (glassmorphism boxes) are restricted to `index.html` (homepage). All inner
 | `PROJECT.md` | This file — human-readable project documentation |
 | `CNAME` | GitHub Pages custom domain (`ansaralhujjah.org`) |
 | `site.webmanifest` | PWA manifest |
-| `og-image.png` | Open Graph social preview image |
+| `icons/` | Favicons, app icons, and `og-image.png` (the Open Graph social preview) |

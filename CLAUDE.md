@@ -37,7 +37,7 @@ GitHub Pages auto-deploys. No CI/CD pipeline.
 
 ## Architecture
 
-**`index.html`** — Homepage (~1 MB due to embedded base64 flyers). All CSS and JS inline. Structure:
+**`index.html`** — Homepage (~150 KB, and grows with every base64 flyer embedded into it — it has been over 1 MB before). All CSS and JS inline. Structure:
 1. Admin-managed program cards between `<!-- AAH-ALL-CARDS-START -->` / `<!-- AAH-ALL-CARDS-END -->` markers
 2. Floating social icons (`.social-float`) in the bottom-right corner — hardcoded, NOT admin-managed. WhatsApp (`#25D366`) and Instagram (gradient) circular buttons.
 
@@ -207,7 +207,7 @@ Wikilink → URL: `[[Session 2 - Ayat 3]]` → `/quran-reflections/session-2-aya
 
 ### Icons
 
-26 SVG Material Design icons in the `ICONS` array in `admin/index.html`. Each entry: `{ id, label, path }`. `getIconPath(id)` returns the SVG path data, falling back to the first icon if `id` is unknown.
+33 SVG Material Design icons in the `ICONS` array in `admin/index.html`. Each entry: `{ id, label, path }`. `getIconPath(id)` returns the SVG path data, falling back to the first icon if `id` is unknown.
 
 ### Design System
 
