@@ -603,7 +603,7 @@ function getIconPath(id) {
 /* ── Pinned card defaults ─────────────── */
 // Fixed, non-deletable card keys. Add new permanent cards here (and only here) —
 // every other place that needs to know about pinned cards reads this list.
-const PINNED_KEYS = ['sisters', 'quran', 'whatsapp', 'instagram'];
+const PINNED_KEYS = ['sisters', 'quran', 'book', 'whatsapp', 'instagram'];
 
 const PINNED_DEFAULTS = {
   sisters: {
@@ -611,6 +611,12 @@ const PINNED_DEFAULTS = {
     sub: "Games | Snacks | Matcha | Study Zone",
     link: "https://www.cognitoforms.com/IECHouston1/AAHSistersSocialRegistration",
     btnText: "Register", iconId: "people", flyerB64: null, flyerMime: null, removed: false
+  },
+  book: {
+    title: "Book Time with a Scholar",
+    sub: "Schedule a one-on-one conversation",
+    link: "/book",
+    btnText: "Book", iconId: "calendar", flyerB64: null, flyerMime: null, removed: false
   },
   quran: {
     title: "Quran Reflections",

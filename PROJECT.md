@@ -72,9 +72,10 @@ Located at `admin/index.html`. Accessed at ansaralhujjah.org/admin. It is a sing
 ## Card Types
 
 ### Pinned Cards
-Four permanent cards (`PINNED_KEYS` in `admin/index.html`) that always appear in the admin-managed section unless explicitly removed:
+Five permanent cards (`PINNED_KEYS` in `admin/index.html`) that always appear in the admin-managed section unless explicitly removed:
 - **Sisters Social** (key: `sisters`) — links to registration form
 - **Quran Reflections** (key: `quran`) — links to `/quran-reflections`
+- **Book a Scholar** (key: `book`) — links to `/book`
 - **WhatsApp** (key: `whatsapp`) — links to the community WhatsApp chat
 - **Instagram** (key: `instagram`) — links to the Instagram profile
 
@@ -95,6 +96,37 @@ Flyers use `object-fit: contain` at every width — they are text-heavy posters 
 **Both forms come from identical HTML.** The switch is pure CSS in the homepage `<style>` block, which lives outside the `AAH-ALL-CARDS` markers. The admin panel generates one markup shape and knows nothing about the breakpoint.
 
 The entire card is a link (`<a class="program-card">`). There is no expand/collapse interaction for admin-managed cards.
+
+---
+
+## Booking a Scholar (`/book`)
+
+`book/index.html` lets visitors schedule a one-on-one conversation with a scholar. It is a plain static page — no backend — with Calendly doing the actual scheduling.
+
+Everything on the page is driven by the `SCHOLARS` array at the top of its script:
+
+```javascript
+const SCHOLARS = [
+  {
+    id: 'farhat-abbas',
+    name: 'Molana Farhat Abbas',
+    role: 'Resident scholar · Quran Reflections',
+    calendlyUrl: ''
+  }
+];
+```
+
+**To switch booking on for a scholar:** create their Calendly event, paste its link (e.g. `https://calendly.com/farhat-abbas/30min`) into that scholar's `calendlyUrl`, and push. Nothing else changes.
+
+Behavior follows from the data:
+
+- **No scholar has a link** (the state it ships in) — the page explains that online scheduling is not live yet and offers a WhatsApp link instead. Calendly's script is never loaded.
+- **One scholar has a link** — that scholar's Calendly inline embed renders directly.
+- **Several have links** — a scholar picker renders above the embed; clicking a scholar swaps it. Scholars without a link still appear, marked "Booking opens soon" and not clickable.
+
+If Calendly's script fails to load, the page falls back to the same WhatsApp panel rather than showing an empty box.
+
+To add a scholar, append an entry to `SCHOLARS`. Scheduling, availability, reminders, and cancellations are all handled inside Calendly — the site holds no booking data.
 
 ---
 
@@ -292,6 +324,7 @@ Cards (glassmorphism boxes) are restricted to `index.html` (homepage). All inner
 |---|---|
 | `index.html` | Homepage — the main site |
 | `admin/index.html` | Admin panel SPA |
+| `book/index.html` | Scholar booking page — Calendly-backed, configured via its `SCHOLARS` array |
 | `_head.html` | Reference snippet for shared `<head>` elements — copy into new pages, do not serve directly |
 | `build_notes.py` | Python script: Obsidian `.md` → styled HTML session pages |
 | `build_quran.py` | Python script: session-note Quran wikilinks → generated `/quran/verses/*` and `/quran/surahs/*` pages |

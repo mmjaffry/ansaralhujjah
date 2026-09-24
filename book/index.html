@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Book a Scholar · Ansar Al-Hujjah</title>
+  <meta property="og:title" content="Book a Scholar · Ansar Al-Hujjah" />
+  <meta property="og:description" content="Schedule a one-on-one conversation with a scholar at Ansar Al-Hujjah, Houston, TX." />
+  <meta property="og:image" content="https://ansaralhujjah.org/icons/og-image.png" />
+  <meta property="og:url" content="https://ansaralhujjah.org/book" />
+  <meta property="og:type" content="website" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --accent-light: rgb(195,95,38);
+      --accent-mid: rgb(148,62,12);
+      --accent-dark: rgb(98,28,0);
+      --accent-glow: rgb(210,112,50);
+      --bg: #d9ccbc;
+      --bg-card: rgba(255,255,255,0.55);
+      --bg-card-hover: rgba(255,255,255,0.74);
+      --border: rgba(148,62,12,0.18);
+      --border-strong: rgba(148,62,12,0.42);
+      --text: #1a0d05;
+      --text-muted: #6b3410;
+      --shadow-sm: 0 1px 2px rgba(74,32,6,0.08), 0 1px 3px rgba(74,32,6,0.06);
+      --shadow-md: 0 4px 12px rgba(74,32,6,0.10), 0 2px 4px rgba(74,32,6,0.06);
+      --shadow-lg: 0 12px 32px rgba(74,32,6,0.16), 0 4px 8px rgba(74,32,6,0.08);
+      --sp-1: 4px;  --sp-2: 8px;  --sp-3: 12px;
+      --sp-4: 16px; --sp-5: 24px; --sp-6: 40px;
+      --fs-xs: 0.75rem; --fs-sm: 0.85rem; --fs-md: 0.95rem;
+      --fs-lg: 1.1rem;  --fs-xl: 1.4rem;  --fs-2xl: 1.9rem;
+      --radius-sm: 8px; --radius-md: 12px; --radius-lg: 18px;
+    }
+    html, body { min-height: 100vh; background: var(--bg); color: var(--text); font-family: "Lato", sans-serif; font-weight: 300; }
+    body {
+      background:
+        radial-gradient(ellipse 80% 60% at 50% -10%, rgba(148,62,12,0.10) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 40% at 80% 80%, rgba(120,50,8,0.07) 0%, transparent 60%),
+        #d9ccbc;
+      display: flex; flex-direction: column; align-items: center; padding: var(--sp-6) var(--sp-5) var(--sp-6);
+    }
+    .container { width: 100%; max-width: 760px; }
+
+    .breadcrumb {
+      display: flex; align-items: center; gap: var(--sp-2);
+      font-size: var(--fs-xs); letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--text-muted); margin-bottom: var(--sp-5);
+    }
+    .breadcrumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+    .breadcrumb a:hover { color: var(--accent-mid); }
+
+    header.page-head { text-align: center; margin-bottom: var(--sp-6); }
+    .logo-wrap { width: 92px; height: 92px; margin: 0 auto var(--sp-4); }
+    .logo-wrap img { width: 100%; height: 100%; object-fit: contain; }
+    h1 {
+      font-family: "Cinzel", serif; font-size: var(--fs-2xl); font-weight: 600;
+      letter-spacing: 0.06em;
+      background: linear-gradient(135deg, rgb(160,70,10) 0%, rgb(110,38,0) 50%, rgb(75,18,0) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      margin-bottom: var(--sp-3);
+    }
+    .lede { font-size: var(--fs-md); color: var(--text-muted); line-height: 1.6; max-width: 42ch; margin: 0 auto; }
+
+    .panel {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); box-shadow: var(--shadow-sm);
+      padding: var(--sp-5); margin-bottom: var(--sp-4);
+    }
+
+    .scholar-list { display: flex; flex-direction: column; gap: var(--sp-3); margin-bottom: var(--sp-5); }
+    .scholar {
+      display: flex; align-items: center; gap: var(--sp-4); width: 100%; text-align: left;
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius-md); padding: var(--sp-4); box-shadow: var(--shadow-sm);
+      font-family: "Lato", sans-serif; color: var(--text);
+    }
+    button.scholar { cursor: pointer; transition: border-color 0.2s, background 0.2s, box-shadow 0.2s; }
+    button.scholar:hover { border-color: var(--border-strong); background: var(--bg-card-hover); box-shadow: var(--shadow-md); }
+    button.scholar[aria-pressed="true"] { border-color: var(--accent-mid); background: var(--bg-card-hover); }
+    .scholar-avatar {
+      width: 44px; height: 44px; border-radius: 50%; flex-shrink: 0;
+      background: rgba(148,62,12,0.12); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-family: "Cinzel", serif; font-size: var(--fs-md); color: var(--accent-mid);
+    }
+    .scholar-text { flex: 1; min-width: 0; }
+    .scholar-name { display: block; font-size: var(--fs-md); color: var(--text); }
+    .scholar-role { display: block; font-size: var(--fs-sm); color: var(--text-muted); margin-top: 2px; }
+    .scholar-state {
+      font-size: var(--fs-xs); letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--text-muted); border: 1px solid var(--border);
+      border-radius: 999px; padding: 3px var(--sp-3); white-space: nowrap; flex-shrink: 0;
+    }
+
+    .panel h2 { font-family: "Cinzel", serif; font-size: var(--fs-lg); font-weight: 400; color: var(--accent-mid); margin-bottom: var(--sp-3); }
+    .panel p { font-size: var(--fs-md); color: var(--text-muted); line-height: 1.65; }
+    .panel p + p { margin-top: var(--sp-3); }
+
+    .cta {
+      display: inline-flex; align-items: center; gap: var(--sp-2); margin-top: var(--sp-4);
+      background: var(--accent-mid); color: #fff; text-decoration: none;
+      font-family: "Cinzel", serif; font-size: var(--fs-sm); letter-spacing: 0.05em;
+      padding: var(--sp-3) var(--sp-5); border-radius: var(--radius-md); box-shadow: var(--shadow-sm);
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+    }
+    .cta:hover { background: var(--accent-light); transform: translateY(-1px); box-shadow: var(--shadow-md); }
+    .cta svg { width: 17px; height: 17px; fill: currentColor; }
+
+    #calendlyHost { min-height: 660px; border-radius: var(--radius-md); overflow: hidden; }
+
+    footer { margin-top: var(--sp-6); text-align: center; font-size: var(--fs-sm); color: var(--text-muted); letter-spacing: 0.1em; text-transform: uppercase; }
+    footer a { color: var(--text-muted); text-decoration: none; }
+    footer a:hover { color: var(--accent-mid); }
+
+    @media (max-width: 560px) {
+      .scholar { flex-wrap: wrap; }
+      #calendlyHost { min-height: 900px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <nav class="breadcrumb">
+      <a href="/">Ansar Al-Hujjah</a> <span>&rsaquo;</span> <span>Book a Scholar</span>
+    </nav>
+
+    <header class="page-head">
+      <div class="logo-wrap"><img src="/icons/android-chrome-512x512.png" alt="Ansar Al-Hujjah" /></div>
+      <h1>Book a Scholar</h1>
+      <p class="lede">Schedule a one-on-one conversation — questions of faith, family matters, or guidance on a personal situation.</p>
+    </header>
+
+    <div id="scholarList" class="scholar-list"></div>
+    <div id="bookingArea"></div>
+
+    <footer>
+      <a href="/">Ansar Al-Hujjah &nbsp;·&nbsp; Houston, TX</a>
+    </footer>
+  </div>
+
+<script>
+'use strict';
+
+/* Scholars available for booking.
+   To switch a scholar on: paste their Calendly event link into calendlyUrl
+   (e.g. 'https://calendly.com/farhat-abbas/30min') and push. An empty
+   string means "not bookable yet" — the page then explains that instead
+   of loading Calendly. */
+const SCHOLARS = [
+  {
+    id: 'farhat-abbas',
+    name: 'Molana Farhat Abbas',
+    role: 'Resident scholar · Quran Reflections',
+    calendlyUrl: ''
+  }
+];
+
+const WHATSAPP_URL = 'https://chat.whatsapp.com/IRGzGkHq6tXIadkhGH9A7H?mode=gi_t';
+
+function esc(str) {
+  return String(str).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+}
+
+function initials(name) {
+  return name.split(/\s+/).filter(Boolean).slice(-2).map(w => w[0]).join('').toUpperCase();
+}
+
+const bookable = SCHOLARS.filter(s => s.calendlyUrl);
+
+function renderScholarList() {
+  const host = document.getElementById('scholarList');
+  // One bookable scholar and nothing else to choose between: the embed speaks for itself.
+  if (SCHOLARS.length === 1 && bookable.length === 1) { host.remove(); return; }
+
+  host.innerHTML = SCHOLARS.map(s => {
+    const body = `
+      <span class="scholar-avatar">${esc(initials(s.name))}</span>
+      <span class="scholar-text">
+        <span class="scholar-name">${esc(s.name)}</span>
+        <span class="scholar-role">${esc(s.role)}</span>
+      </span>`;
+    return s.calendlyUrl
+      ? `<button class="scholar" type="button" data-id="${esc(s.id)}" aria-pressed="false">${body}</button>`
+      : `<div class="scholar">${body}<span class="scholar-state">Booking opens soon</span></div>`;
+  }).join('');
+
+  host.querySelectorAll('button.scholar').forEach(btn => {
+    btn.addEventListener('click', () => selectScholar(btn.dataset.id));
+  });
+}
+
+function markSelected(id) {
+  document.querySelectorAll('button.scholar').forEach(btn => {
+    btn.setAttribute('aria-pressed', String(btn.dataset.id === id));
+  });
+}
+
+function loadCalendly(cb) {
+  if (window.Calendly) { cb(); return; }
+  const s = document.createElement('script');
+  s.src = 'https://assets.calendly.com/assets/external/widget.js';
+  s.onload = cb;
+  s.onerror = showCalendlyError;
+  document.head.appendChild(s);
+}
+
+function showCalendlyError() {
+  document.getElementById('bookingArea').innerHTML = `
+    <div class="panel">
+      <h2>Scheduling didn't load</h2>
+      <p>The booking calendar could not be reached. Please refresh, or message us on WhatsApp and we'll arrange a time for you.</p>
+      <a class="cta" href="${WHATSAPP_URL}" target="_blank" rel="noopener">Message us on WhatsApp</a>
+    </div>`;
+}
+
+function selectScholar(id) {
+  const scholar = SCHOLARS.find(s => s.id === id);
+  if (!scholar || !scholar.calendlyUrl) return;
+  markSelected(id);
+  const area = document.getElementById('bookingArea');
+  area.innerHTML = '<div id="calendlyHost"></div>';
+  loadCalendly(() => {
+    window.Calendly.initInlineWidget({
+      url: scholar.calendlyUrl,
+      parentElement: document.getElementById('calendlyHost'),
+      prefill: {},
+      utm: {}
+    });
+  });
+}
+
+function renderPlaceholder() {
+  document.getElementById('bookingArea').innerHTML = `
+    <div class="panel">
+      <h2>Online scheduling is coming soon</h2>
+      <p>We're setting up online booking so you can pick a time directly from this page. It isn't live yet.</p>
+      <p>In the meantime, message us on WhatsApp and we'll arrange a time with a scholar for you.</p>
+      <a class="cta" href="${WHATSAPP_URL}" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Message us on WhatsApp
+      </a>
+    </div>`;
+}
+
+renderScholarList();
+if (bookable.length) selectScholar(bookable[0].id);
+else renderPlaceholder();
+</script>
+</body>
+</html>
