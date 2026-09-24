@@ -193,6 +193,8 @@ Wikilink → URL: `[[Session 2 - Ayat 3]]` → `/quran-reflections/session-2-aya
    - If Surah an-Nas source Arabic is blank in vault files, uses internal fallback text for `114:1–6`
 6. Generates surah pages with metadata, referenced verses list, and backlinks
 
+**Neither build script prunes.** A verse or surah page whose last referencing note was edited or removed stays on disk as an orphan and keeps whatever styling it had when it was generated. After a token or template change, look for pages the rebuild did not touch (`git status` shows them as unmodified) and delete the ones nothing links to.
+
 ### Icons
 
 26 SVG Material Design icons in the `ICONS` array in `admin/index.html`. Each entry: `{ id, label, path }`. `getIconPath(id)` returns the SVG path data, falling back to the first icon if `id` is unknown.
@@ -202,7 +204,11 @@ Wikilink → URL: `[[Session 2 - Ayat 3]]` → `/quran-reflections/session-2-aya
 CSS custom properties — see `PROJECT.md` for the full token table. Key values:
 - Accent mid: `rgb(148,62,12)` (warm brown)
 - Background: `#d9ccbc` (beige)
-- Cards: glassmorphism (`rgba(255,255,255,0.48)`) — homepage only; inner pages use plain article layout
+- Muted text: `#6b3410` — opaque on purpose; the previous `rgba(110,55,12,0.72)` failed contrast against the beige background
+- Cards: glassmorphism (`rgba(255,255,255,0.55)`) — homepage only; inner pages use plain article layout
+- Scales: `--shadow-sm/md/lg`, `--sp-1`…`--sp-6`, `--fs-xs`…`--fs-2xl`, `--radius-sm/md/lg`. Use these instead of writing new one-off values.
+
+**The token block is duplicated in four files** — `index.html`, `quran-reflections/index.html`, and the `<style>` templates inside `build_notes.py` and `build_quran.py`. Edit all four together, then re-run both build scripts. Note the brace escaping differs: `build_notes.py`'s template is an f-string so its literal braces are doubled (`:root {{ … }}`), while `build_quran.py`'s is not. `admin/index.html` has its own independent token set.
 - Fonts (inner pages): EB Garamond (body), Playfair Display (headings), Alegreya SC (nav/metadata/small caps), Amiri (Arabic) via Google Fonts
 - Fonts (homepage `index.html`): Cinzel/Lato — unchanged
 

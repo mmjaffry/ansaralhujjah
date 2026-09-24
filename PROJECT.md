@@ -199,6 +199,8 @@ Each note file must follow this convention at the top (after YAML frontmatter):
   - Referenced verse list
   - Backlinks to session notes that referenced that surah
 
+Neither script deletes anything. If a note stops referencing a verse, that verse's page stays on disk and stops being updated — it keeps its old styling and quietly drifts from the rest of the site. After changing the design tokens or a page template, check which generated pages the rebuild left untouched and delete any that nothing links to.
+
 ### URL slug rule
 
 Filename (without `.md`) → lowercase → strip special chars → spaces/underscores to hyphens → collapse consecutive hyphens.
@@ -226,10 +228,20 @@ All styling is inline in each HTML file with CSS custom properties. There are no
 | `--accent-light` | `rgb(195,95,38)` | Icon fills, hover states |
 | `--accent-mid` | `rgb(148,62,12)` | Primary accent, buttons |
 | `--accent-dark` | `rgb(98,28,0)` | Arrow color, deep contrast |
+| `--accent-glow` | `rgb(210,112,50)` | Gradient highlights |
 | `--bg` | `#d9ccbc` | Page background (beige) |
-| `--bg-card` | `rgba(255,255,255,0.48)` | Card background (glassmorphism — homepage only) |
+| `--bg-card` | `rgba(255,255,255,0.55)` | Card background (glassmorphism — homepage only) |
+| `--bg-card-hover` | `rgba(255,255,255,0.74)` | Card background on hover |
+| `--border` | `rgba(148,62,12,0.18)` | Default borders and dividers |
+| `--border-strong` | `rgba(148,62,12,0.42)` | Hover / focus borders |
 | `--text` | `#1a0d05` | Body text (dark brown) |
-| `--text-muted` | `rgba(110,55,12,0.72)` | Subtitles, secondary text, nav labels |
+| `--text-muted` | `#6b3410` | Subtitles, secondary text, nav labels (6.27:1 on `--bg`, clears WCAG AA) |
+| `--shadow-sm` / `--shadow-md` / `--shadow-lg` | see token block | Elevation scale — resting, hover, modal |
+| `--sp-1` … `--sp-6` | `4px` `8px` `12px` `16px` `24px` `40px` | Spacing scale |
+| `--fs-xs` … `--fs-2xl` | `0.75rem` `0.85rem` `0.95rem` `1.1rem` `1.4rem` `1.9rem` | Type scale |
+| `--radius-sm` / `--radius-md` / `--radius-lg` | `8px` / `12px` / `18px` | Corner radii |
+
+**The token block is duplicated in four files** — `index.html`, `quran-reflections/index.html`, and the page templates inside `build_notes.py` and `build_quran.py`. Changing a token means changing all four and re-running both build scripts, or generated pages will visibly diverge from hand-written ones. (`admin/index.html` carries its own separate token set.)
 
 **Homepage fonts:** Cinzel (headings) and Lato (body) — unchanged.
 
