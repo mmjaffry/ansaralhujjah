@@ -44,7 +44,7 @@ const { chromium } = require('playwright');
   const browser = await chromium.launch();
   const page = await browser.newPage({ viewport: { width: +width, height: +height } });
   await page.goto('http://localhost:8765/admin/', { waitUntil: 'networkidle' });
-  await page.fill('#passwordInput', 'murtaza6');
+  await page.fill('#passwordInput', process.env.AAH_ADMIN_PASSWORD);
   await page.click('#loginForm button[type="submit"]');
   await page.waitForSelector('#dashboard', { state: 'visible' });
   await page.waitForTimeout(1500); // let syncFromLiveSite finish
